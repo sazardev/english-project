@@ -153,8 +153,23 @@ const postsByLevel = {
   <section class="posts-section">
     <div class="container">
       <div class="posts-header">
-        <h2 id="posts-title">All Lessons ({sortedPosts.length})</h2>
-        <p class="text-light" id="posts-subtitle">Sorted by newest first</p>
+        <div class="posts-header-content">
+          <h2 id="posts-title">All Lessons ({sortedPosts.length})</h2>
+          <p class="posts-subtitle" id="posts-subtitle">
+            Sorted by newest first
+          </p>
+        </div>
+        <div class="posts-header-actions">
+          <div class="sort-options">
+            <label class="sort-label">Sort by:</label>
+            <select class="sort-select" id="sort-select">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="title">Title A-Z</option>
+              <option value="level">Level (Beginner → Advanced)</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div class="posts-grid" id="posts-grid">
@@ -162,106 +177,218 @@ const postsByLevel = {
       </div>
 
       <div class="empty-state" id="empty-state" style="display: none;">
-        <h3>No lessons found for this filter</h3>
-        <p>
-          Try adjusting your filters or <button class="clear-all-filters"
-            >view all lessons</button
-          >.
-        </p>
-        <a
-          href="https://github.com/sazardev/english-project"
-          class="btn btn-primary"
-        >
-          Contribute a Lesson
-        </a>
+        <div class="empty-state-content">
+          <div class="empty-state-icon">🔍</div>
+          <h3>No lessons found for this filter</h3>
+          <p>
+            We couldn't find any lessons matching your current filters. Try
+            adjusting your criteria or explore all available content.
+          </p>
+          <div class="empty-state-actions">
+            <button class="btn btn-secondary clear-all-filters">
+              <span class="btn-icon">🔄</span>
+              View All Lessons
+            </button>
+            <a
+              href="https://github.com/sazardev/english-project"
+              class="btn btn-primary"
+              target="_blank"
+            >
+              <span class="btn-icon">✨</span>
+              Contribute a Lesson
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Contribute CTA -->
   <section class="contribute-cta">
-    <div class="container text-center">
-      <h2>Share Your Knowledge</h2>
-      <p>
-        Help other English learners by contributing your own lessons and
-        resources. It's easy to get started with our GitHub-based contribution
-        system.
-      </p>
-      <div class="cta-actions">
-        <a
-          href="https://github.com/sazardev/english-project"
-          target="_blank"
-          class="btn btn-primary"
-        >
-          Contribute on GitHub
-        </a>
-        <a href="/contribute" class="btn btn-secondary">
-          Learn How to Contribute
-        </a>
+    <div class="cta-background">
+      <div class="cta-patterns"></div>
+      <div class="cta-gradient"></div>
+    </div>
+    <div class="container">
+      <div class="cta-content">
+        <div class="cta-header">
+          <div class="cta-badge">
+            <span class="badge-icon">🚀</span>
+            <span>Join Our Community</span>
+          </div>
+          <h2>Share Your Knowledge</h2>
+          <p>
+            Help thousands of English learners worldwide by contributing your
+            own lessons and resources. Join our growing community of educators
+            and learners making quality English education accessible to
+            everyone.
+          </p>
+        </div>
+
+        <div class="cta-features">
+          <div class="feature-item">
+            <div class="feature-icon">📝</div>
+            <div class="feature-content">
+              <h4>Easy to Contribute</h4>
+              <p>Simple Markdown-based system for creating lessons</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🌍</div>
+            <div class="feature-content">
+              <h4>Global Impact</h4>
+              <p>Your content reaches learners in 150+ countries</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎓</div>
+            <div class="feature-content">
+              <h4>Expert Review</h4>
+              <p>Community peer review ensures quality content</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-actions">
+          <a
+            href="https://github.com/sazardev/english-project"
+            target="_blank"
+            class="btn btn-primary btn-enhanced"
+          >
+            <span class="btn-icon">💡</span>
+            <span class="btn-content">
+              <span class="btn-title">Start Contributing</span>
+              <span class="btn-subtitle">Join on GitHub</span>
+            </span>
+            <span class="btn-arrow">→</span>
+            <div class="btn-glow"></div>
+          </a>
+          <a href="/contribute" class="btn btn-secondary btn-enhanced">
+            <span class="btn-icon">📖</span>
+            <span class="btn-content">
+              <span class="btn-title">Learn How</span>
+              <span class="btn-subtitle">Contribution guide</span>
+            </span>
+            <span class="btn-arrow">→</span>
+            <div class="btn-glow"></div>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 </MainLayout>
 
 <style>
+  /* Enhanced Blog Header */
   .blog-header {
     background: linear-gradient(
       135deg,
       var(--color-bg) 0%,
       var(--color-bg-secondary) 100%
     );
-    padding: 3rem 0;
+    padding: 4rem 0;
     margin-bottom: 3rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 25% 25%,
+        rgba(59, 130, 246, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(147, 51, 234, 0.05) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
   }
 
   .blog-header h1 {
-    font-size: 3rem;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: 1rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    position: relative;
+    z-index: 1;
   }
 
   .blog-description {
-    font-size: 1.125rem;
-    color: var(--color-text-light);
-    max-width: 600px;
-    margin: 0 auto 2rem;
-    line-height: 1.6;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    line-height: var(--line-height-relaxed);
+    position: relative;
+    z-index: 1;
   }
 
+  /* Enhanced Stats Section */
   .stats {
     display: flex;
     justify-content: center;
     gap: 3rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
+    position: relative;
+    z-index: 1;
   }
 
   .stat {
     text-align: center;
+    padding: var(--space-4) var(--space-6);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border-light);
+    transition: all var(--transition-normal);
+  }
+
+  .stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
   }
 
   .stat-number {
     display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--color-primary);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary-600);
     margin-bottom: 0.5rem;
+    line-height: 1;
   }
 
   .stat-label {
-    font-size: 0.875rem;
-    color: var(--color-text-light);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.05em;
+    font-weight: var(--font-weight-medium);
   }
 
+  /* Enhanced Filters Section */
   .filters {
-    background: var(--color-bg-secondary);
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-secondary) 0%,
+      var(--color-bg-tertiary) 100%
+    );
     padding: 3rem 0;
     margin-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .filter-section {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .filter-section:last-child {
@@ -269,8 +396,11 @@ const postsByLevel = {
   }
 
   .filter-section h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    text-align: center;
   }
 
   .filter-grid {
@@ -280,80 +410,151 @@ const postsByLevel = {
   }
 
   .category-filters {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 
+  /* Enhanced Filter Items */
   .filter-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem;
-    background: var(--color-bg);
+    padding: 1.25rem 1rem;
+    background: var(--color-surface);
     border: 2px solid var(--color-border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-2xl);
     text-decoration: none;
     color: var(--color-text);
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+  }
+
+  .filter-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left var(--transition-normal);
+  }
+
+  .filter-item:hover::before {
+    left: 100%;
   }
 
   .filter-item:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-300);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
     text-decoration: none;
     color: var(--color-text);
+    background: var(--color-surface-elevated);
   }
 
   .filter-item.active {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
+    border-color: var(--color-primary-500);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-600) 0%,
+      var(--color-primary-700) 100%
+    );
     color: white;
+    box-shadow: var(--shadow-primary);
+    transform: translateY(-2px);
   }
 
+  .filter-item.active:hover {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-700) 0%,
+      var(--color-primary-800) 100%
+    );
+    border-color: var(--color-primary-600);
+  }
+
+  /* Level-specific hover colors */
   .filter-item.beginner:hover {
-    border-color: #10b981;
+    border-color: var(--color-beginner-400);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.25);
   }
+
   .filter-item.intermediate:hover {
-    border-color: #f59e0b;
+    border-color: var(--color-intermediate-400);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.25);
   }
+
   .filter-item.advanced:hover {
-    border-color: #ef4444;
+    border-color: var(--color-advanced-400);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.25);
   }
 
   .filter-icon {
     font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: transform var(--transition-normal);
+  }
+
+  .filter-item:hover .filter-icon {
+    transform: scale(1.1);
   }
 
   .filter-name {
     flex: 1;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
   }
 
   .filter-count {
-    background: var(--color-bg-secondary);
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
+    background: var(--color-bg-tertiary);
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-full);
     font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--color-text-light);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-normal);
+    flex-shrink: 0;
   }
+
   .filter-item.active .filter-count {
     background: rgba(255, 255, 255, 0.2);
     color: white;
   }
 
+  .filter-item:hover .filter-count {
+    background: var(--color-primary-100);
+    color: var(--color-primary-700);
+  }
+
+  .filter-item.active:hover .filter-count {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+
+  /* Enhanced Active Filters */
   .active-filters {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: var(--color-bg);
-    border-radius: var(--radius);
+    background: var(--color-surface);
+    border-radius: var(--radius-2xl);
     border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
   }
 
   .active-filters h4 {
     margin: 0 0 1rem 0;
     font-size: 1rem;
     color: var(--color-text);
+    font-weight: var(--font-weight-semibold);
   }
 
   .filter-tags {
@@ -363,24 +564,36 @@ const postsByLevel = {
     align-items: center;
   }
 
+  /* Enhanced Filter Tags */
   .filter-tag {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: var(--color-primary);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-600) 0%,
+      var(--color-primary-700) 100%
+    );
     color: white;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+  }
+
+  .filter-tag:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
   }
 
   .remove-filter {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     color: white;
@@ -388,93 +601,44 @@ const postsByLevel = {
     font-weight: bold;
     font-size: 14px;
     line-height: 1;
-    transition: background-color 0.2s ease;
+    transition: all var(--transition-normal);
+    cursor: pointer;
   }
 
   .remove-filter:hover {
     background: rgba(255, 255, 255, 0.3);
     color: white;
     text-decoration: none;
+    transform: scale(1.1);
   }
 
+  /* Enhanced Clear All Button */
   .clear-all-filters {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: var(--color-text-light);
-    color: white;
-    border-radius: 20px;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
     text-decoration: none;
     font-size: 0.875rem;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-normal);
+    cursor: pointer;
   }
 
   .clear-all-filters:hover {
-    background: var(--color-text);
-    color: white;
+    background: var(--color-error-50);
+    color: var(--color-error-600);
+    border-color: var(--color-error-200);
     text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
 
-  .posts-section {
-    padding: 2rem 0;
-  }
-
-  .posts-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .posts-header h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius);
-  }
-
-  .empty-state h3 {
-    margin-bottom: 1rem;
-    color: var(--color-text-light);
-  }
-
-  .empty-state p {
-    margin-bottom: 2rem;
-    color: var(--color-text-light);
-  }
-
-  .contribute-cta {
-    background: var(--color-bg-secondary);
-    padding: 4rem 0;
-    margin-top: 4rem;
-  }
-
-  .contribute-cta h2 {
-    margin-bottom: 1rem;
-  }
-
-  .contribute-cta p {
-    font-size: 1.125rem;
-    color: var(--color-text-light);
-    max-width: 600px;
-    margin: 0 auto 2rem;
-    line-height: 1.6;
-  }
-
-  .cta-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
+  /* Enhanced Responsive Design */
   @media (max-width: 768px) {
     .blog-header h1 {
       font-size: 2.25rem;
@@ -482,14 +646,42 @@ const postsByLevel = {
 
     .stats {
       gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .stat-number {
       font-size: 2rem;
     }
 
+    .filters {
+      padding: 2rem 0;
+    }
+
+    .filter-section h3 {
+      font-size: 1.125rem;
+    }
+
     .filter-grid {
       grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .category-filters {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .filter-item {
+      padding: 1rem 0.875rem;
+      gap: 0.625rem;
+    }
+
+    .filter-icon {
+      font-size: 1.25rem;
+    }
+
+    .filter-name {
+      font-size: var(--font-size-sm);
     }
 
     .posts-grid {
@@ -500,16 +692,551 @@ const postsByLevel = {
       flex-direction: column;
       align-items: center;
     }
+
+    .filter-tags {
+      gap: 0.5rem;
+    }
+
+    .filter-tag,
+    .clear-all-filters {
+      font-size: 0.8125rem;
+      padding: 0.375rem 0.75rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .filter-item {
+      padding: 0.875rem 0.75rem;
+      min-height: 60px;
+    }
+
+    .filter-icon {
+      font-size: 1.125rem;
+    }
+
+    .active-filters {
+      padding: 1rem;
+    }
+  }
+
+  /* Desktop Enhancement */
+  @media (min-width: 1024px) {
+    .filters {
+      padding: 4rem 0;
+    }
+
+    .filter-grid {
+      gap: 1.25rem;
+    }
+
+    .filter-item {
+      padding: 1.5rem 1.25rem;
+      gap: 1rem;
+    }
+
+    .filter-item:hover {
+      transform: translateY(-4px);
+    }
+
+    .filter-icon {
+      font-size: 1.75rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2.5rem;
+    }
+  }
+
+  /* Enhanced Posts Section */
+  .posts-section {
+    padding: 3rem 0 4rem;
+    min-height: 400px;
+  }
+
+  .posts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .posts-header-content h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .posts-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .posts-header-actions {
+    flex-shrink: 0;
+  }
+
+  .sort-options {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .sort-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+  }
+
+  .sort-select {
+    padding: 0.5rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-width: 160px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+  }
+
+  .sort-select:hover {
+    border-color: var(--color-primary-300);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .sort-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-focus);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  /* Enhanced Empty State */
+  .empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 3rem 1rem;
+  }
+
+  .empty-state-content {
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .empty-state h3 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .empty-state p {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: 2rem;
+  }
+
+  .empty-state-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Enhanced Contribute CTA */
+  .contribute-cta {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
+    color: var(--color-white);
+    padding: 5rem 0;
+    margin-top: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+
+  .cta-patterns {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 20% 20%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 50%
+      ),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    animation: patternMove 20s linear infinite;
+  }
+
+  @keyframes patternMove {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(60px, 60px);
+    }
+  }
+
+  .cta-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 70%,
+      transparent 100%
+    );
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .cta-header {
+    margin-bottom: 3rem;
+  }
+
+  .cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .cta-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 1rem;
+    color: var(--color-white);
+    line-height: 1.2;
+  }
+
+  .cta-header p {
+    font-size: var(--font-size-lg);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: var(--line-height-relaxed);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-normal);
+  }
+
+  .feature-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .feature-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+  }
+
+  .feature-content h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 0.5rem;
+    color: var(--color-white);
+  }
+
+  .feature-content p {
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.8);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  /* Enhanced CTA Buttons */
+  .btn-enhanced {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-2xl);
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    min-height: 60px;
+  }
+
+  .btn-enhanced .btn-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+
+  .btn-enhanced .btn-title {
+    font-size: var(--font-size-base);
+    line-height: 1;
+  }
+
+  .btn-enhanced .btn-subtitle {
+    font-size: var(--font-size-xs);
+    opacity: 0.8;
+    line-height: 1;
+  }
+
+  .btn-enhanced .btn-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .btn-enhanced .btn-arrow {
+    font-size: 1.25rem;
+    transition: transform var(--transition-normal);
+    flex-shrink: 0;
+  }
+
+  .btn-enhanced .btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left var(--transition-slow);
+  }
+
+  .btn-enhanced:hover .btn-glow {
+    left: 100%;
+  }
+
+  .btn-enhanced:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .btn-enhanced:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .contribute-cta .btn-primary.btn-enhanced {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border: 2px solid var(--color-white);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .contribute-cta .btn-primary.btn-enhanced:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-primary-dark);
+    border-color: var(--color-bg-secondary);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  .contribute-cta .btn-secondary.btn-enhanced {
+    background: transparent;
+    color: var(--color-white);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .contribute-cta .btn-secondary.btn-enhanced:hover {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border-color: var(--color-white);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .posts-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .posts-header-actions {
+      width: 100%;
+    }
+
+    .sort-options {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .sort-select {
+      width: 100%;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .empty-state {
+      min-height: 300px;
+      padding: 2rem 1rem;
+    }
+
+    .empty-state-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contribute-cta {
+      padding: 3rem 0;
+    }
+
+    .cta-features {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .feature-item {
+      padding: 1.25rem;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-enhanced {
+      padding: 0.875rem 1.5rem;
+      min-height: 50px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .empty-state-icon {
+      font-size: 3rem;
+    }
+
+    .btn-enhanced .btn-content {
+      align-items: center;
+    }
   }
 </style>
 
 <script is:inline>
-  // Blog filtering functionality
+  // Blog filtering and sorting functionality
   document.addEventListener("DOMContentLoaded", () => {
     let currentFilters = {
       level: "",
       category: "",
     };
+    let currentSort = "newest";
+
     function collectPosts() {
       const postCards = document.querySelectorAll(".posts-grid .blog-card");
       return Array.from(postCards).map((card) => ({
@@ -517,7 +1244,68 @@ const postsByLevel = {
         level: card.dataset.level || "",
         category: card.dataset.category || "",
         title: card.querySelector("h3")?.textContent || "",
+        publishDate: card.dataset.publishDate || "1970-01-01",
       }));
+    }
+
+    function sortPosts(posts, sortBy) {
+      const sortedPosts = [...posts];
+
+      switch (sortBy) {
+        case "newest":
+          return sortedPosts.sort(
+            (a, b) => new Date(b.publishDate) - new Date(a.publishDate)
+          );
+        case "oldest":
+          return sortedPosts.sort(
+            (a, b) => new Date(a.publishDate) - new Date(b.publishDate)
+          );
+        case "title":
+          return sortedPosts.sort((a, b) => a.title.localeCompare(b.title));
+        case "level":
+          const levelOrder = { beginner: 1, intermediate: 2, advanced: 3 };
+          return sortedPosts.sort((a, b) => {
+            const levelA = levelOrder[a.level] || 0;
+            const levelB = levelOrder[b.level] || 0;
+            return levelA - levelB;
+          });
+        default:
+          return sortedPosts;
+      }
+    }
+
+    function applySorting(sortValue) {
+      currentSort = sortValue;
+
+      const allPosts = collectPosts();
+      const visiblePosts = allPosts.filter((post) => {
+        const matchesLevel =
+          !currentFilters.level || post.level === currentFilters.level;
+        const matchesCategory =
+          !currentFilters.category || post.category === currentFilters.category;
+        return matchesLevel && matchesCategory;
+      });
+
+      const sortedPosts = sortPosts(visiblePosts, sortValue);
+      const postsGrid = document.getElementById("posts-grid");
+
+      if (postsGrid) {
+        // Remove all posts from grid
+        allPosts.forEach((post) => {
+          if (post.element && post.element.parentNode) {
+            post.element.remove();
+          }
+        });
+
+        // Add sorted visible posts back to grid
+        sortedPosts.forEach((post) => {
+          if (post.element) {
+            postsGrid.appendChild(post.element);
+          }
+        });
+      }
+
+      updatePostsHeader();
     }
 
     function applyFilter(filterType, filterValue) {
@@ -531,6 +1319,9 @@ const postsByLevel = {
       if (currentFilters.category) {
         params.set("category", currentFilters.category);
       }
+      if (currentSort !== "newest") {
+        params.set("sort", currentSort);
+      }
 
       const newUrl = params.toString()
         ? `${window.location.pathname}?${params.toString()}`
@@ -541,17 +1332,25 @@ const postsByLevel = {
       updateFilterButtons();
       filterPosts();
       updateActiveFilters();
-      updatePostsHeader();
+      applySorting(currentSort);
     }
 
     function clearAllFilters() {
       currentFilters = { level: "", category: "" };
+      currentSort = "newest";
+
+      // Reset sort dropdown
+      const sortSelect = document.getElementById("sort-select");
+      if (sortSelect) {
+        sortSelect.value = "newest";
+      }
+
       window.history.replaceState({}, "", window.location.pathname);
 
       updateFilterButtons();
       filterPosts();
       updateActiveFilters();
-      updatePostsHeader();
+      applySorting(currentSort);
     }
 
     function updateFilterButtons() {
@@ -694,23 +1493,54 @@ const postsByLevel = {
         titleText += `Lessons (${visiblePosts.length})`;
 
         title.textContent = titleText;
-        subtitle.textContent =
-          "Showing filtered results • Sorted by newest first";
       } else {
         title.textContent = `All Lessons (${visiblePosts.length})`;
-        subtitle.textContent = "Sorted by newest first";
+      }
+
+      // Update subtitle based on current sort
+      let sortText = "";
+      switch (currentSort) {
+        case "newest":
+          sortText = "Sorted by newest first";
+          break;
+        case "oldest":
+          sortText = "Sorted by oldest first";
+          break;
+        case "title":
+          sortText = "Sorted alphabetically";
+          break;
+        case "level":
+          sortText = "Sorted by level (Beginner → Advanced)";
+          break;
+        default:
+          sortText = "Sorted by newest first";
+      }
+
+      if (hasFilters) {
+        subtitle.textContent = `Showing filtered results • ${sortText}`;
+      } else {
+        subtitle.textContent = sortText;
       }
     }
     function checkUrlParams() {
       const params = new URLSearchParams(window.location.search);
       const level = params.get("level");
       const category = params.get("category");
+      const sort = params.get("sort") || "newest";
 
       if (level) {
         applyFilter("level", level);
       }
       if (category) {
         applyFilter("category", category);
+      }
+      if (sort !== "newest") {
+        currentSort = sort;
+        const sortSelect = document.getElementById("sort-select");
+        if (sortSelect) {
+          sortSelect.value = sort;
+        }
+        applySorting(sort);
       }
     }
 
@@ -723,6 +1553,14 @@ const postsByLevel = {
         applyFilter(filterType, filterValue);
       });
     });
+
+    // Add sort functionality
+    const sortSelect = document.getElementById("sort-select");
+    if (sortSelect) {
+      sortSelect.addEventListener("change", (e) => {
+        applySorting(e.target.value);
+      });
+    }
 
     document.querySelectorAll(".clear-all-filters").forEach((button) => {
       button.addEventListener("click", (e) => {
