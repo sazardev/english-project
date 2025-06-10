@@ -581,11 +581,8 @@ const postsByLevel = {
         allLevelsButton.classList.toggle("active", isActive);
       }
     }
-
     function filterPosts() {
       const allPosts = collectPosts();
-      console.log("Current filters:", currentFilters);
-
       let visibleCount = 0;
 
       allPosts.forEach((post) => {
@@ -595,17 +592,11 @@ const postsByLevel = {
           !currentFilters.category || post.category === currentFilters.category;
         const isVisible = matchesLevel && matchesCategory;
 
-        console.log(
-          `Post "${post.title}": level=${post.level}, category=${post.category}, visible=${isVisible}`
-        );
-
         if (post.element) {
           post.element.style.display = isVisible ? "block" : "none";
           if (isVisible) visibleCount++;
         }
       });
-
-      console.log("Visible posts count:", visibleCount);
 
       // Show/hide empty state
       const emptyState = document.getElementById("empty-state");
@@ -710,13 +701,10 @@ const postsByLevel = {
         subtitle.textContent = "Sorted by newest first";
       }
     }
-
     function checkUrlParams() {
       const params = new URLSearchParams(window.location.search);
       const level = params.get("level");
       const category = params.get("category");
-
-      console.log("URL params - level:", level, "category:", category);
 
       if (level) {
         applyFilter("level", level);
