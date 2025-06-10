@@ -290,7 +290,12 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
 
 <script>
   class AudioPronunciation {
-    constructor(container) {
+    private container: HTMLElement;
+    private practicedWords: Set<number>;
+    private totalWords: number;
+    private speed: "normal" | "slow";
+
+    constructor(container: HTMLElement) {
       this.container = container;
       this.practicedWords = new Set();
       this.totalWords = this.container.querySelectorAll(
@@ -299,53 +304,59 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       this.speed = "normal";
       this.init();
     }
-
-    init() {
+    init(): void {
       this.bindEvents();
       this.updateProgress();
     }
 
-    bindEvents() {
+    bindEvents(): void {
       // Play individual word sounds
-      this.container.querySelectorAll(".play-sound-btn").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const word = e.currentTarget.dataset.word;
-          const cardIndex = Array.from(
-            this.container.querySelectorAll(".pronunciation-card")
-          ).indexOf(e.currentTarget.closest(".pronunciation-card"));
-          this.playWordSound(word, btn, cardIndex);
+      this.container
+        .querySelectorAll(".play-sound-btn")
+        .forEach((btn: Element) => {
+          btn.addEventListener("click", (e: Event) => {
+            const target = e.currentTarget as HTMLElement;
+            const word = target.dataset.word as string;
+            const cardIndex = Array.from(
+              this.container.querySelectorAll(".pronunciation-card")
+            ).indexOf(target.closest(".pronunciation-card") as Element);
+            this.playWordSound(word, target, cardIndex);
+          });
         });
-      });
 
       // Play example sentences
-      this.container.querySelectorAll(".play-example-btn").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const example = e.currentTarget.dataset.example;
-          this.playExampleSound(example, btn);
-        });
-      });
-
-      // Show examples toggle
-      const showExamplesBtn =
-        this.container.querySelector(".show-examples-btn");
+      this.container
+        .querySelectorAll(".play-example-btn")
+        .forEach((btn: Element) => {
+          btn.addEventListener("click", (e: Event) => {
+            const target = e.currentTarget as HTMLElement;
+            const example = target.dataset.example as string;
+            this.playExampleSound(example, target);
+          });
+        }); // Show examples toggle
+      const showExamplesBtn = this.container.querySelector(
+        ".show-examples-btn"
+      ) as HTMLButtonElement;
       if (showExamplesBtn) {
         showExamplesBtn.addEventListener("click", () => this.toggleExamples());
       }
 
       // Practice all button
-      const practiceAllBtn = this.container.querySelector(".practice-all-btn");
+      const practiceAllBtn = this.container.querySelector(
+        ".practice-all-btn"
+      ) as HTMLButtonElement;
       if (practiceAllBtn) {
         practiceAllBtn.addEventListener("click", () => this.practiceAll());
-      }
-
-      // Speed control
-      const speedBtn = this.container.querySelector(".speed-control-btn");
+      } // Speed control
+      const speedBtn = this.container.querySelector(
+        ".speed-control-btn"
+      ) as HTMLButtonElement;
       if (speedBtn) {
         speedBtn.addEventListener("click", () => this.toggleSpeed(speedBtn));
       }
     }
 
-    playWordSound(word, button, cardIndex) {
+    playWordSound(word: string, button: HTMLElement, cardIndex: number): void {
       // Simulate audio playback with Web Speech API
       if ("speechSynthesis" in window) {
         const utterance = new SpeechSynthesisUtterance(word);
@@ -353,11 +364,16 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
         utterance.pitch = 1;
 
         button.classList.add("playing");
-        button.querySelector(".play-text").textContent = "Playing...";
+        const playText = button.querySelector(".play-text") as HTMLElement;
+        if (playText) {
+          playText.textContent = "Playing...";
+        }
 
         utterance.onend = () => {
           button.classList.remove("playing");
-          button.querySelector(".play-text").textContent = "Play Sound";
+          if (playText) {
+            playText.textContent = "Play Sound";
+          }
           this.markWordPracticed(cardIndex);
         };
 
@@ -370,7 +386,7 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       }
     }
 
-    playExampleSound(example, button) {
+    playExampleSound(example: string, button: HTMLElement): void {
       if ("speechSynthesis" in window) {
         const utterance = new SpeechSynthesisUtterance(example);
         utterance.rate = this.speed === "slow" ? 0.7 : 1;
@@ -385,15 +401,17 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       }
     }
 
-    markWordPracticed(cardIndex) {
+    markWordPracticed(cardIndex: number): void {
       const card = this.container.querySelectorAll(".pronunciation-card")[
         cardIndex
-      ];
+      ] as HTMLElement;
       if (!this.practicedWords.has(cardIndex)) {
         this.practicedWords.add(cardIndex);
         card.classList.add("practiced");
 
-        const indicator = card.querySelector(".practice-indicator");
+        const indicator = card.querySelector(
+          ".practice-indicator"
+        ) as HTMLElement;
         if (indicator) {
           indicator.style.display = "block";
         }
@@ -402,10 +420,12 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       }
     }
 
-    updateProgress() {
-      const practicedCount = this.container.querySelector(".practiced-count");
+    updateProgress(): void {
+      const practicedCount = this.container.querySelector(
+        ".practiced-count"
+      ) as HTMLElement;
       if (practicedCount) {
-        practicedCount.textContent = this.practicedWords.size;
+        practicedCount.textContent = this.practicedWords.size.toString();
       }
 
       if (this.practicedWords.size === this.totalWords) {
@@ -413,40 +433,58 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       }
     }
 
-    toggleExamples() {
-      const examples = this.container.querySelectorAll(".example-sentence");
-      const btn = this.container.querySelector(".show-examples-btn");
+    toggleExamples(): void {
+      const examples = this.container.querySelectorAll(
+        ".example-sentence"
+      ) as NodeListOf<HTMLElement>;
+      const btn = this.container.querySelector(
+        ".show-examples-btn"
+      ) as HTMLButtonElement;
       const isVisible = examples[0]?.style.display !== "none";
 
-      examples.forEach((example) => {
+      examples.forEach((example: HTMLElement) => {
         example.style.display = isVisible ? "none" : "block";
       });
 
-      btn.textContent = isVisible ? "👁️ Show Examples" : "🙈 Hide Examples";
+      if (btn) {
+        btn.textContent = isVisible ? "👁️ Show Examples" : "🙈 Hide Examples";
+      }
     }
 
-    async practiceAll() {
-      const cards = this.container.querySelectorAll(".pronunciation-card");
-      const btn = this.container.querySelector(".practice-all-btn");
+    async practiceAll(): Promise<void> {
+      const cards = this.container.querySelectorAll(
+        ".pronunciation-card"
+      ) as NodeListOf<HTMLElement>;
+      const btn = this.container.querySelector(
+        ".practice-all-btn"
+      ) as HTMLButtonElement;
 
-      btn.textContent = "🎯 Practicing...";
-      btn.disabled = true;
-
-      for (let i = 0; i < cards.length; i++) {
-        const playBtn = cards[i].querySelector(".play-sound-btn");
-        const word = playBtn.dataset.word;
-
-        await new Promise((resolve) => {
-          this.playWordSound(word, playBtn, i);
-          setTimeout(resolve, 2000); // Wait 2 seconds between words
-        });
+      if (btn) {
+        btn.textContent = "🎯 Practicing...";
+        btn.disabled = true;
       }
 
-      btn.textContent = "🎯 Practice All";
-      btn.disabled = false;
+      for (let i = 0; i < cards.length; i++) {
+        const playBtn = cards[i].querySelector(
+          ".play-sound-btn"
+        ) as HTMLElement;
+        const word = playBtn?.dataset.word;
+
+        if (word && playBtn) {
+          await new Promise<void>((resolve) => {
+            this.playWordSound(word, playBtn, i);
+            setTimeout(resolve, 2000); // Wait 2 seconds between words
+          });
+        }
+      }
+
+      if (btn) {
+        btn.textContent = "🎯 Practice All";
+        btn.disabled = false;
+      }
     }
 
-    toggleSpeed(button) {
+    toggleSpeed(button: HTMLButtonElement): void {
       if (this.speed === "normal") {
         this.speed = "slow";
         button.textContent = "🐌 Slow Speed";
@@ -456,10 +494,10 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
       }
     }
 
-    showCompletion() {
+    showCompletion(): void {
       const progressDiv = this.container.querySelector(
         ".pronunciation-progress"
-      );
+      ) as HTMLElement;
       if (progressDiv) {
         progressDiv.style.display = "block";
         progressDiv.scrollIntoView({ behavior: "smooth" });
@@ -469,8 +507,10 @@ const { words, title = "Pronunciation Practice", id } = Astro.props;
 
   // Initialize all audio pronunciation components
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".audio-pronunciation").forEach((container) => {
-      new AudioPronunciation(container);
-    });
+    document
+      .querySelectorAll(".audio-pronunciation")
+      .forEach((container: Element) => {
+        new AudioPronunciation(container as HTMLElement);
+      });
   });
 </script>
