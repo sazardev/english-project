@@ -271,9 +271,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **Email**: hello@english-project.org
+- **Email**: sazardev@gmail.com
 - **GitHub**: [@sazardev](https://github.com/sazardev)
-- **Website**: [https://english-project.org](https://english-project.org)
+- **Website**: [https://the-english-project.netlify.app](https://the-english-project.netlify.app)
 
 ---
 
