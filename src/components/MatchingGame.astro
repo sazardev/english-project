@@ -1,0 +1,381 @@
+---
+export interface Props {
+  words: { word: string; translation: string; example?: string }[];
+  title?: string;
+  id: string;
+}
+
+const { words, title = "Match the Words", id } = Astro.props;
+---
+
+<div class="matching-game" data-game-id={id}>
+  <div class="game-header">
+    <h4>🎯 {title}</h4>
+    <p>Match the English words with their meanings by clicking on them!</p>
+    <div class="game-score">
+      Score: <span class="score-value">0</span>/<span class="total-score"
+        >{words.length}</span
+      >
+    </div>
+  </div>
+
+  <div class="matching-container">
+    <div class="words-column">
+      <h5>English Words</h5>
+      <div class="words-list">
+        {
+          words.map((item, index) => (
+            <button
+              class="word-item"
+              data-word-id={index}
+              data-word={item.word}
+            >
+              {item.word}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="translations-column">
+      <h5>Meanings</h5>
+      <div class="translations-list">
+        {
+          words
+            .sort(() => Math.random() - 0.5)
+            .map((item, index) => {
+              const originalIndex = words.findIndex(
+                (w) => w.word === item.word
+              );
+              return (
+                <button
+                  class="translation-item"
+                  data-translation-id={originalIndex}
+                  data-translation={item.translation}
+                >
+                  {item.translation}
+                </button>
+              );
+            })
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="game-result" style="display: none;">
+    <div class="result-content">
+      <div class="result-icon">🏆</div>
+      <h4>Congratulations!</h4>
+      <p>You've matched all words correctly!</p>
+      <button class="play-again-btn">Play Again</button>
+    </div>
+  </div>
+
+  <div class="examples-section" style="display: none;">
+    <h5>📚 Example Sentences</h5>
+    <div class="examples-list">
+      {
+        words.map(
+          (item, index) =>
+            item.example && (
+              <div
+                class="example-item"
+                data-example-id={index}
+                style="display: none;"
+              >
+                <strong>{item.word}:</strong> {item.example}
+              </div>
+            )
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .matching-game {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+  }
+
+  .game-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .game-header h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .game-header p {
+    margin: 0 0 1rem 0;
+    opacity: 0.9;
+  }
+
+  .game-score {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .matching-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .words-column h5,
+  .translations-column h5 {
+    text-align: center;
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+
+  .words-list,
+  .translations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .word-item,
+  .translation-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .word-item:hover,
+  .translation-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .word-item.selected,
+  .translation-item.selected {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.05);
+  }
+
+  .word-item.matched,
+  .translation-item.matched {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: #22c55e;
+    cursor: default;
+    transform: none;
+  }
+
+  .word-item.disabled,
+  .translation-item.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .game-result {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .result-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .result-content h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+  }
+
+  .result-content p {
+    margin: 0 0 1.5rem 0;
+    opacity: 0.9;
+  }
+
+  .play-again-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .play-again-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .examples-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .examples-section h5 {
+    margin: 0 0 1rem 0;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .example-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .matching-game {
+      padding: 1.5rem;
+    }
+
+    .matching-container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .word-item,
+    .translation-item {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const matchingGames = document.querySelectorAll(".matching-game");
+
+    matchingGames.forEach((game) => {
+      const wordItems = game.querySelectorAll(".word-item");
+      const translationItems = game.querySelectorAll(".translation-item");
+      const scoreElement = game.querySelector(".score-value");
+      const totalElement = game.querySelector(".total-score");
+      const gameResult = game.querySelector(".game-result");
+      const examplesSection = game.querySelector(".examples-section");
+      const playAgainBtn = game.querySelector(".play-again-btn");
+
+      let selectedWord = null;
+      let selectedTranslation = null;
+      let score = 0;
+      let totalPairs = parseInt(totalElement.textContent);
+
+      function resetGame() {
+        score = 0;
+        selectedWord = null;
+        selectedTranslation = null;
+        scoreElement.textContent = "0";
+        gameResult.style.display = "none";
+        examplesSection.style.display = "none";
+
+        wordItems.forEach((item) => {
+          item.classList.remove("selected", "matched", "disabled");
+        });
+
+        translationItems.forEach((item) => {
+          item.classList.remove("selected", "matched", "disabled");
+        });
+
+        // Hide all examples
+        const examples = examplesSection.querySelectorAll(".example-item");
+        examples.forEach((example) => {
+          example.style.display = "none";
+        });
+      }
+
+      function checkMatch() {
+        if (selectedWord && selectedTranslation) {
+          const wordId = selectedWord.dataset.wordId;
+          const translationId = selectedTranslation.dataset.translationId;
+
+          if (wordId === translationId) {
+            // Correct match
+            selectedWord.classList.add("matched");
+            selectedTranslation.classList.add("matched");
+            selectedWord.classList.remove("selected");
+            selectedTranslation.classList.remove("selected");
+
+            score++;
+            scoreElement.textContent = score.toString();
+
+            // Show example if available
+            const example = examplesSection.querySelector(
+              `[data-example-id="${wordId}"]`
+            );
+            if (example) {
+              examplesSection.style.display = "block";
+              example.style.display = "block";
+            }
+
+            // Check if game is complete
+            if (score === totalPairs) {
+              setTimeout(() => {
+                gameResult.style.display = "block";
+              }, 500);
+            }
+          } else {
+            // Incorrect match - remove selection
+            selectedWord.classList.remove("selected");
+            selectedTranslation.classList.remove("selected");
+          }
+
+          selectedWord = null;
+          selectedTranslation = null;
+        }
+      }
+
+      wordItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          if (this.classList.contains("matched")) return;
+
+          // Clear previous word selection
+          wordItems.forEach((w) => w.classList.remove("selected"));
+
+          selectedWord = this;
+          this.classList.add("selected");
+
+          checkMatch();
+        });
+      });
+
+      translationItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          if (this.classList.contains("matched")) return;
+
+          // Clear previous translation selection
+          translationItems.forEach((t) => t.classList.remove("selected"));
+
+          selectedTranslation = this;
+          this.classList.add("selected");
+
+          checkMatch();
+        });
+      });
+
+      playAgainBtn.addEventListener("click", resetGame);
+    });
+  });
+</script>

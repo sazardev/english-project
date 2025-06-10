@@ -1,0 +1,523 @@
+---
+export interface Props {
+  instruction: string;
+  sentences: { incorrect: string; correct: string; explanation?: string }[];
+  id: string;
+}
+
+const { instruction, sentences, id } = Astro.props;
+---
+
+<div class="drag-drop-component" data-dragdrop-id={id}>
+  <div class="dragdrop-header">
+    <h4>🔄 Drag & Drop Exercise</h4>
+    <p>{instruction}</p>
+  </div>
+
+  <div class="exercise-container">
+    {
+      sentences.map((sentence, sentenceIndex) => (
+        <div class="sentence-exercise" data-sentence-index={sentenceIndex}>
+          <div class="incorrect-sentence">
+            <h5>❌ Incorrect:</h5>
+            <p class="sentence-text">{sentence.incorrect}</p>
+          </div>
+
+          <div class="word-bank">
+            <h5>Word Bank:</h5>
+            <div class="draggable-words">
+              {sentence.correct.split(" ").map((word, wordIndex) => (
+                <span
+                  class="draggable-word"
+                  draggable="true"
+                  data-word={word}
+                  data-position={wordIndex}
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div class="drop-zone">
+            <h5>✅ Correct Order:</h5>
+            <div class="sentence-builder">
+              {sentence.correct.split(" ").map((_, wordIndex) => (
+                <div
+                  class="drop-slot"
+                  data-position={wordIndex}
+                  data-sentence={sentenceIndex}
+                >
+                  Drop here
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="sentence-result" style="display: none;">
+            <div class="result-icon" />
+            <div class="result-message" />
+            {sentence.explanation && (
+              <div class="explanation">
+                <strong>💡 Explanation:</strong> {sentence.explanation}
+              </div>
+            )}
+          </div>
+
+          <button class="check-sentence-btn">Check This Sentence</button>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="overall-result" style="display: none;">
+    <div class="completion-message">
+      <div class="completion-icon">🏆</div>
+      <h4>Exercise Complete!</h4>
+      <p class="final-score"></p>
+      <button class="restart-btn">Start Over</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .drag-drop-component {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: #333;
+    box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
+  }
+
+  .dragdrop-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+
+  .dragdrop-header h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    color: #333;
+  }
+
+  .dragdrop-header p {
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .sentence-exercise {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .sentence-exercise:last-child {
+    margin-bottom: 0;
+  }
+
+  .incorrect-sentence,
+  .word-bank,
+  .drop-zone {
+    margin-bottom: 1.5rem;
+  }
+
+  .incorrect-sentence h5,
+  .word-bank h5,
+  .drop-zone h5 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .sentence-text {
+    background: #fef2f2;
+    border: 2px solid #fca5a5;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .draggable-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    min-height: 60px;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 6px;
+  }
+
+  .draggable-word {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: move;
+    user-select: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+
+  .draggable-word:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+
+  .draggable-word.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+  }
+
+  .draggable-word.used {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+
+  .sentence-builder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 60px;
+    padding: 1rem;
+    background: #f0fdf4;
+    border: 2px dashed #22c55e;
+    border-radius: 6px;
+    align-items: center;
+  }
+
+  .drop-slot {
+    min-width: 80px;
+    min-height: 40px;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px dashed #94a3b8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #64748b;
+    transition: all 0.3s ease;
+  }
+
+  .drop-slot.drag-over {
+    border-color: #3b82f6;
+    background: #dbeafe;
+  }
+
+  .drop-slot.filled {
+    background: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+    font-weight: 500;
+  }
+
+  .drop-slot.correct {
+    background: #22c55e;
+    border-color: #16a34a;
+  }
+
+  .drop-slot.incorrect {
+    background: #ef4444;
+    border-color: #dc2626;
+  }
+
+  .check-sentence-btn {
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .check-sentence-btn:hover {
+    background: #7c3aed;
+  }
+
+  .check-sentence-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+
+  .sentence-result {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .explanation {
+    background: #f1f5f9;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: left;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .overall-result {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 3rem;
+    border-radius: 8px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .completion-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .completion-message h4 {
+    margin: 0 0 1rem 0;
+    color: #333;
+    font-size: 1.5rem;
+  }
+
+  .final-score {
+    margin: 0 0 2rem 0;
+    font-size: 1.1rem;
+    color: #64748b;
+  }
+
+  .restart-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .restart-btn:hover {
+    background: #ee5a52;
+  }
+
+  @media (max-width: 768px) {
+    .drag-drop-component {
+      padding: 1.5rem;
+    }
+
+    .sentence-exercise {
+      padding: 1.5rem;
+    }
+
+    .draggable-words,
+    .sentence-builder {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .drop-slot {
+      min-width: 100px;
+      margin: 0.25rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dragDropComponents = document.querySelectorAll(
+      ".drag-drop-component"
+    );
+
+    dragDropComponents.forEach((component) => {
+      const sentences = component.querySelectorAll(".sentence-exercise");
+      const overallResult = component.querySelector(".overall-result");
+      const finalScore = component.querySelector(".final-score");
+      const restartBtn = component.querySelector(".restart-btn");
+
+      let completedSentences = 0;
+      let totalSentences = sentences.length;
+      let correctSentences = 0;
+
+      sentences.forEach((sentenceEl, sentenceIndex) => {
+        const draggableWords = sentenceEl.querySelectorAll(".draggable-word");
+        const dropSlots = sentenceEl.querySelectorAll(".drop-slot");
+        const checkBtn = sentenceEl.querySelector(".check-sentence-btn");
+        const result = sentenceEl.querySelector(".sentence-result");
+        const resultIcon = sentenceEl.querySelector(".result-icon");
+        const resultMessage = sentenceEl.querySelector(".result-message");
+
+        let draggedElement = null;
+
+        // Drag and drop event listeners
+        draggableWords.forEach((word) => {
+          word.addEventListener("dragstart", function (e) {
+            draggedElement = this;
+            this.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "move";
+          });
+
+          word.addEventListener("dragend", function () {
+            this.classList.remove("dragging");
+            draggedElement = null;
+          });
+        });
+
+        dropSlots.forEach((slot) => {
+          slot.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            this.classList.add("drag-over");
+          });
+
+          slot.addEventListener("dragleave", function () {
+            this.classList.remove("drag-over");
+          });
+
+          slot.addEventListener("drop", function (e) {
+            e.preventDefault();
+            this.classList.remove("drag-over");
+
+            if (draggedElement && !this.classList.contains("filled")) {
+              this.textContent = draggedElement.dataset.word;
+              this.classList.add("filled");
+              this.dataset.placedWord = draggedElement.dataset.word;
+              draggedElement.classList.add("used");
+              draggedElement.draggable = false;
+            }
+          });
+
+          // Click to remove word
+          slot.addEventListener("click", function () {
+            if (this.classList.contains("filled")) {
+              const placedWord = this.dataset.placedWord;
+
+              // Find and restore the draggable word
+              const wordToRestore = sentenceEl.querySelector(
+                `[data-word="${placedWord}"]`
+              );
+              if (wordToRestore) {
+                wordToRestore.classList.remove("used");
+                wordToRestore.draggable = true;
+              }
+
+              // Clear the slot
+              this.textContent = "Drop here";
+              this.classList.remove("filled", "correct", "incorrect");
+              delete this.dataset.placedWord;
+            }
+          });
+        });
+
+        checkBtn.addEventListener("click", function () {
+          const correctWords =
+            sentenceEl.dataset.sentenceIndex !== undefined
+              ? sentences[sentenceIndex]
+                  .querySelector(".sentence-builder")
+                  .parentElement.parentElement.querySelector(
+                    "[data-sentence-index]"
+                  )
+                  .previousElementSibling.previousElementSibling.querySelector(
+                    ".draggable-words"
+                  )
+                  .querySelectorAll(".draggable-word")
+              : [];
+
+          let allCorrect = true;
+          let correctCount = 0;
+
+          dropSlots.forEach((slot, slotIndex) => {
+            const placedWord = slot.dataset.placedWord;
+            const expectedWord =
+              Array.from(draggableWords)[slotIndex].dataset.word;
+
+            if (placedWord === expectedWord) {
+              slot.classList.add("correct");
+              slot.classList.remove("incorrect");
+              correctCount++;
+            } else {
+              slot.classList.add("incorrect");
+              slot.classList.remove("correct");
+              allCorrect = false;
+            }
+          });
+
+          // Show result
+          result.style.display = "block";
+
+          if (allCorrect) {
+            resultIcon.textContent = "🎉";
+            resultMessage.textContent = "Perfect! Sentence is correct!";
+            resultMessage.style.color = "#22c55e";
+            correctSentences++;
+          } else {
+            resultIcon.textContent = "❌";
+            resultMessage.textContent = `${correctCount}/${dropSlots.length} words correct. Try again!`;
+            resultMessage.style.color = "#ef4444";
+          }
+
+          completedSentences++;
+          this.disabled = true;
+
+          // Check if all sentences are completed
+          if (completedSentences === totalSentences) {
+            setTimeout(() => {
+              finalScore.textContent = `You got ${correctSentences} out of ${totalSentences} sentences completely correct!`;
+              overallResult.style.display = "block";
+            }, 1500);
+          }
+        });
+      });
+
+      restartBtn.addEventListener("click", function () {
+        // Reset all sentences
+        sentences.forEach((sentenceEl) => {
+          const draggableWords = sentenceEl.querySelectorAll(".draggable-word");
+          const dropSlots = sentenceEl.querySelectorAll(".drop-slot");
+          const checkBtn = sentenceEl.querySelector(".check-sentence-btn");
+          const result = sentenceEl.querySelector(".sentence-result");
+
+          draggableWords.forEach((word) => {
+            word.classList.remove("used");
+            word.draggable = true;
+          });
+
+          dropSlots.forEach((slot) => {
+            slot.textContent = "Drop here";
+            slot.classList.remove(
+              "filled",
+              "correct",
+              "incorrect",
+              "drag-over"
+            );
+            delete slot.dataset.placedWord;
+          });
+
+          checkBtn.disabled = false;
+          result.style.display = "none";
+        });
+
+        // Reset counters
+        completedSentences = 0;
+        correctSentences = 0;
+        overallResult.style.display = "none";
+      });
+    });
+  });
+</script>

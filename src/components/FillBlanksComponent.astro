@@ -1,0 +1,386 @@
+---
+export interface Props {
+  sentence: string;
+  blanks: { word: string; options: string[] }[];
+  id: string;
+  hint?: string;
+}
+
+const { sentence, blanks, id, hint } = Astro.props;
+
+// Replace blanks with placeholders
+let processedSentence = sentence;
+blanks.forEach((blank, index) => {
+  processedSentence = processedSentence.replace(
+    blank.word,
+    `__BLANK_${index}__`
+  );
+});
+---
+
+<div class="fill-blanks-component" data-blanks-id={id}>
+  <div class="blanks-header">
+    <h4>✏️ Fill in the Blanks</h4>
+    {hint && <p class="hint">💡 Hint: {hint}</p>}
+  </div>
+
+  <div class="sentence-container">
+    <div class="sentence-display">
+      {
+        processedSentence.split(/(__BLANK_\d+__)/g).map((part, index) => {
+          const blankMatch = part.match(/__BLANK_(\d+)__/);
+          if (blankMatch) {
+            const blankIndex = parseInt(blankMatch[1]);
+            const blank = blanks[blankIndex];
+            return (
+              <select
+                class="blank-select"
+                data-blank-index={blankIndex}
+                data-correct={blank.word}
+              >
+                <option value="">Choose...</option>
+                {blank.options.map((option) => (
+                  <option value={option}>{option}</option>
+                ))}
+              </select>
+            );
+          }
+          return <span class="sentence-text">{part}</span>;
+        })
+      }
+    </div>
+  </div>
+
+  <div class="blanks-actions">
+    <button class="check-answers-btn">Check Answers</button>
+    <button class="reset-btn" style="display: none;">Try Again</button>
+  </div>
+
+  <div class="blanks-result" style="display: none;">
+    <div class="result-summary">
+      <div class="result-icon"></div>
+      <div class="result-text"></div>
+      <div class="score-display">
+        Score: <span class="correct-count">0</span>/<span class="total-count"
+          >{blanks.length}</span
+        >
+      </div>
+    </div>
+
+    <div class="detailed-feedback">
+      {
+        blanks.map((blank, index) => (
+          <div
+            class="feedback-item"
+            data-feedback-index={index}
+            style="display: none;"
+          >
+            <span class="feedback-icon" />
+            <strong>{blank.word}</strong> -
+            <span class="feedback-text" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .fill-blanks-component {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+  }
+
+  .blanks-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .blanks-header h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .hint {
+    margin: 0;
+    opacity: 0.9;
+    font-style: italic;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.75rem;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .sentence-container {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .sentence-display {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sentence-text {
+    white-space: pre-wrap;
+  }
+
+  .blank-select {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+  }
+
+  .blank-select:focus {
+    outline: none;
+    border-color: #4facfe;
+    background: white;
+  }
+
+  .blank-select.correct {
+    background: #22c55e;
+    color: white;
+    border-color: #16a34a;
+  }
+
+  .blank-select.incorrect {
+    background: #ef4444;
+    color: white;
+    border-color: #dc2626;
+  }
+
+  .blank-select.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .blanks-actions {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .check-answers-btn,
+  .reset-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .check-answers-btn:hover,
+  .reset-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .blanks-result {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .result-summary {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .result-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .result-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .score-display {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .detailed-feedback {
+    text-align: left;
+  }
+
+  .feedback-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .feedback-icon {
+    font-size: 1.5rem;
+    min-width: 1.5rem;
+  }
+
+  .feedback-text {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .fill-blanks-component {
+      padding: 1.5rem;
+    }
+
+    .sentence-display {
+      font-size: 1.1rem;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .blank-select {
+      min-width: 100px;
+      font-size: 1rem;
+    }
+
+    .check-answers-btn,
+    .reset-btn {
+      padding: 0.75rem 1.5rem;
+      margin: 0.25rem;
+      display: block;
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fillBlanksComponents = document.querySelectorAll(
+      ".fill-blanks-component"
+    );
+
+    fillBlanksComponents.forEach((component) => {
+      const selects = component.querySelectorAll(".blank-select");
+      const checkBtn = component.querySelector(".check-answers-btn");
+      const resetBtn = component.querySelector(".reset-btn");
+      const result = component.querySelector(".blanks-result");
+      const resultIcon = component.querySelector(".result-icon");
+      const resultText = component.querySelector(".result-text");
+      const correctCount = component.querySelector(".correct-count");
+      const totalCount = component.querySelector(".total-count");
+      const feedbackItems = component.querySelectorAll(".feedback-item");
+
+      let checked = false;
+
+      function checkAnswers() {
+        if (checked) return;
+
+        checked = true;
+        let correct = 0;
+
+        selects.forEach((select, index) => {
+          const selectedValue = select.value;
+          const correctValue = select.dataset.correct;
+
+          select.classList.add("disabled");
+          select.disabled = true;
+
+          if (selectedValue === correctValue) {
+            select.classList.add("correct");
+            correct++;
+
+            // Show positive feedback
+            const feedback = feedbackItems[index];
+            if (feedback) {
+              feedback.style.display = "flex";
+              feedback.querySelector(".feedback-icon").textContent = "✅";
+              feedback.querySelector(".feedback-text").textContent = "Correct!";
+            }
+          } else {
+            select.classList.add("incorrect");
+
+            // Show corrective feedback
+            const feedback = feedbackItems[index];
+            if (feedback) {
+              feedback.style.display = "flex";
+              feedback.querySelector(".feedback-icon").textContent = "❌";
+              feedback.querySelector(".feedback-text").textContent =
+                `Correct answer: ${correctValue}`;
+            }
+          }
+        });
+
+        // Update score
+        correctCount.textContent = correct.toString();
+
+        // Show result
+        result.style.display = "block";
+
+        if (correct === selects.length) {
+          resultIcon.textContent = "🎉";
+          resultText.textContent = "Perfect! All answers are correct!";
+          resultText.style.color = "#22c55e";
+        } else if (correct >= selects.length * 0.7) {
+          resultIcon.textContent = "👍";
+          resultText.textContent = "Good job! Most answers are correct.";
+          resultText.style.color = "#3b82f6";
+        } else {
+          resultIcon.textContent = "💪";
+          resultText.textContent = "Keep practicing! You can do better.";
+          resultText.style.color = "#f59e0b";
+        }
+
+        // Show reset button
+        checkBtn.style.display = "none";
+        resetBtn.style.display = "inline-block";
+      }
+
+      function resetExercise() {
+        checked = false;
+
+        selects.forEach((select) => {
+          select.value = "";
+          select.disabled = false;
+          select.classList.remove("disabled", "correct", "incorrect");
+        });
+
+        feedbackItems.forEach((feedback) => {
+          feedback.style.display = "none";
+        });
+
+        result.style.display = "none";
+        checkBtn.style.display = "inline-block";
+        resetBtn.style.display = "none";
+        correctCount.textContent = "0";
+      }
+
+      checkBtn.addEventListener("click", checkAnswers);
+      resetBtn.addEventListener("click", resetExercise);
+    });
+  });
+</script>

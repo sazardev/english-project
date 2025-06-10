@@ -1,0 +1,244 @@
+---
+export interface Props {
+  question: string;
+  options: string[];
+  correct: number;
+  explanation?: string;
+  id: string;
+}
+
+const { question, options, correct, explanation, id } = Astro.props;
+---
+
+<div class="quiz-component" data-quiz-id={id}>
+  <div class="quiz-question">
+    <h4>🧠 Quick Quiz</h4>
+    <p>{question}</p>
+  </div>
+
+  <div class="quiz-options">
+    {
+      options.map((option, index) => (
+        <button class="quiz-option" data-option={index} data-correct={correct}>
+          <span class="option-letter">{String.fromCharCode(65 + index)}.</span>
+          <span class="option-text">{option}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="quiz-result" style="display: none;">
+    <div class="result-icon"></div>
+    <div class="result-text"></div>
+    {
+      explanation && (
+        <div class="quiz-explanation">
+          <strong>💡 Explanation:</strong> {explanation}
+        </div>
+      )
+    }
+    <button class="try-again-btn" style="display: none;">Try Again</button>
+  </div>
+</div>
+
+<style>
+  .quiz-component {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+
+  .quiz-question h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .quiz-question p {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 1rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .quiz-option:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .quiz-option.selected {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .quiz-option.correct {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: #22c55e;
+  }
+
+  .quiz-option.incorrect {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: #ef4444;
+  }
+
+  .quiz-option.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .option-letter {
+    font-weight: bold;
+    min-width: 1.5rem;
+  }
+
+  .option-text {
+    flex: 1;
+  }
+
+  .quiz-result {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .result-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .quiz-explanation {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  .try-again-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .try-again-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .quiz-component {
+      padding: 1.5rem;
+    }
+
+    .quiz-option {
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const quizComponents = document.querySelectorAll(".quiz-component");
+
+    quizComponents.forEach((quiz) => {
+      const options = quiz.querySelectorAll(".quiz-option");
+      const result = quiz.querySelector(".quiz-result");
+      const resultIcon = quiz.querySelector(".result-icon");
+      const resultText = quiz.querySelector(".result-text");
+      const tryAgainBtn = quiz.querySelector(".try-again-btn");
+
+      let answered = false;
+
+      options.forEach((option) => {
+        option.addEventListener("click", function () {
+          if (answered) return;
+
+          answered = true;
+          const selectedIndex = parseInt(this.dataset.option);
+          const correctIndex = parseInt(this.dataset.correct);
+
+          // Disable all options and show results
+          options.forEach((opt) => opt.classList.add("disabled"));
+
+          // Mark correct and incorrect answers
+          options[correctIndex].classList.add("correct");
+          if (selectedIndex !== correctIndex) {
+            this.classList.add("incorrect");
+          }
+
+          // Show result
+          result.style.display = "block";
+
+          if (selectedIndex === correctIndex) {
+            resultIcon.textContent = "🎉";
+            resultText.textContent = "Correct! Well done!";
+            resultText.style.color = "#22c55e";
+          } else {
+            resultIcon.textContent = "❌";
+            resultText.textContent = "Not quite right. Try again!";
+            resultText.style.color = "#ef4444";
+            tryAgainBtn.style.display = "inline-block";
+          }
+        });
+      });
+
+      if (tryAgainBtn) {
+        tryAgainBtn.addEventListener("click", function () {
+          answered = false;
+          options.forEach((opt) => {
+            opt.classList.remove(
+              "disabled",
+              "correct",
+              "incorrect",
+              "selected"
+            );
+          });
+          result.style.display = "none";
+          tryAgainBtn.style.display = "none";
+        });
+      }
+    });
+  });
+</script>

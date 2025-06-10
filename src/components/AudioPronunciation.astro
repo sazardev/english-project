@@ -1,0 +1,476 @@
+---
+export interface Props {
+  words: { word: string; phonetic: string; example?: string }[];
+  title?: string;
+  id: string;
+}
+
+const { words, title = "Pronunciation Practice", id } = Astro.props;
+---
+
+<div class="audio-pronunciation" data-audio-id={id}>
+  <div class="pronunciation-header">
+    <h4>🎵 {title}</h4>
+    <p>Click on the words to hear their pronunciation!</p>
+    <div class="practice-score">
+      Practiced: <span class="practiced-count">0</span>/<span
+        class="total-words">{words.length}</span
+      >
+    </div>
+  </div>
+
+  <div class="words-grid">
+    {
+      words.map((item, index) => (
+        <div class="pronunciation-card" data-word-index={index}>
+          <div class="word-display">
+            <h5 class="word-text">{item.word}</h5>
+            <p class="phonetic-text">{item.phonetic}</p>
+          </div>
+
+          <button class="play-sound-btn" data-word={item.word}>
+            <span class="sound-icon">🔊</span>
+            <span class="play-text">Play Sound</span>
+          </button>
+
+          <div class="practice-indicator" style="display: none;">
+            <span class="check-icon">✅</span>
+            <span class="practiced-text">Practiced!</span>
+          </div>
+
+          {item.example && (
+            <div class="example-sentence" style="display: none;">
+              <p>
+                <strong>Example:</strong> {item.example}
+              </p>
+              <button class="play-example-btn" data-example={item.example}>
+                🔊 Play Example
+              </button>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="pronunciation-controls">
+    <button class="show-examples-btn">👁️ Show Examples</button>
+    <button class="practice-all-btn">🎯 Practice All</button>
+    <button class="speed-control-btn" data-speed="normal"
+      >🐢 Normal Speed</button
+    >
+  </div>
+
+  <div class="pronunciation-progress" style="display: none;">
+    <div class="progress-content">
+      <div class="progress-icon">🎉</div>
+      <h4>Great Progress!</h4>
+      <p>You've practiced all the words. Keep it up!</p>
+      <div class="achievement-badge">🏅 Pronunciation Master</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .audio-pronunciation {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .pronunciation-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .pronunciation-header h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .pronunciation-header p {
+    opacity: 0.9;
+    margin-bottom: 1rem;
+  }
+
+  .practice-score {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 600;
+  }
+
+  .words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .pronunciation-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .pronunciation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .pronunciation-card.practiced {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  .word-display {
+    margin-bottom: 1rem;
+  }
+
+  .word-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: white;
+  }
+
+  .phonetic-text {
+    font-size: 1.1rem;
+    color: #e2e8f0;
+    font-family: "Courier New", monospace;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .play-sound-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .play-sound-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+  }
+
+  .play-sound-btn:active {
+    transform: scale(0.98);
+  }
+
+  .play-sound-btn.playing {
+    background: rgba(34, 197, 94, 0.3);
+    animation: pulse 1s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .practice-indicator {
+    color: #22c55e;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .example-sentence {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .play-example-btn {
+    background: rgba(34, 197, 94, 0.3);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .play-example-btn:hover {
+    background: rgba(34, 197, 94, 0.5);
+  }
+
+  .pronunciation-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .pronunciation-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pronunciation-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .pronunciation-progress {
+    text-align: center;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .progress-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .achievement-badge {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a202c;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 1rem;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .words-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pronunciation-controls {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pronunciation-controls button {
+      width: 100%;
+      max-width: 250px;
+    }
+  }
+</style>
+
+<script>
+  class AudioPronunciation {
+    constructor(container) {
+      this.container = container;
+      this.practicedWords = new Set();
+      this.totalWords = this.container.querySelectorAll(
+        ".pronunciation-card"
+      ).length;
+      this.speed = "normal";
+      this.init();
+    }
+
+    init() {
+      this.bindEvents();
+      this.updateProgress();
+    }
+
+    bindEvents() {
+      // Play individual word sounds
+      this.container.querySelectorAll(".play-sound-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const word = e.currentTarget.dataset.word;
+          const cardIndex = Array.from(
+            this.container.querySelectorAll(".pronunciation-card")
+          ).indexOf(e.currentTarget.closest(".pronunciation-card"));
+          this.playWordSound(word, btn, cardIndex);
+        });
+      });
+
+      // Play example sentences
+      this.container.querySelectorAll(".play-example-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const example = e.currentTarget.dataset.example;
+          this.playExampleSound(example, btn);
+        });
+      });
+
+      // Show examples toggle
+      const showExamplesBtn =
+        this.container.querySelector(".show-examples-btn");
+      if (showExamplesBtn) {
+        showExamplesBtn.addEventListener("click", () => this.toggleExamples());
+      }
+
+      // Practice all button
+      const practiceAllBtn = this.container.querySelector(".practice-all-btn");
+      if (practiceAllBtn) {
+        practiceAllBtn.addEventListener("click", () => this.practiceAll());
+      }
+
+      // Speed control
+      const speedBtn = this.container.querySelector(".speed-control-btn");
+      if (speedBtn) {
+        speedBtn.addEventListener("click", () => this.toggleSpeed(speedBtn));
+      }
+    }
+
+    playWordSound(word, button, cardIndex) {
+      // Simulate audio playback with Web Speech API
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.rate = this.speed === "slow" ? 0.7 : 1;
+        utterance.pitch = 1;
+
+        button.classList.add("playing");
+        button.querySelector(".play-text").textContent = "Playing...";
+
+        utterance.onend = () => {
+          button.classList.remove("playing");
+          button.querySelector(".play-text").textContent = "Play Sound";
+          this.markWordPracticed(cardIndex);
+        };
+
+        speechSynthesis.speak(utterance);
+      } else {
+        // Fallback: just mark as practiced
+        setTimeout(() => {
+          this.markWordPracticed(cardIndex);
+        }, 1000);
+      }
+    }
+
+    playExampleSound(example, button) {
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(example);
+        utterance.rate = this.speed === "slow" ? 0.7 : 1;
+
+        button.textContent = "🔊 Playing...";
+
+        utterance.onend = () => {
+          button.textContent = "🔊 Play Example";
+        };
+
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    markWordPracticed(cardIndex) {
+      const card = this.container.querySelectorAll(".pronunciation-card")[
+        cardIndex
+      ];
+      if (!this.practicedWords.has(cardIndex)) {
+        this.practicedWords.add(cardIndex);
+        card.classList.add("practiced");
+
+        const indicator = card.querySelector(".practice-indicator");
+        if (indicator) {
+          indicator.style.display = "block";
+        }
+
+        this.updateProgress();
+      }
+    }
+
+    updateProgress() {
+      const practicedCount = this.container.querySelector(".practiced-count");
+      if (practicedCount) {
+        practicedCount.textContent = this.practicedWords.size;
+      }
+
+      if (this.practicedWords.size === this.totalWords) {
+        this.showCompletion();
+      }
+    }
+
+    toggleExamples() {
+      const examples = this.container.querySelectorAll(".example-sentence");
+      const btn = this.container.querySelector(".show-examples-btn");
+      const isVisible = examples[0]?.style.display !== "none";
+
+      examples.forEach((example) => {
+        example.style.display = isVisible ? "none" : "block";
+      });
+
+      btn.textContent = isVisible ? "👁️ Show Examples" : "🙈 Hide Examples";
+    }
+
+    async practiceAll() {
+      const cards = this.container.querySelectorAll(".pronunciation-card");
+      const btn = this.container.querySelector(".practice-all-btn");
+
+      btn.textContent = "🎯 Practicing...";
+      btn.disabled = true;
+
+      for (let i = 0; i < cards.length; i++) {
+        const playBtn = cards[i].querySelector(".play-sound-btn");
+        const word = playBtn.dataset.word;
+
+        await new Promise((resolve) => {
+          this.playWordSound(word, playBtn, i);
+          setTimeout(resolve, 2000); // Wait 2 seconds between words
+        });
+      }
+
+      btn.textContent = "🎯 Practice All";
+      btn.disabled = false;
+    }
+
+    toggleSpeed(button) {
+      if (this.speed === "normal") {
+        this.speed = "slow";
+        button.textContent = "🐌 Slow Speed";
+      } else {
+        this.speed = "normal";
+        button.textContent = "🐢 Normal Speed";
+      }
+    }
+
+    showCompletion() {
+      const progressDiv = this.container.querySelector(
+        ".pronunciation-progress"
+      );
+      if (progressDiv) {
+        progressDiv.style.display = "block";
+        progressDiv.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }
+
+  // Initialize all audio pronunciation components
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".audio-pronunciation").forEach((container) => {
+      new AudioPronunciation(container);
+    });
+  });
+</script>

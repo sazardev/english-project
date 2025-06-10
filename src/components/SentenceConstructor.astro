@@ -1,0 +1,1010 @@
+---
+export interface Props {
+  exercises: {
+    scrambledSentence: string;
+    correctSentence: string;
+    hint?: string;
+    translation?: string;
+    difficulty: "easy" | "medium" | "hard";
+  }[];
+  title?: string;
+  id: string;
+}
+
+const { exercises, title = "Sentence Construction Game", id } = Astro.props;
+---
+
+<div class="sentence-constructor" data-constructor-id={id}>
+  <div class="constructor-header">
+    <h4>🧩 {title}</h4>
+    <p>Drag and drop the words to create correct sentences!</p>
+    <div class="game-stats">
+      <div class="stat">
+        <span class="stat-value" id="current-exercise">1</span>
+        <span class="stat-label">Exercise</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="total-exercises">{exercises.length}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="score">0</span>
+        <span class="stat-label">Score</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exercise-container">
+    {
+      exercises.map((exercise, index) => (
+        <div
+          class={`exercise-card ${index === 0 ? "active" : ""}`}
+          data-exercise-index={index}
+          data-difficulty={exercise.difficulty}
+        >
+          <div class="exercise-header">
+            <div class="difficulty-badge">
+              <span class={`difficulty ${exercise.difficulty}`}>
+                {exercise.difficulty.toUpperCase()}
+              </span>
+            </div>
+            {exercise.hint && (
+              <div class="hint-section">
+                <button class="hint-toggle">💡 Show Hint</button>
+                <div class="hint-text" style="display: none;">
+                  {exercise.hint}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div class="word-bank">
+            <h5>Word Bank</h5>
+            <div
+              class="draggable-words"
+              data-sentence={exercise.correctSentence}
+            >
+              {exercise.scrambledSentence.split(" ").map((word, wordIndex) => (
+                <div
+                  class="word-tile"
+                  draggable="true"
+                  data-word={word}
+                  data-original-position={wordIndex}
+                >
+                  {word}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="construction-area">
+            <h5>Build Your Sentence</h5>
+            <div class="sentence-slots">
+              {exercise.correctSentence.split(" ").map((_, slotIndex) => (
+                <div class="word-slot" data-slot-index={slotIndex}>
+                  Drop word here
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="exercise-controls">
+            <button class="check-sentence-btn">✅ Check Sentence</button>
+            <button class="clear-sentence-btn">🗑️ Clear</button>
+            <button class="show-answer-btn">👁️ Show Answer</button>
+          </div>
+
+          <div class="exercise-result" style="display: none;">
+            <div class="result-content">
+              <div class="result-icon" />
+              <div class="result-message" />
+              <div class="correct-sentence">
+                <strong>Correct sentence:</strong>
+                <span class="correct-text">{exercise.correctSentence}</span>
+                <button
+                  class="play-correct-btn"
+                  data-sentence={exercise.correctSentence}
+                >
+                  🔊 Play
+                </button>
+              </div>
+              {exercise.translation && (
+                <div class="translation">
+                  <strong>Translation:</strong> {exercise.translation}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="navigation-controls">
+    <button class="prev-exercise-btn" disabled>⬅️ Previous</button>
+    <button class="next-exercise-btn">Next ➡️</button>
+  </div>
+
+  <div class="final-results" style="display: none;">
+    <div class="results-content">
+      <div class="results-icon">🏆</div>
+      <h4>Game Complete!</h4>
+      <div class="final-stats">
+        <div class="final-stat">
+          <span class="final-stat-value" id="final-score">0</span>
+          <span class="final-stat-label">Total Score</span>
+        </div>
+        <div class="final-stat">
+          <span class="final-stat-value" id="correct-answers">0</span>
+          <span class="final-stat-label">Correct</span>
+        </div>
+        <div class="final-stat">
+          <span class="final-stat-value" id="completion-percentage">0%</span>
+          <span class="final-stat-label">Accuracy</span>
+        </div>
+      </div>
+      <div class="achievement-section">
+        <div
+          class="achievement-badge"
+          id="achievement-badge"
+          style="display: none;"
+        >
+          <span class="badge-icon">🌟</span>
+          <span class="badge-text">Perfect Score!</span>
+        </div>
+      </div>
+      <button class="restart-game-btn">🔄 Play Again</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sentence-constructor {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .constructor-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .constructor-header h4 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .constructor-header p {
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .game-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fbbf24;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+
+  .exercise-container {
+    margin-bottom: 2rem;
+  }
+
+  .exercise-card {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .exercise-card.active {
+    display: block;
+    animation: slideIn 0.3s ease-in;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .difficulty-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+  }
+
+  .difficulty.easy {
+    color: #10b981;
+  }
+  .difficulty.medium {
+    color: #f59e0b;
+  }
+  .difficulty.hard {
+    color: #ef4444;
+  }
+
+  .hint-section {
+    flex: 1;
+    text-align: right;
+  }
+
+  .hint-toggle {
+    background: rgba(255, 193, 7, 0.3);
+    border: 1px solid rgba(255, 193, 7, 0.5);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .hint-text {
+    background: rgba(255, 193, 7, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .word-bank {
+    margin-bottom: 2rem;
+  }
+
+  .word-bank h5 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .draggable-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    min-height: 80px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+  }
+
+  .word-tile {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1a202c;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: grab;
+    user-select: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .word-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .word-tile:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+  }
+
+  .word-tile.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+  }
+
+  .construction-area h5 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .sentence-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    min-height: 80px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+  }
+
+  .word-slot {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    min-width: 80px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .word-slot.occupied {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: #10b981;
+    color: white;
+    font-weight: 600;
+  }
+
+  .word-slot.drag-over {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: #22c55e;
+    transform: scale(1.05);
+  }
+
+  .exercise-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .exercise-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .exercise-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .exercise-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .exercise-result {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .result-content {
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .result-message {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .correct-sentence {
+    background: rgba(34, 197, 94, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .correct-text {
+    font-style: italic;
+    margin: 0 0.5rem;
+  }
+
+  .play-correct-btn {
+    background: rgba(34, 197, 94, 0.3);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+  }
+
+  .translation {
+    background: rgba(79, 70, 229, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    font-style: italic;
+  }
+
+  .navigation-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .navigation-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .navigation-controls button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .navigation-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .final-results {
+    text-align: center;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .results-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .final-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .final-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .final-stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fbbf24;
+  }
+
+  .final-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .achievement-badge {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a202c;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 1rem 0;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  }
+
+  .badge-icon {
+    margin-right: 0.5rem;
+  }
+
+  .restart-game-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .restart-game-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .game-stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .game-stats .stat {
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .sentence-slots {
+      flex-direction: column;
+    }
+
+    .word-slot {
+      min-width: auto;
+      width: 100%;
+    }
+
+    .final-stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .exercise-controls {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .navigation-controls {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+
+<script>
+  class SentenceConstructor {
+    constructor(container) {
+      this.container = container;
+      this.currentExercise = 0;
+      this.exercises = this.container.querySelectorAll(".exercise-card");
+      this.totalExercises = this.exercises.length;
+      this.score = 0;
+      this.correctAnswers = 0;
+      this.draggedElement = null;
+      this.init();
+    }
+
+    init() {
+      this.bindEvents();
+      this.updateStats();
+      this.initializeDragAndDrop();
+    }
+
+    bindEvents() {
+      // Hint toggles
+      this.container.addEventListener("click", (e) => {
+        if (e.target.classList.contains("hint-toggle")) {
+          this.toggleHint(e.target);
+        }
+
+        if (e.target.classList.contains("check-sentence-btn")) {
+          this.checkSentence();
+        }
+
+        if (e.target.classList.contains("clear-sentence-btn")) {
+          this.clearSentence();
+        }
+
+        if (e.target.classList.contains("show-answer-btn")) {
+          this.showAnswer();
+        }
+
+        if (e.target.classList.contains("play-correct-btn")) {
+          this.playCorrectSentence(e.target.dataset.sentence);
+        }
+      });
+
+      // Navigation
+      const prevBtn = this.container.querySelector(".prev-exercise-btn");
+      const nextBtn = this.container.querySelector(".next-exercise-btn");
+      const restartBtn = this.container.querySelector(".restart-game-btn");
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", () => this.previousExercise());
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => this.nextExercise());
+      }
+
+      if (restartBtn) {
+        restartBtn.addEventListener("click", () => this.restart());
+      }
+    }
+
+    initializeDragAndDrop() {
+      this.container.addEventListener("dragstart", (e) => {
+        if (e.target.classList.contains("word-tile")) {
+          this.draggedElement = e.target;
+          e.target.classList.add("dragging");
+        }
+      });
+
+      this.container.addEventListener("dragend", (e) => {
+        if (e.target.classList.contains("word-tile")) {
+          e.target.classList.remove("dragging");
+          this.draggedElement = null;
+        }
+      });
+
+      this.container.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains("word-slot")) {
+          e.target.classList.add("drag-over");
+        }
+      });
+
+      this.container.addEventListener("dragleave", (e) => {
+        if (e.target.classList.contains("word-slot")) {
+          e.target.classList.remove("drag-over");
+        }
+      });
+
+      this.container.addEventListener("drop", (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains("word-slot") && this.draggedElement) {
+          this.handleDrop(e.target);
+        }
+      });
+    }
+
+    handleDrop(slot) {
+      slot.classList.remove("drag-over");
+
+      // If slot is already occupied, return the word to bank
+      if (slot.classList.contains("occupied")) {
+        const existingWord = slot.textContent.trim();
+        this.returnWordToBank(existingWord);
+      }
+
+      // Place the new word
+      slot.textContent = this.draggedElement.dataset.word;
+      slot.classList.add("occupied");
+
+      // Remove the word from the bank
+      this.draggedElement.remove();
+    }
+
+    returnWordToBank(word) {
+      const currentExercise = this.exercises[this.currentExercise];
+      const wordBank = currentExercise.querySelector(".draggable-words");
+
+      const wordTile = document.createElement("div");
+      wordTile.className = "word-tile";
+      wordTile.draggable = true;
+      wordTile.dataset.word = word;
+      wordTile.textContent = word;
+
+      wordBank.appendChild(wordTile);
+    }
+
+    toggleHint(button) {
+      const hintText = button.nextElementSibling;
+      const isVisible = hintText.style.display !== "none";
+
+      hintText.style.display = isVisible ? "none" : "block";
+      button.textContent = isVisible ? "💡 Show Hint" : "🙈 Hide Hint";
+    }
+
+    checkSentence() {
+      const currentExercise = this.exercises[this.currentExercise];
+      const slots = currentExercise.querySelectorAll(".word-slot");
+      const correctSentence =
+        currentExercise.querySelector(".draggable-words").dataset.sentence;
+
+      const userSentence = Array.from(slots)
+        .map((slot) =>
+          slot.classList.contains("occupied") ? slot.textContent.trim() : ""
+        )
+        .filter((word) => word !== "")
+        .join(" ");
+
+      const isCorrect =
+        userSentence.toLowerCase().trim() ===
+        correctSentence.toLowerCase().trim();
+
+      this.showResult(
+        isCorrect,
+        userSentence,
+        correctSentence,
+        currentExercise
+      );
+
+      if (isCorrect) {
+        this.correctAnswers++;
+        this.score += this.getDifficultyPoints();
+      }
+
+      this.updateStats();
+    }
+
+    getDifficultyPoints() {
+      const currentExercise = this.exercises[this.currentExercise];
+      const difficulty = currentExercise.dataset.difficulty;
+
+      switch (difficulty) {
+        case "easy":
+          return 10;
+        case "medium":
+          return 20;
+        case "hard":
+          return 30;
+        default:
+          return 10;
+      }
+    }
+
+    showResult(isCorrect, userSentence, correctSentence, exerciseElement) {
+      const resultDiv = exerciseElement.querySelector(".exercise-result");
+      const resultIcon = resultDiv.querySelector(".result-icon");
+      const resultMessage = resultDiv.querySelector(".result-message");
+
+      if (isCorrect) {
+        resultIcon.textContent = "🎉";
+        resultMessage.textContent =
+          "Perfect! You built the sentence correctly!";
+        resultDiv.style.background = "rgba(34, 197, 94, 0.2)";
+      } else {
+        resultIcon.textContent = "❌";
+        resultMessage.textContent =
+          "Not quite right. Try again or check the answer below.";
+        resultDiv.style.background = "rgba(239, 68, 68, 0.2)";
+      }
+
+      resultDiv.style.display = "block";
+      resultDiv.scrollIntoView({ behavior: "smooth" });
+    }
+
+    clearSentence() {
+      const currentExercise = this.exercises[this.currentExercise];
+      const slots = currentExercise.querySelectorAll(".word-slot");
+      const wordBank = currentExercise.querySelector(".draggable-words");
+      const originalSentence = wordBank.dataset.sentence;
+
+      // Return all words to bank
+      slots.forEach((slot) => {
+        if (slot.classList.contains("occupied")) {
+          const word = slot.textContent.trim();
+          this.returnWordToBank(word);
+          slot.textContent = "Drop word here";
+          slot.classList.remove("occupied");
+        }
+      });
+
+      // Hide result
+      const resultDiv = currentExercise.querySelector(".exercise-result");
+      resultDiv.style.display = "none";
+    }
+
+    showAnswer() {
+      const currentExercise = this.exercises[this.currentExercise];
+      const slots = currentExercise.querySelectorAll(".word-slot");
+      const correctSentence =
+        currentExercise.querySelector(".draggable-words").dataset.sentence;
+      const words = correctSentence.split(" ");
+
+      // Clear current sentence
+      this.clearSentence();
+
+      // Place correct words
+      slots.forEach((slot, index) => {
+        if (index < words.length) {
+          slot.textContent = words[index];
+          slot.classList.add("occupied");
+        }
+      });
+
+      // Remove words from bank
+      const wordBank = currentExercise.querySelector(".draggable-words");
+      wordBank.innerHTML = "";
+
+      // Show result as correct
+      this.showResult(true, correctSentence, correctSentence, currentExercise);
+    }
+
+    playCorrectSentence(sentence) {
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(sentence);
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    nextExercise() {
+      if (this.currentExercise < this.totalExercises - 1) {
+        this.exercises[this.currentExercise].classList.remove("active");
+        this.currentExercise++;
+        this.exercises[this.currentExercise].classList.add("active");
+        this.updateStats();
+        this.updateNavigation();
+      } else {
+        this.showFinalResults();
+      }
+    }
+
+    previousExercise() {
+      if (this.currentExercise > 0) {
+        this.exercises[this.currentExercise].classList.remove("active");
+        this.currentExercise--;
+        this.exercises[this.currentExercise].classList.add("active");
+        this.updateStats();
+        this.updateNavigation();
+      }
+    }
+
+    updateNavigation() {
+      const prevBtn = this.container.querySelector(".prev-exercise-btn");
+      const nextBtn = this.container.querySelector(".next-exercise-btn");
+
+      if (prevBtn) {
+        prevBtn.disabled = this.currentExercise === 0;
+      }
+
+      if (nextBtn) {
+        nextBtn.textContent =
+          this.currentExercise === this.totalExercises - 1
+            ? "Finish 🏁"
+            : "Next ➡️";
+      }
+    }
+
+    updateStats() {
+      const currentSpan = this.container.querySelector("#current-exercise");
+      const scoreSpan = this.container.querySelector("#score");
+
+      if (currentSpan) currentSpan.textContent = this.currentExercise + 1;
+      if (scoreSpan) scoreSpan.textContent = this.score;
+    }
+
+    showFinalResults() {
+      const finalResults = this.container.querySelector(".final-results");
+      const exerciseContainer = this.container.querySelector(
+        ".exercise-container"
+      );
+      const navigationControls = this.container.querySelector(
+        ".navigation-controls"
+      );
+
+      // Hide exercise interface
+      exerciseContainer.style.display = "none";
+      navigationControls.style.display = "none";
+
+      // Update final stats
+      const finalScore = this.container.querySelector("#final-score");
+      const correctAnswers = this.container.querySelector("#correct-answers");
+      const completionPercentage = this.container.querySelector(
+        "#completion-percentage"
+      );
+      const achievementBadge =
+        this.container.querySelector("#achievement-badge");
+
+      if (finalScore) finalScore.textContent = this.score;
+      if (correctAnswers) correctAnswers.textContent = this.correctAnswers;
+
+      const percentage = Math.round(
+        (this.correctAnswers / this.totalExercises) * 100
+      );
+      if (completionPercentage)
+        completionPercentage.textContent = `${percentage}%`;
+
+      // Show achievement badge for perfect score
+      if (percentage === 100 && achievementBadge) {
+        achievementBadge.style.display = "inline-block";
+      }
+
+      // Show final results
+      finalResults.style.display = "block";
+      finalResults.scrollIntoView({ behavior: "smooth" });
+    }
+
+    restart() {
+      // Reset stats
+      this.currentExercise = 0;
+      this.score = 0;
+      this.correctAnswers = 0;
+
+      // Reset exercises
+      this.exercises.forEach((exercise, index) => {
+        exercise.classList.toggle("active", index === 0);
+
+        // Reset word bank and slots
+        const originalSentence =
+          exercise.querySelector(".draggable-words").dataset.sentence;
+        const words = originalSentence.split(" ");
+
+        // Recreate word bank
+        const wordBank = exercise.querySelector(".draggable-words");
+        wordBank.innerHTML = "";
+        words
+          .sort(() => Math.random() - 0.5)
+          .forEach((word, index) => {
+            const wordTile = document.createElement("div");
+            wordTile.className = "word-tile";
+            wordTile.draggable = true;
+            wordTile.dataset.word = word;
+            wordTile.dataset.originalPosition = index;
+            wordTile.textContent = word;
+            wordBank.appendChild(wordTile);
+          });
+
+        // Reset slots
+        const slots = exercise.querySelectorAll(".word-slot");
+        slots.forEach((slot) => {
+          slot.textContent = "Drop word here";
+          slot.classList.remove("occupied");
+        });
+
+        // Hide results
+        const resultDiv = exercise.querySelector(".exercise-result");
+        resultDiv.style.display = "none";
+
+        // Hide hints
+        const hintText = exercise.querySelector(".hint-text");
+        const hintToggle = exercise.querySelector(".hint-toggle");
+        if (hintText) hintText.style.display = "none";
+        if (hintToggle) hintToggle.textContent = "💡 Show Hint";
+      });
+
+      // Show exercise interface
+      const finalResults = this.container.querySelector(".final-results");
+      const exerciseContainer = this.container.querySelector(
+        ".exercise-container"
+      );
+      const navigationControls = this.container.querySelector(
+        ".navigation-controls"
+      );
+
+      finalResults.style.display = "none";
+      exerciseContainer.style.display = "block";
+      navigationControls.style.display = "flex";
+
+      this.updateStats();
+      this.updateNavigation();
+    }
+  }
+
+  // Initialize all sentence constructor components
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".sentence-constructor").forEach((container) => {
+      new SentenceConstructor(container);
+    });
+  });
+</script>

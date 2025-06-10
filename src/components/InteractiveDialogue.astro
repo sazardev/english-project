@@ -1,0 +1,691 @@
+---
+export interface Props {
+  scenario: string;
+  dialogue: {
+    speaker: "A" | "B";
+    text: string;
+    options?: string[];
+    correctOption?: number;
+    explanation?: string;
+  }[];
+  characters: { A: string; B: string };
+  id: string;
+}
+
+const { scenario, dialogue, characters, id } = Astro.props;
+---
+
+<div class="interactive-dialogue" data-dialogue-id={id}>
+  <div class="dialogue-header">
+    <h4>💬 Interactive Dialogue Practice</h4>
+    <p class="scenario">Scenario: {scenario}</p>
+    <div class="characters">
+      <div class="character character-a">
+        <div class="avatar">👤</div>
+        <span>{characters.A}</span>
+      </div>
+      <div class="character character-b">
+        <div class="avatar">👥</div>
+        <span>{characters.B}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialogue-container">
+    <div class="conversation-flow">
+      {
+        dialogue.map((line, index) => (
+          <div
+            class={`dialogue-line ${line.speaker.toLowerCase()}`}
+            data-line-index={index}
+          >
+            <div class="speaker-info">
+              <div class="speaker-avatar">
+                {line.speaker === "A" ? "👤" : "👥"}
+              </div>
+              <span class="speaker-name">{characters[line.speaker]}</span>
+            </div>
+
+            <div class="dialogue-content">
+              {!line.options ? (
+                <div class="speech-bubble">
+                  <p class="dialogue-text">{line.text}</p>
+                  <button class="play-dialogue-btn" data-text={line.text}>
+                    🔊 Play
+                  </button>
+                </div>
+              ) : (
+                <div class="choice-bubble" style="display: none;">
+                  <p class="dialogue-prompt">Choose the best response:</p>
+                  <div class="dialogue-options">
+                    {line.options.map((option, optIndex) => (
+                      <button
+                        class="dialogue-option"
+                        data-option-index={optIndex}
+                        data-correct={line.correctOption}
+                        data-line={index}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                  {line.explanation && (
+                    <div class="option-explanation" style="display: none;">
+                      <strong>💡 Explanation:</strong> {line.explanation}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="dialogue-controls">
+      <button class="start-dialogue-btn">▶️ Start Dialogue</button>
+      <button class="repeat-btn" style="display: none;">🔄 Repeat</button>
+      <button class="next-line-btn" style="display: none;">➡️ Next</button>
+    </div>
+  </div>
+
+  <div class="dialogue-progress">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 0%"></div>
+    </div>
+    <p class="progress-text">
+      Progress: <span class="current-line">0</span>/<span class="total-lines"
+        >{dialogue.length}</span>
+    </p>
+  </div>
+
+  <div class="dialogue-completion" style="display: none;">
+    <div class="completion-content">
+      <div class="completion-icon">🎭</div>
+      <h4>Dialogue Complete!</h4>
+      <p>Great job practicing this conversation!</p>
+      <div class="completion-stats">
+        <div class="stat">
+          <span class="stat-value" id="correct-choices">0</span>
+          <span class="stat-label">Correct Choices</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="total-choices">0</span>
+          <span class="stat-label">Total Choices</span>
+        </div>
+      </div>
+      <button class="restart-dialogue-btn">🔄 Practice Again</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .interactive-dialogue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    color: white;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .dialogue-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .dialogue-header h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .scenario {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .characters {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .conversation-flow {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    min-height: 400px;
+  }
+
+  .dialogue-line {
+    display: none;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .dialogue-line.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dialogue-line.a {
+    margin-right: 2rem;
+  }
+
+  .dialogue-line.b {
+    margin-left: 2rem;
+  }
+
+  .speaker-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .speaker-avatar {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .speaker-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .speech-bubble {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .dialogue-line.a .speech-bubble {
+    border-bottom-left-radius: 5px;
+  }
+
+  .dialogue-line.b .speech-bubble {
+    border-bottom-right-radius: 5px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .dialogue-text {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .play-dialogue-btn {
+    background: rgba(34, 197, 94, 0.3);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .play-dialogue-btn:hover {
+    background: rgba(34, 197, 94, 0.5);
+  }
+
+  .choice-bubble {
+    background: rgba(255, 193, 7, 0.2);
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .dialogue-prompt {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .dialogue-options {
+    display: grid;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .dialogue-option {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+  }
+
+  .dialogue-option:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .dialogue-option.correct {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.5);
+  }
+
+  .dialogue-option.incorrect {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
+  .option-explanation {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .dialogue-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .dialogue-controls button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .dialogue-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .dialogue-progress {
+    margin-bottom: 1rem;
+  }
+
+  .progress-bar {
+    background: rgba(255, 255, 255, 0.2);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-text {
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .dialogue-completion {
+    text-align: center;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+
+  .completion-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .completion-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #10b981;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .restart-dialogue-btn {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .restart-dialogue-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .characters {
+      gap: 1.5rem;
+    }
+
+    .dialogue-line.a {
+      margin-right: 1rem;
+    }
+
+    .dialogue-line.b {
+      margin-left: 1rem;
+    }
+
+    .completion-stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  class InteractiveDialogue {
+    constructor(container) {
+      this.container = container;
+      this.currentLine = 0;
+      this.totalLines =
+        this.container.querySelectorAll(".dialogue-line").length;
+      this.correctChoices = 0;
+      this.totalChoices = 0;
+      this.isActive = false;
+      this.init();
+    }
+
+    init() {
+      this.bindEvents();
+      this.updateProgress();
+    }
+
+    bindEvents() {
+      const startBtn = this.container.querySelector(".start-dialogue-btn");
+      const nextBtn = this.container.querySelector(".next-line-btn");
+      const repeatBtn = this.container.querySelector(".repeat-btn");
+      const restartBtn = this.container.querySelector(".restart-dialogue-btn");
+
+      if (startBtn) {
+        startBtn.addEventListener("click", () => this.startDialogue());
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => this.nextLine());
+      }
+
+      if (repeatBtn) {
+        repeatBtn.addEventListener("click", () => this.repeatCurrent());
+      }
+
+      if (restartBtn) {
+        restartBtn.addEventListener("click", () => this.restart());
+      }
+
+      // Play dialogue buttons
+      this.container.addEventListener("click", (e) => {
+        if (e.target.classList.contains("play-dialogue-btn")) {
+          const text = e.target.dataset.text;
+          this.playDialogue(text, e.target);
+        }
+
+        if (e.target.classList.contains("dialogue-option")) {
+          this.handleOptionClick(e.target);
+        }
+      });
+    }
+
+    startDialogue() {
+      this.isActive = true;
+      this.showCurrentLine();
+
+      const startBtn = this.container.querySelector(".start-dialogue-btn");
+      const repeatBtn = this.container.querySelector(".repeat-btn");
+
+      if (startBtn) startBtn.style.display = "none";
+      if (repeatBtn) repeatBtn.style.display = "inline-block";
+    }
+
+    showCurrentLine() {
+      const lines = this.container.querySelectorAll(".dialogue-line");
+
+      // Hide all lines
+      lines.forEach((line) => {
+        line.classList.remove("active");
+      });
+
+      if (this.currentLine < this.totalLines) {
+        const currentLineElement = lines[this.currentLine];
+        currentLineElement.classList.add("active");
+
+        // Check if this line has options
+        const choiceBubble = currentLineElement.querySelector(".choice-bubble");
+        if (choiceBubble) {
+          choiceBubble.style.display = "block";
+          this.totalChoices++;
+        } else {
+          // Auto advance after showing text
+          setTimeout(() => {
+            this.showNextButton();
+          }, 2000);
+        }
+
+        this.updateProgress();
+      } else {
+        this.completeDialogue();
+      }
+    }
+
+    showNextButton() {
+      const nextBtn = this.container.querySelector(".next-line-btn");
+      if (nextBtn && this.currentLine < this.totalLines - 1) {
+        nextBtn.style.display = "inline-block";
+      }
+    }
+
+    nextLine() {
+      this.currentLine++;
+      this.showCurrentLine();
+
+      const nextBtn = this.container.querySelector(".next-line-btn");
+      if (nextBtn) nextBtn.style.display = "none";
+    }
+
+    repeatCurrent() {
+      const currentLineElement =
+        this.container.querySelectorAll(".dialogue-line")[this.currentLine];
+      const playBtn = currentLineElement?.querySelector(".play-dialogue-btn");
+      if (playBtn) {
+        playBtn.click();
+      }
+    }
+
+    handleOptionClick(optionButton) {
+      const options =
+        optionButton.parentElement.querySelectorAll(".dialogue-option");
+      const correct = parseInt(optionButton.dataset.correct);
+      const selected = parseInt(optionButton.dataset.optionIndex);
+      const lineIndex = parseInt(optionButton.dataset.line);
+
+      // Disable all options
+      options.forEach((opt, index) => {
+        opt.disabled = true;
+        if (index === correct) {
+          opt.classList.add("correct");
+        } else if (index === selected && index !== correct) {
+          opt.classList.add("incorrect");
+        }
+      });
+
+      if (selected === correct) {
+        this.correctChoices++;
+      }
+
+      // Show explanation if available
+      const explanation = optionButton
+        .closest(".choice-bubble")
+        .querySelector(".option-explanation");
+      if (explanation) {
+        explanation.style.display = "block";
+      }
+
+      // Show next button after a delay
+      setTimeout(() => {
+        this.showNextButton();
+      }, 2000);
+    }
+
+    playDialogue(text, button) {
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+
+        const originalText = button.textContent;
+        button.textContent = "🔊 Playing...";
+        button.disabled = true;
+
+        utterance.onend = () => {
+          button.textContent = originalText;
+          button.disabled = false;
+        };
+
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    updateProgress() {
+      const progressFill = this.container.querySelector(".progress-fill");
+      const currentSpan = this.container.querySelector(".current-line");
+      const totalSpan = this.container.querySelector(".total-lines");
+
+      if (progressFill) {
+        const percentage = (this.currentLine / this.totalLines) * 100;
+        progressFill.style.width = `${percentage}%`;
+      }
+
+      if (currentSpan) currentSpan.textContent = this.currentLine;
+      if (totalSpan) totalSpan.textContent = this.totalLines;
+    }
+
+    completeDialogue() {
+      const completion = this.container.querySelector(".dialogue-completion");
+      const correctSpan = document.getElementById("correct-choices");
+      const totalSpan = document.getElementById("total-choices");
+
+      if (completion) {
+        completion.style.display = "block";
+        completion.scrollIntoView({ behavior: "smooth" });
+      }
+
+      if (correctSpan) correctSpan.textContent = this.correctChoices;
+      if (totalSpan) totalSpan.textContent = this.totalChoices;
+    }
+
+    restart() {
+      this.currentLine = 0;
+      this.correctChoices = 0;
+      this.totalChoices = 0;
+      this.isActive = false;
+
+      // Reset UI
+      const lines = this.container.querySelectorAll(".dialogue-line");
+      lines.forEach((line) => {
+        line.classList.remove("active");
+
+        // Reset options
+        const options = line.querySelectorAll(".dialogue-option");
+        options.forEach((opt) => {
+          opt.disabled = false;
+          opt.classList.remove("correct", "incorrect");
+        });
+
+        // Hide explanations and choice bubbles
+        const explanation = line.querySelector(".option-explanation");
+        const choiceBubble = line.querySelector(".choice-bubble");
+        if (explanation) explanation.style.display = "none";
+        if (choiceBubble) choiceBubble.style.display = "none";
+      });
+
+      // Reset buttons
+      const startBtn = this.container.querySelector(".start-dialogue-btn");
+      const nextBtn = this.container.querySelector(".next-line-btn");
+      const repeatBtn = this.container.querySelector(".repeat-btn");
+      const completion = this.container.querySelector(".dialogue-completion");
+
+      if (startBtn) startBtn.style.display = "inline-block";
+      if (nextBtn) nextBtn.style.display = "none";
+      if (repeatBtn) repeatBtn.style.display = "none";
+      if (completion) completion.style.display = "none";
+
+      this.updateProgress();
+    }
+  }
+
+  // Initialize all interactive dialogue components
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".interactive-dialogue").forEach((container) => {
+      new InteractiveDialogue(container);
+    });
+  });
+</script>
