@@ -28,7 +28,7 @@ The English Project is a collaborative, community-driven platform designed to he
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/english-project.git
+git clone https://github.com/sazardev/english-project.git
 
 # Navigate to the project directory
 cd english-project
@@ -272,7 +272,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 - **Email**: hello@english-project.org
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **GitHub**: [@sazardev](https://github.com/sazardev)
 - **Website**: [https://english-project.org](https://english-project.org)
 
 ---
