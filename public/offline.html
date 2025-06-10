@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - English Project</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8, #3b82f6);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .offline-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 2rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn.secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn.secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .features {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .features h3 {
+            color: #1e293b;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .feature-list li {
+            color: #64748b;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '📚';
+            position: absolute;
+            left: 0;
+        }
+
+        .connection-status {
+            margin-top: 24px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .connection-status.online {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .connection-status.offline {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon" id="statusIcon">📚</div>
+        <h1 id="statusTitle">You're Offline</h1>
+        <p class="subtitle" id="statusSubtitle">No internet connection detected</p>
+        <p class="description" id="statusDescription">
+            Don't worry! You can still browse previously visited lessons and content that's cached on your device.
+        </p>
+
+        <div class="actions">
+            <button class="btn" onclick="attemptReconnect()" id="retryBtn">
+                <span id="retryIcon">🔄</span>
+                Try Again
+            </button>
+            <a href="/" class="btn secondary">
+                🏠 Go Home
+            </a>
+        </div>
+
+        <div class="features">
+            <h3>What you can do offline:</h3>
+            <ul class="feature-list">
+                <li>Browse previously visited lessons</li>
+                <li>Access cached vocabulary lists</li>
+                <li>Review grammar guides</li>
+                <li>Continue reading downloaded content</li>
+                <li>Practice exercises you've opened before</li>
+            </ul>
+        </div>
+
+        <div class="connection-status" id="connectionStatus">
+            <span id="statusText">Checking connection...</span>
+        </div>
+    </div>
+
+    <script>
+        let retryAttempts = 0;
+        let isOnline = navigator.onLine;
+        let checkingConnection = false;
+
+        // Update UI based on connection status
+        function updateConnectionStatus(online) {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusSubtitle = document.getElementById('statusSubtitle');
+            const statusDescription = document.getElementById('statusDescription');
+            const connectionStatus = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('statusText');
+            const retryBtn = document.getElementById('retryBtn');
+
+            if (online) {
+                statusIcon.textContent = '🌟';
+                statusTitle.textContent = 'Connection Restored!';
+                statusSubtitle.textContent = 'You\'re back online';
+                statusDescription.textContent = 'Great! Your internet connection has been restored. You can now access all features of English Project.';
+                
+                connectionStatus.className = 'connection-status online';
+                connectionStatus.style.display = 'block';
+                statusText.textContent = 'Online - All features available';
+                
+                retryBtn.innerHTML = '<span>✅</span> Connected';
+                retryBtn.disabled = true;
+                retryBtn.style.opacity = '0.6';
+
+                // Auto redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                statusIcon.textContent = '📚';
+                statusTitle.textContent = 'You\'re Offline';
+                statusSubtitle.textContent = 'No internet connection detected';
+                statusDescription.textContent = 'Don\'t worry! You can still browse previously visited lessons and content that\'s cached on your device.';
+                
+                connectionStatus.className = 'connection-status offline';
+                connectionStatus.style.display = 'block';
+                statusText.textContent = 'Offline - Limited features available';
+                
+                retryBtn.innerHTML = '<span id="retryIcon">🔄</span> Try Again';
+                retryBtn.disabled = false;
+                retryBtn.style.opacity = '1';
+            }
+        }
+
+        // Attempt to reconnect
+        async function attemptReconnect() {
+            if (checkingConnection) return;
+            
+            checkingConnection = true;
+            retryAttempts++;
+            
+            const retryIcon = document.getElementById('retryIcon');
+            const retryBtn = document.getElementById('retryBtn');
+            
+            retryIcon.classList.add('pulse');
+            retryBtn.innerHTML = '<span class="pulse">⏳</span> Checking...';
+            retryBtn.disabled = true;
+
+            try {
+                // Try to fetch a small resource to check connectivity
+                const response = await fetch('/', { 
+                    method: 'HEAD',
+                    cache: 'no-cache',
+                    mode: 'no-cors'
+                });
+                
+                // If we get here, we're likely online
+                isOnline = true;
+                updateConnectionStatus(true);
+            } catch (error) {
+                // Still offline
+                setTimeout(() => {
+                    retryIcon.classList.remove('pulse');
+                    retryBtn.innerHTML = '<span>🔄</span> Try Again';
+                    retryBtn.disabled = false;
+                    
+                    // Show retry attempt count
+                    if (retryAttempts > 1) {
+                        document.getElementById('statusDescription').textContent = 
+                            `Connection attempt ${retryAttempts} failed. Please check your internet connection and try again.`;
+                    }
+                }, 1500);
+            }
+            
+            checkingConnection = false;
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            isOnline = true;
+            updateConnectionStatus(true);
+        });
+
+        window.addEventListener('offline', () => {
+            isOnline = false;
+            updateConnectionStatus(false);
+        });
+
+        // Initial status check
+        updateConnectionStatus(isOnline);
+
+        // Periodic connection check
+        setInterval(() => {
+            if (!checkingConnection && !isOnline) {
+                fetch('/', { 
+                    method: 'HEAD',
+                    cache: 'no-cache',
+                    mode: 'no-cors'
+                }).then(() => {
+                    if (!isOnline) {
+                        isOnline = true;
+                        updateConnectionStatus(true);
+                    }
+                }).catch(() => {
+                    // Still offline, do nothing
+                });
+            }
+        }, 10000); // Check every 10 seconds
+
+        // Handle visibility change to check connection when tab becomes active
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !isOnline && !checkingConnection) {
+                attemptReconnect();
+            }
+        });
+    </script>
+</body>
+</html>
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .offline-features {
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📚</div>
+        <h1>You're Offline</h1>
+        <p>Don't worry! Your English learning journey continues even without an internet connection. Some features are still available to you.</p>
+        
+        <button class="retry-btn" onclick="window.location.reload()">
+            Try Again
+        </button>
+
+        <div class="offline-features">
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Previously viewed lessons are cached</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Practice exercises still work</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Your progress is saved locally</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⏳</span>
+                <span>Changes will sync when back online</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for connectivity and auto-reload when back online
+        window.addEventListener('online', () => {
+            window.location.reload();
+        });
+
+        // Add some interactivity
+        document.querySelector('.retry-btn').addEventListener('click', () => {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            } else {
+                // Show a temporary message
+                const btn = document.querySelector('.retry-btn');
+                const originalText = btn.textContent;
+                btn.textContent = 'Still Offline...';
+                btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

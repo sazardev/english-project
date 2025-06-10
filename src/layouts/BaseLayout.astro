@@ -1,53 +1,554 @@
 ---
+import '../styles/main.css';
+
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
+  keywords?: string;
+  author?: string;
+  canonicalURL?: string;
+  type?: string;
+  publishDate?: string;
+  modifiedDate?: string;
+  section?: string;
+  locale?: string;
+  breadcrumbs?: Array<{name: string; url: string}>;
+  alternateLanguages?: Array<{lang: string; url: string}>;
+  price?: string;
+  availability?: string;
+  category?: string;
+  level?: string;
+  readingTime?: number;
+  tags?: string[];
+  isArticle?: boolean;
 }
 
+const currentUrl = new URL(Astro.request.url);
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? currentUrl.origin
+);
+
 const {
-  title = "English Project",
-  description = "Open source notes for English learners",
-  image = "/favicon.svg",
+  title = "English Project - Learn English with Open Source Notes | Free ESL Lessons",
+  description = "🌟 Master English with 500+ free lessons! Interactive exercises, grammar guides, vocabulary builders & speaking practice. From beginner to advanced. Join 100k+ learners worldwide. No ads, 100% free forever.",
+  image = "/icon-512.png",
+  keywords = "learn english online free, ESL lessons, english grammar exercises, vocabulary builder, speaking practice, listening skills, writing improvement, pronunciation guide, english learning app, interactive english lessons, business english, academic english, IELTS preparation, TOEFL practice, english conversation, grammar checker, english tutor, language learning, beginner english, intermediate english, advanced english, english for beginners, english speaking course, english writing course, free english course, online english class, english teacher, english education, second language learning, foreign language, english fluency",
+  author = "English Project Community",
+  canonicalURL: customCanonical,
+  type = "website",
+  publishDate,
+  modifiedDate,
+  section = "Education",
+  locale = "en_US",
+  breadcrumbs = [],
+  alternateLanguages = [],
+  price,
+  availability = "InStock",
+  category,
+  level,
+  readingTime,
+  tags = [],
+  isArticle = false,
 } = Astro.props;
+
+const finalCanonicalURL = customCanonical || canonicalURL.href;
+const imageUrl = new URL(image, Astro.site ?? currentUrl.origin).href;
+
+// Generate rich metadata for better SEO
+const pageType = isArticle ? "article" : type;
+const siteName = "English Project";
+const currentYear = new Date().getFullYear();
+const lastModified = modifiedDate || new Date().toISOString();
+
+// Enhanced structured data
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": siteName,
+  "description": "Free online platform for learning English with interactive lessons, exercises, and community support.",
+  "url": finalCanonicalURL,
+  "logo": {
+    "@type": "ImageObject",
+    "url": imageUrl,
+    "width": 512,
+    "height": 512
+  },
+  "foundingDate": "2024",
+  "founder": {
+    "@type": "Organization",
+    "name": "English Project Community"
+  },
+  "sameAs": [
+    "https://github.com/english-project"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "availableLanguage": "English"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "Global"
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": siteName,
+  "alternateName": "English Learning Platform",
+  "description": description,
+  "url": finalCanonicalURL,
+  "inLanguage": "en",
+  "author": {
+    "@type": "Organization",
+    "name": "English Project Community"
+  },
+  "publisher": organizationSchema,
+  "copyrightYear": currentYear,
+  "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "potentialAction": [
+    {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${finalCanonicalURL}/blog?search={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    {
+      "@type": "ReadAction",
+      "target": `${finalCanonicalURL}/blog`
+    }
+  ]
+};
+
+// Course schema for educational content
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Complete English Learning Course",
+  "description": "Comprehensive English learning course with lessons from beginner to advanced levels",
+  "provider": organizationSchema,
+  "educationalLevel": ["Beginner", "Intermediate", "Advanced"],
+  "teaches": [
+    "English Grammar",
+    "English Vocabulary", 
+    "English Speaking",
+    "English Listening",
+    "English Writing",
+    "English Reading",
+    "English Pronunciation"
+  ],
+  "courseCode": "ENG-ALL",
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "online",
+    "instructor": {
+      "@type": "Organization",
+      "name": "English Project Community"
+    }
+  },
+  "isAccessibleForFree": true,
+  "educationalCredentialAwarded": "Certificate of Completion",
+  "timeRequired": "P1Y",
+  "numberOfCredits": 0,
+  "typicalAgeRange": "13-99"
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Fonts -->
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={author} />
+    <meta name="copyright" content="© 2024-2025 English Project Community" />
+    <meta name="subject" content="English Language Learning" />
+    <meta name="language" content="en" />
+    <meta name="classification" content="Education" />
+    <meta name="category" content="Education" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="doc-type" content="Web Page" />
+    <meta name="doc-rights" content="Copyable" />
+    
+    <!-- Enhanced Robots Meta -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, notranslate" />
+    <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
+    <meta name="bingbot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
+    <meta name="slurp" content="index, follow" />
+    <meta name="facebookexternalhit" content="index, follow" />
+
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    <meta name="geo.position" content="40.7128;-74.0060" />
+    <meta name="ICBM" content="40.7128, -74.0060" />
+
+    <!-- DC Metadata -->
+    <meta name="DC.title" content={title} />
+    <meta name="DC.creator" content={author} />
+    <meta name="DC.subject" content="English Language Learning" />
+    <meta name="DC.description" content={description} />
+    <meta name="DC.publisher" content="English Project Community" />
+    <meta name="DC.contributor" content="English Project Community" />
+    <meta name="DC.date" content={lastModified} />
+    <meta name="DC.type" content="Text" />
+    <meta name="DC.format" content="text/html" />
+    <meta name="DC.identifier" content={finalCanonicalURL} />
+    <meta name="DC.source" content={finalCanonicalURL} />
+    <meta name="DC.language" content="en" />
+    <meta name="DC.relation" content={finalCanonicalURL} />
+    <meta name="DC.coverage" content="World" />
+    <meta name="DC.rights" content="Open Source" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={finalCanonicalURL} />
+
+    <!-- Alternate Languages -->
+    {alternateLanguages.map(alt => (
+      <link rel="alternate" hreflang={alt.lang} href={alt.url} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={finalCanonicalURL} />
+
+    <!-- Enhanced Open Graph / Facebook -->
+    <meta property="og:type" content={pageType} />
+    <meta property="og:site_name" content="English Project" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:secure_url" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:url" content={finalCanonicalURL} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="og:locale:alternate" content="en_AU" />
+    <meta property="og:locale:alternate" content="en_CA" />
+    <meta property="og:updated_time" content={lastModified} />
+    {section && <meta property="og:section" content={section} />}
+    <meta property="og:see_also" content={`${finalCanonicalURL}/blog`} />
+    <meta property="og:see_also" content={`${finalCanonicalURL}/categories`} />
+    <meta property="og:see_also" content={`${finalCanonicalURL}/levels`} />
+
+    <!-- Article specific Open Graph -->
+    {isArticle && (
+      <>
+        {publishDate && <meta property="article:published_time" content={publishDate} />}
+        {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
+        {author && <meta property="article:author" content={author} />}
+        <meta property="article:section" content="Education" />
+        <meta property="article:tag" content="English Learning" />
+        <meta property="article:tag" content="ESL" />
+        <meta property="article:tag" content="Language Education" />
+        {category && <meta property="article:tag" content={category} />}
+        {level && <meta property="article:tag" content={level} />}
+        {tags.map(tag => <meta property="article:tag" content={tag} />)}
+        {readingTime && <meta property="article:reading_time" content={readingTime.toString()} />}
+      </>
+    )}
+
+    <!-- Enhanced Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@EnglishProject" />
+    <meta name="twitter:creator" content="@EnglishProject" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={title} />
+    <meta name="twitter:url" content={finalCanonicalURL} />
+    <meta name="twitter:domain" content="english-project.com" />
+    <meta name="twitter:app:name:iphone" content="English Project" />
+    <meta name="twitter:app:name:ipad" content="English Project" />
+    <meta name="twitter:app:name:googleplay" content="English Project" />
+
+    <!-- LinkedIn specific -->
+    <meta property="linkedin:owner" content="english-project" />
+
+    <!-- Pinterest specific -->
+    <meta name="pinterest-rich-pin" content="true" />
+    <meta property="pinterestapp:name" content="English Project" />
+
+    <!-- Telegram specific -->
+    <meta property="telegram:channel" content="@englishproject" />
+
+    <!-- WhatsApp specific -->
+    <meta property="whatsapp:title" content={title} />
+    <meta property="whatsapp:description" content={description} />
+    <meta property="whatsapp:image" content={imageUrl} />
+
+    <!-- Enhanced Icons and Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#3b82f6" />
+
+    <!-- Enhanced PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="application-name" content="English Project" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="English Project" />
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="msapplication-navbutton-color" content="#3b82f6" />
+    <meta name="msapplication-starturl" content="/" />
+    <meta name="msapplication-window" content="width=1024;height=768" />
+    <meta name="msapplication-task" content="name=Browse Lessons;action-uri=/blog;icon-uri=/favicon.ico" />
+    <meta name="msapplication-task" content="name=Grammar;action-uri=/blog?category=grammar;icon-uri=/favicon.ico" />
+    <meta name="msapplication-task" content="name=Vocabulary;action-uri=/blog?category=vocabulary;icon-uri=/favicon.ico" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Enhanced Search Engine Tags -->
+    <meta name="alexaVerifyID" content="alexa-verify-id" />
+    <meta name="yandex-verification" content="yandex-verify-id" />
+    <meta name="baidu-site-verification" content="baidu-verify-id" />
+    <meta name="norton-safeweb-site-verification" content="norton-verify-id" />
+
+    <!-- Performance and Loading -->
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="cleartype" content="on" />
+    <meta http-equiv="imagetoolbar" content="false" />
+    <meta name="skype_toolbar" content="skype_toolbar_parser_compatible" />
+
+    <!-- DNS Prefetch & Preconnect -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Resource Hints -->
+    <link rel="preload" href="/src/styles/main.css" as="style" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style" />
+    <link rel="prefetch" href="/blog" />
+    <link rel="prefetch" href="/categories" />
+    <link rel="prefetch" href="/levels" />
+
+    <!-- Fonts with Performance Optimization -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <!-- Enhanced Structured Data JSON-LD -->
+    <script type="application/ld+json">
+      {JSON.stringify(organizationSchema)}
+    </script>
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <script type="application/ld+json">
+      {JSON.stringify(websiteSchema)}
+    </script>
 
-    <!-- Import our refined design system -->
-    <link rel="stylesheet" href="/src/styles/main.css" />
+    <script type="application/ld+json">
+      {JSON.stringify(courseSchema)}
+    </script>
+
+    <!-- Breadcrumbs JSON-LD -->
+    {breadcrumbs.length > 0 && (
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": breadcrumbs.map((crumb, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": crumb.name,
+            "item": crumb.url
+          }))
+        })}
+      </script>
+    )}
+
+    <!-- FAQ Schema if available -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is English Project really free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! English Project is completely free and open source. We believe everyone should have access to quality English education."
+            }
+          },
+          {
+            "@type": "Question", 
+            "name": "What levels does English Project cover?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We cover all levels from absolute beginner (A1) to advanced (C2), including IELTS and TOEFL preparation materials."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use English Project offline?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! English Project is a Progressive Web App (PWA) that can be installed and used offline on any device."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How many lessons are available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We have over 500 comprehensive lessons covering grammar, vocabulary, speaking, listening, reading, and writing skills."
+            }
+          }
+        ]
+      })}
+    </script>
+
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- RSS Feeds -->
+    <link rel="alternate" type="application/rss+xml" title="English Project Blog" href="/rss.xml" />
+    <link rel="alternate" type="application/atom+xml" title="English Project Atom Feed" href="/atom.xml" />
+    <link rel="alternate" type="application/json" title="English Project JSON Feed" href="/feed.json" />
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; media-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https:; frame-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
+
+    <!-- Performance Hints -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width, Save-Data" />
+    <meta name="save-data" content="on" />
+
+    <!-- Generator -->
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Critical CSS Inlining (if needed) -->
+    <style>
+      /* Critical above-the-fold styles go here for better performance */
+      body { font-family: Inter, system-ui, sans-serif; }
+      .hero { min-height: 80vh; display: flex; align-items: center; }
+    </style>
   </head>
   <body>
     <slot />
+
+    <!-- Service Worker Registration for PWA -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+      }
+    </script>
+
+    <!-- PWA Install Prompt -->
+    <script>
+      let deferredPrompt = null;
+      
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install button/banner
+        const installBanner = document.createElement("div");
+        installBanner.id = "install-banner";
+        installBanner.innerHTML = `
+          <div style="position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; padding: 16px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); z-index: 1000; font-family: Inter, sans-serif; max-width: 300px;">
+            <p style="margin: 0 0 12px 0; font-weight: 600;">Install English Project</p>
+            <p style="margin: 0 0 16px 0; font-size: 14px; opacity: 0.9;">Add to your home screen for quick access!</p>
+            <div style="display: flex; gap: 12px;">
+              <button id="install-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; flex: 1;">Install</button>
+              <button id="dismiss-btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Later</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(installBanner);
+
+        const installBtn = document.getElementById("install-btn");
+        const dismissBtn = document.getElementById("dismiss-btn");
+        
+        if (installBtn) {
+          installBtn.addEventListener("click", () => {
+            if (deferredPrompt && typeof deferredPrompt.prompt === 'function') {
+              deferredPrompt.prompt();
+              if (deferredPrompt.userChoice) {
+                deferredPrompt.userChoice.then((choiceResult) => {
+                  if (choiceResult.outcome === "accepted") {
+                    console.log("User accepted the A2HS prompt");
+                  }
+                  deferredPrompt = null;
+                  const banner = document.getElementById("install-banner");
+                  if (banner) {
+                    banner.remove();
+                  }
+                });
+              }
+            }
+          });
+        }
+
+        if (dismissBtn) {
+          dismissBtn.addEventListener("click", () => {
+            const banner = document.getElementById("install-banner");
+            if (banner) {
+              banner.remove();
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- Analytics placeholder for future implementation -->
+    <script>
+      // Google Analytics or other analytics can be added here
+      // Example: gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
   </body>
 </html>

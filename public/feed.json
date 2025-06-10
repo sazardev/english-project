@@ -1,0 +1,293 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "English Project - Free English Learning Lessons",
+  "description": "Master English with 500+ free lessons! Interactive exercises, grammar guides, vocabulary builders & speaking practice. From beginner to advanced. Join 100k+ learners worldwide.",
+  "home_page_url": "https://english-project.com/",
+  "feed_url": "https://english-project.com/feed.json",
+  "language": "en",
+  "icon": "https://english-project.com/icon-512.png",
+  "favicon": "https://english-project.com/favicon.svg",
+  "authors": [
+    {
+      "name": "English Project Team",
+      "url": "https://english-project.com/about/",
+      "avatar": "https://english-project.com/icon-192.png"
+    }
+  ],
+  "user_comment": "This JSON feed provides programmatic access to English Project's latest lessons and content updates. Perfect for developers building educational apps or content aggregators.",
+  "expired": false,
+  "hubs": [
+    {
+      "type": "WebSub",
+      "url": "https://pubsubhubbub.appspot.com/"
+    }
+  ],
+  "items": [
+    {
+      "id": "https://english-project.com/blog/interactive-discourse-analysis-advanced/",
+      "url": "https://english-project.com/blog/interactive-discourse-analysis-advanced/",
+      "title": "Interactive Discourse Analysis - Advanced Level",
+      "content_html": "<p>Master advanced discourse analysis techniques with interactive exercises. Learn to analyze text structure, coherence, and persuasive language patterns in academic and professional contexts.</p>",
+      "content_text": "Master advanced discourse analysis techniques with interactive exercises. Learn to analyze text structure, coherence, and persuasive language patterns in academic and professional contexts.",
+      "summary": "Master advanced discourse analysis techniques with interactive exercises. Learn to analyze text structure, coherence, and persuasive language patterns.",
+      "date_published": "2025-06-10T10:00:00Z",
+      "date_modified": "2025-06-10T10:00:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": ["Advanced", "Writing", "Analysis", "Interactive", "Discourse"],
+      "language": "en",
+      "attachments": [
+        {
+          "url": "https://english-project.com/audio/discourse-analysis-pronunciation.mp3",
+          "mime_type": "audio/mpeg",
+          "title": "Pronunciation Guide for Discourse Analysis Terms"
+        }
+      ]
+    },
+    {
+      "id": "https://english-project.com/blog/interactive-academic-discourse-advanced/",
+      "url": "https://english-project.com/blog/interactive-academic-discourse-advanced/",
+      "title": "Interactive Academic Discourse - Advanced Level",
+      "content_html": "<p>Develop sophisticated academic writing and discourse skills with interactive practice sessions designed for advanced learners pursuing higher education or research.</p>",
+      "content_text": "Develop sophisticated academic writing and discourse skills with interactive practice sessions designed for advanced learners pursuing higher education or research.",
+      "summary": "Develop sophisticated academic writing and discourse skills with interactive practice sessions designed for advanced learners.",
+      "date_published": "2025-06-09T14:30:00Z",
+      "date_modified": "2025-06-09T14:30:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Advanced",
+        "Academic",
+        "Writing",
+        "Interactive",
+        "Higher Education"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/advanced-writing-techniques/",
+      "url": "https://english-project.com/blog/advanced-writing-techniques/",
+      "title": "Advanced Writing Techniques for Professional Communication",
+      "content_html": "<p>Master sophisticated writing techniques including complex sentence structures, advanced vocabulary usage, and persuasive writing strategies for professional and academic success.</p>",
+      "content_text": "Master sophisticated writing techniques including complex sentence structures, advanced vocabulary usage, and persuasive writing strategies for professional and academic success.",
+      "summary": "Master sophisticated writing techniques including complex sentence structures, advanced vocabulary usage, and persuasive writing strategies.",
+      "date_published": "2025-06-08T09:15:00Z",
+      "date_modified": "2025-06-08T09:15:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Advanced",
+        "Writing",
+        "Professional",
+        "Communication",
+        "Techniques"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/interactive-business-meetings-intermediate/",
+      "url": "https://english-project.com/blog/interactive-business-meetings-intermediate/",
+      "title": "Interactive Business Meetings - Intermediate Level",
+      "content_html": "<p>Practice essential business meeting skills with interactive scenarios covering presentations, negotiations, and professional discussions for intermediate-level learners.</p>",
+      "content_text": "Practice essential business meeting skills with interactive scenarios covering presentations, negotiations, and professional discussions for intermediate-level learners.",
+      "summary": "Practice essential business meeting skills with interactive scenarios covering presentations, negotiations, and professional discussions.",
+      "date_published": "2025-06-07T11:20:00Z",
+      "date_modified": "2025-06-07T11:20:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Intermediate",
+        "Business",
+        "Speaking",
+        "Meetings",
+        "Interactive"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/interactive-conditionals-intermediate/",
+      "url": "https://english-project.com/blog/interactive-conditionals-intermediate/",
+      "title": "Interactive Conditionals Practice - Intermediate Level",
+      "content_html": "<p>Master all types of conditional sentences with interactive exercises and real-world examples. Perfect for intermediate learners looking to improve their grammar accuracy.</p>",
+      "content_text": "Master all types of conditional sentences with interactive exercises and real-world examples. Perfect for intermediate learners looking to improve their grammar accuracy.",
+      "summary": "Master all types of conditional sentences with interactive exercises and real-world examples for intermediate learners.",
+      "date_published": "2025-06-06T13:45:00Z",
+      "date_modified": "2025-06-06T13:45:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Intermediate",
+        "Grammar",
+        "Conditionals",
+        "Interactive",
+        "Practice"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/business-english-vocabulary/",
+      "url": "https://english-project.com/blog/business-english-vocabulary/",
+      "title": "Essential Business English Vocabulary",
+      "content_html": "<p>Build your professional vocabulary with essential business terms, phrases, and expressions used in corporate environments. Perfect for career advancement.</p>",
+      "content_text": "Build your professional vocabulary with essential business terms, phrases, and expressions used in corporate environments. Perfect for career advancement.",
+      "summary": "Build your professional vocabulary with essential business terms, phrases, and expressions used in corporate environments.",
+      "date_published": "2025-06-05T08:30:00Z",
+      "date_modified": "2025-06-05T08:30:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": ["Business", "Vocabulary", "Professional", "Corporate", "Career"],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/english-culture-and-idioms/",
+      "url": "https://english-project.com/blog/english-culture-and-idioms/",
+      "title": "English Culture and Common Idioms",
+      "content_html": "<p>Explore English-speaking cultures and learn common idioms that will help you sound more natural and confident in conversations with native speakers.</p>",
+      "content_text": "Explore English-speaking cultures and learn common idioms that will help you sound more natural and confident in conversations with native speakers.",
+      "summary": "Explore English-speaking cultures and learn common idioms that will help you sound more natural and confident in conversations.",
+      "date_published": "2025-06-04T15:10:00Z",
+      "date_modified": "2025-06-04T15:10:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Culture",
+        "Idioms",
+        "Speaking",
+        "Native Speakers",
+        "Natural English"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/pronunciation-guide/",
+      "url": "https://english-project.com/blog/pronunciation-guide/",
+      "title": "Complete English Pronunciation Guide",
+      "content_html": "<p>Improve your English pronunciation with comprehensive guides covering phonetics, stress patterns, and common pronunciation challenges for non-native speakers.</p>",
+      "content_text": "Improve your English pronunciation with comprehensive guides covering phonetics, stress patterns, and common pronunciation challenges for non-native speakers.",
+      "summary": "Improve your English pronunciation with comprehensive guides covering phonetics, stress patterns, and common pronunciation challenges.",
+      "date_published": "2025-06-03T12:25:00Z",
+      "date_modified": "2025-06-03T12:25:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Pronunciation",
+        "Speaking",
+        "Phonetics",
+        "Stress Patterns",
+        "IPA"
+      ],
+      "language": "en",
+      "attachments": [
+        {
+          "url": "https://english-project.com/audio/pronunciation-examples.mp3",
+          "mime_type": "audio/mpeg",
+          "title": "Pronunciation Examples Audio Guide"
+        }
+      ]
+    },
+    {
+      "id": "https://english-project.com/blog/listening-skills-beginners/",
+      "url": "https://english-project.com/blog/listening-skills-beginners/",
+      "title": "Listening Skills Development for Beginners",
+      "content_html": "<p>Develop essential listening skills with beginner-friendly exercises, audio content, and proven strategies for better English comprehension.</p>",
+      "content_text": "Develop essential listening skills with beginner-friendly exercises, audio content, and proven strategies for better English comprehension.",
+      "summary": "Develop essential listening skills with beginner-friendly exercises, audio content, and strategies for better comprehension.",
+      "date_published": "2025-06-02T16:40:00Z",
+      "date_modified": "2025-06-02T16:40:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": ["Beginner", "Listening", "Comprehension", "Audio", "Skills"],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/interactive-daily-routines-beginner/",
+      "url": "https://english-project.com/blog/interactive-daily-routines-beginner/",
+      "title": "Interactive Daily Routines - Beginner Level",
+      "content_html": "<p>Learn to describe daily activities and routines with interactive exercises perfect for beginner English learners. Build practical vocabulary for everyday conversations.</p>",
+      "content_text": "Learn to describe daily activities and routines with interactive exercises perfect for beginner English learners. Build practical vocabulary for everyday conversations.",
+      "summary": "Learn to describe daily activities and routines with interactive exercises perfect for beginner English learners.",
+      "date_published": "2025-06-01T10:15:00Z",
+      "date_modified": "2025-06-01T10:15:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Beginner",
+        "Daily Life",
+        "Vocabulary",
+        "Interactive",
+        "Routines"
+      ],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/daily-activities-vocabulary/",
+      "url": "https://english-project.com/blog/daily-activities-vocabulary/",
+      "title": "Daily Activities Vocabulary Builder",
+      "content_html": "<p>Expand your vocabulary with essential words and phrases for describing daily activities, routines, and everyday situations that you encounter regularly.</p>",
+      "content_text": "Expand your vocabulary with essential words and phrases for describing daily activities, routines, and everyday situations that you encounter regularly.",
+      "summary": "Expand your vocabulary with essential words and phrases for describing daily activities, routines, and everyday situations.",
+      "date_published": "2025-05-31T14:20:00Z",
+      "date_modified": "2025-05-31T14:20:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": ["Vocabulary", "Daily Life", "Basic", "Activities", "Everyday"],
+      "language": "en"
+    },
+    {
+      "id": "https://english-project.com/blog/present-simple-tense/",
+      "url": "https://english-project.com/blog/present-simple-tense/",
+      "title": "Master the Present Simple Tense",
+      "content_html": "<p>Learn the fundamentals of the present simple tense with clear explanations, examples, and interactive practice exercises. Essential for all English learners.</p>",
+      "content_text": "Learn the fundamentals of the present simple tense with clear explanations, examples, and interactive practice exercises. Essential for all English learners.",
+      "summary": "Learn the fundamentals of the present simple tense with clear explanations, examples, and interactive practice exercises.",
+      "date_published": "2025-05-30T09:35:00Z",
+      "date_modified": "2025-05-30T09:35:00Z",
+      "authors": [
+        {
+          "name": "English Project Team"
+        }
+      ],
+      "tags": [
+        "Grammar",
+        "Beginner",
+        "Tenses",
+        "Present Simple",
+        "Fundamentals"
+      ],
+      "language": "en"
+    }
+  ]
+}

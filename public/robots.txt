@@ -1,0 +1,222 @@
+# Enhanced Robots.txt for English Project - SEO Optimized
+# Learn English with Open Source Notes | Free ESL Lessons
+
+# Primary search engine bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 3
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+# General rules for all other bots
+User-agent: *
+Allow: /
+
+# Explicitly allow important sections
+Allow: /blog/
+Allow: /blog/*.html
+Allow: /categories/
+Allow: /levels/
+Allow: /about/
+Allow: /contribute/
+Allow: /search/
+Allow: /sitemap.xml
+Allow: /rss.xml
+Allow: /atom.xml
+Allow: /feed.json
+Allow: /manifest.json
+Allow: /sw.js
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+Allow: /*.avif
+Allow: /*.ico
+Allow: /*.woff
+Allow: /*.woff2
+Allow: /*.ttf
+
+# Block admin, development, and private areas
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_astro/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /src/
+Disallow: /dist/
+Disallow: /temp/
+Disallow: /tmp/
+Disallow: /logs/
+Disallow: /cache/
+Disallow: /backup/
+Disallow: /test/
+Disallow: /tests/
+Disallow: /.env
+Disallow: /.env.*
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tsconfig.json
+Disallow: /astro.config.*
+Disallow: /tailwind.config.*
+Disallow: /vite.config.*
+Disallow: /prettier.*
+Disallow: /eslint.*
+Disallow: /.vscode/
+Disallow: /.idea/
+
+# Block search and filter parameters that create duplicate content
+Disallow: /*?search=*
+Disallow: /*?filter=*
+Disallow: /*?sort=*
+Disallow: /*?page=*&
+Disallow: /*&search=*
+Disallow: /*&filter=*
+Disallow: /*&sort=*
+
+# Block development and preview URLs
+Disallow: /preview/
+Disallow: /staging/
+Disallow: /development/
+Disallow: /dev/
+
+# Security - Block common vulnerability scan paths
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /administrator/
+Disallow: /admin.php
+Disallow: /login.php
+Disallow: /phpmyadmin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+
+# Educational content priority hints for crawlers
+# Grammar lessons - High priority
+Allow: /blog/grammar/
+Allow: /categories/grammar/
+
+# Vocabulary lessons - High priority  
+Allow: /blog/vocabulary/
+Allow: /categories/vocabulary/
+
+# Speaking practice - High priority
+Allow: /blog/speaking/
+Allow: /categories/speaking/
+
+# Listening exercises - High priority
+Allow: /blog/listening/
+Allow: /categories/listening/
+
+# Writing guides - High priority
+Allow: /blog/writing/
+Allow: /categories/writing/
+
+# Reading comprehension - High priority
+Allow: /blog/reading/
+Allow: /categories/reading/
+
+# Pronunciation guides - High priority
+Allow: /blog/pronunciation/
+Allow: /categories/pronunciation/
+
+# Level-based content - High priority
+Allow: /levels/beginner/
+Allow: /levels/intermediate/
+Allow: /levels/advanced/
+Allow: /levels/a1/
+Allow: /levels/a2/
+Allow: /levels/b1/
+Allow: /levels/b2/
+Allow: /levels/c1/
+Allow: /levels/c2/
+
+# Exam preparation - High priority
+Allow: /blog/ielts/
+Allow: /blog/toefl/
+Allow: /blog/cambridge/
+Allow: /blog/exam-prep/
+
+# Business English - Medium priority
+Allow: /blog/business/
+Allow: /categories/business/
+
+# Cultural content - Medium priority
+Allow: /blog/culture/
+Allow: /categories/culture/
+
+# Crawl-delay settings for different bots
+# Googlebot - Fast crawling allowed
+# Bingbot - Standard crawling
+# Others - Slower to prevent server overload
+
+# Sitemap locations (multiple formats for better indexing)
+Sitemap: https://english-project.com/sitemap.xml
+Sitemap: https://english-project.com/sitemap-index.xml
+Sitemap: https://english-project.com/sitemap-pages.xml
+Sitemap: https://english-project.com/sitemap-blog.xml
+Sitemap: https://english-project.com/sitemap-categories.xml
+Sitemap: https://english-project.com/sitemap-levels.xml
+Sitemap: https://english-project.com/sitemap-images.xml
+
+# RSS/Atom feeds for content discovery
+Sitemap: https://english-project.com/rss.xml
+Sitemap: https://english-project.com/atom.xml
+
+# Additional host information
+Host: https://english-project.com
+
+# Request rate - Be conservative to ensure good server performance
+Request-rate: 1/5s
+
+# Visit time - Allow crawling during all hours
+Visit-time: 0000-2359
+
+# Cache directives for crawlers
+# Encourage fresh crawling of dynamic content
+Clean-param: utm_source&utm_medium&utm_campaign&utm_term&utm_content
+Clean-param: fbclid&gclid&msclkid&ttclid
+Clean-param: ref&source&medium&campaign
+
+# Educational SEO hints
+# This robots.txt is optimized for educational content discovery
+# Supporting 100k+ learners worldwide with free English lessons
+# Content categories: Grammar, Vocabulary, Speaking, Listening, Writing, Reading, Pronunciation
+# Skill levels: Beginner (A1-A2), Intermediate (B1-B2), Advanced (C1-C2)
+# Exam preparation: IELTS, TOEFL, Cambridge English, Business English
+# Last updated: 2024-12-19

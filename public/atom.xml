@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>English Project - Free English Learning Lessons</title>
+  <subtitle>Master English with 500+ free lessons! Interactive exercises, grammar guides, vocabulary builders &amp; speaking practice. From beginner to advanced.</subtitle>
+  <link href="https://english-project.com/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="https://english-project.com/" rel="alternate" type="text/html"/>
+  <id>https://english-project.com/</id>
+  <updated>2025-06-10T12:00:00Z</updated>
+  <generator uri="https://astro.build/">Astro</generator>
+  <rights>Creative Commons Attribution-ShareAlike 4.0 International License</rights>
+  <logo>https://english-project.com/icon-512.png</logo>
+  <icon>https://english-project.com/favicon.svg</icon>
+  
+  <author>
+    <name>English Project Team</name>
+    <email>contact@english-project.com</email>
+    <uri>https://english-project.com/about/</uri>
+  </author>
+
+  <category term="Education" label="Education"/>
+  <category term="Language Learning" label="Language Learning"/>
+  <category term="ESL" label="ESL"/>
+  <category term="English" label="English"/>
+
+  <!-- Interactive Discourse Analysis Advanced -->
+  <entry>
+    <title>Interactive Discourse Analysis - Advanced Level</title>
+    <link href="https://english-project.com/blog/interactive-discourse-analysis-advanced/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/interactive-discourse-analysis-advanced/</id>
+    <updated>2025-06-10T10:00:00Z</updated>
+    <published>2025-06-10T10:00:00Z</published>
+    <summary>Master advanced discourse analysis techniques with interactive exercises. Learn to analyze text structure, coherence, and persuasive language patterns.</summary>
+    <content type="html"><![CDATA[<p>Master advanced discourse analysis techniques with interactive exercises. Learn to analyze text structure, coherence, and persuasive language patterns in academic and professional contexts.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Advanced" label="Advanced"/>
+    <category term="Writing" label="Writing"/>
+    <category term="Analysis" label="Analysis"/>
+  </entry>
+
+  <!-- Interactive Academic Discourse Advanced -->
+  <entry>
+    <title>Interactive Academic Discourse - Advanced Level</title>
+    <link href="https://english-project.com/blog/interactive-academic-discourse-advanced/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/interactive-academic-discourse-advanced/</id>
+    <updated>2025-06-09T14:30:00Z</updated>
+    <published>2025-06-09T14:30:00Z</published>
+    <summary>Develop sophisticated academic writing and discourse skills with interactive practice sessions designed for advanced learners.</summary>
+    <content type="html"><![CDATA[<p>Develop sophisticated academic writing and discourse skills with interactive practice sessions designed for advanced learners pursuing higher education or research.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Advanced" label="Advanced"/>
+    <category term="Academic" label="Academic"/>
+    <category term="Writing" label="Writing"/>
+  </entry>
+
+  <!-- Advanced Writing Techniques -->
+  <entry>
+    <title>Advanced Writing Techniques for Professional Communication</title>
+    <link href="https://english-project.com/blog/advanced-writing-techniques/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/advanced-writing-techniques/</id>
+    <updated>2025-06-08T09:15:00Z</updated>
+    <published>2025-06-08T09:15:00Z</published>
+    <summary>Master sophisticated writing techniques including complex sentence structures, advanced vocabulary usage, and persuasive writing strategies.</summary>
+    <content type="html"><![CDATA[<p>Master sophisticated writing techniques including complex sentence structures, advanced vocabulary usage, and persuasive writing strategies for professional and academic success.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Advanced" label="Advanced"/>
+    <category term="Writing" label="Writing"/>
+    <category term="Professional" label="Professional"/>
+  </entry>
+
+  <!-- Interactive Business Meetings Intermediate -->
+  <entry>
+    <title>Interactive Business Meetings - Intermediate Level</title>
+    <link href="https://english-project.com/blog/interactive-business-meetings-intermediate/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/interactive-business-meetings-intermediate/</id>
+    <updated>2025-06-07T11:20:00Z</updated>
+    <published>2025-06-07T11:20:00Z</published>
+    <summary>Practice essential business meeting skills with interactive scenarios covering presentations, negotiations, and professional discussions.</summary>
+    <content type="html"><![CDATA[<p>Practice essential business meeting skills with interactive scenarios covering presentations, negotiations, and professional discussions for intermediate-level learners.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Intermediate" label="Intermediate"/>
+    <category term="Business" label="Business"/>
+    <category term="Speaking" label="Speaking"/>
+  </entry>
+
+  <!-- Interactive Conditionals Intermediate -->
+  <entry>
+    <title>Interactive Conditionals Practice - Intermediate Level</title>
+    <link href="https://english-project.com/blog/interactive-conditionals-intermediate/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/interactive-conditionals-intermediate/</id>
+    <updated>2025-06-06T13:45:00Z</updated>
+    <published>2025-06-06T13:45:00Z</published>
+    <summary>Master all types of conditional sentences with interactive exercises and real-world examples for intermediate learners.</summary>
+    <content type="html"><![CDATA[<p>Master all types of conditional sentences with interactive exercises and real-world examples. Perfect for intermediate learners looking to improve their grammar accuracy.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Intermediate" label="Intermediate"/>
+    <category term="Grammar" label="Grammar"/>
+    <category term="Conditionals" label="Conditionals"/>
+  </entry>
+
+  <!-- Business English Vocabulary -->
+  <entry>
+    <title>Essential Business English Vocabulary</title>
+    <link href="https://english-project.com/blog/business-english-vocabulary/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/business-english-vocabulary/</id>
+    <updated>2025-06-05T08:30:00Z</updated>
+    <published>2025-06-05T08:30:00Z</published>
+    <summary>Build your professional vocabulary with essential business terms, phrases, and expressions used in corporate environments.</summary>
+    <content type="html"><![CDATA[<p>Build your professional vocabulary with essential business terms, phrases, and expressions used in corporate environments. Perfect for career advancement.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Business" label="Business"/>
+    <category term="Vocabulary" label="Vocabulary"/>
+    <category term="Professional" label="Professional"/>
+  </entry>
+
+  <!-- English Culture and Idioms -->
+  <entry>
+    <title>English Culture and Common Idioms</title>
+    <link href="https://english-project.com/blog/english-culture-and-idioms/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/english-culture-and-idioms/</id>
+    <updated>2025-06-04T15:10:00Z</updated>
+    <published>2025-06-04T15:10:00Z</published>
+    <summary>Explore English-speaking cultures and learn common idioms that will help you sound more natural and confident in conversations.</summary>
+    <content type="html"><![CDATA[<p>Explore English-speaking cultures and learn common idioms that will help you sound more natural and confident in conversations with native speakers.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Culture" label="Culture"/>
+    <category term="Idioms" label="Idioms"/>
+    <category term="Speaking" label="Speaking"/>
+  </entry>
+
+  <!-- Pronunciation Guide -->
+  <entry>
+    <title>Complete English Pronunciation Guide</title>
+    <link href="https://english-project.com/blog/pronunciation-guide/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/pronunciation-guide/</id>
+    <updated>2025-06-03T12:25:00Z</updated>
+    <published>2025-06-03T12:25:00Z</published>
+    <summary>Improve your English pronunciation with comprehensive guides covering phonetics, stress patterns, and common pronunciation challenges.</summary>
+    <content type="html"><![CDATA[<p>Improve your English pronunciation with comprehensive guides covering phonetics, stress patterns, and common pronunciation challenges for non-native speakers.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Pronunciation" label="Pronunciation"/>
+    <category term="Speaking" label="Speaking"/>
+    <category term="Phonetics" label="Phonetics"/>
+  </entry>
+
+  <!-- Listening Skills for Beginners -->
+  <entry>
+    <title>Listening Skills Development for Beginners</title>
+    <link href="https://english-project.com/blog/listening-skills-beginners/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/listening-skills-beginners/</id>
+    <updated>2025-06-02T16:40:00Z</updated>
+    <published>2025-06-02T16:40:00Z</published>
+    <summary>Develop essential listening skills with beginner-friendly exercises, audio content, and strategies for better comprehension.</summary>
+    <content type="html"><![CDATA[<p>Develop essential listening skills with beginner-friendly exercises, audio content, and proven strategies for better English comprehension.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Beginner" label="Beginner"/>
+    <category term="Listening" label="Listening"/>
+    <category term="Comprehension" label="Comprehension"/>
+  </entry>
+
+  <!-- Interactive Daily Routines Beginner -->
+  <entry>
+    <title>Interactive Daily Routines - Beginner Level</title>
+    <link href="https://english-project.com/blog/interactive-daily-routines-beginner/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/interactive-daily-routines-beginner/</id>
+    <updated>2025-06-01T10:15:00Z</updated>
+    <published>2025-06-01T10:15:00Z</published>
+    <summary>Learn to describe daily activities and routines with interactive exercises perfect for beginner English learners.</summary>
+    <content type="html"><![CDATA[<p>Learn to describe daily activities and routines with interactive exercises perfect for beginner English learners. Build practical vocabulary for everyday conversations.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Beginner" label="Beginner"/>
+    <category term="Daily Life" label="Daily Life"/>
+    <category term="Vocabulary" label="Vocabulary"/>
+  </entry>
+
+  <!-- Daily Activities Vocabulary -->
+  <entry>
+    <title>Daily Activities Vocabulary Builder</title>
+    <link href="https://english-project.com/blog/daily-activities-vocabulary/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/daily-activities-vocabulary/</id>
+    <updated>2025-05-31T14:20:00Z</updated>
+    <published>2025-05-31T14:20:00Z</published>
+    <summary>Expand your vocabulary with essential words and phrases for describing daily activities, routines, and everyday situations.</summary>
+    <content type="html"><![CDATA[<p>Expand your vocabulary with essential words and phrases for describing daily activities, routines, and everyday situations that you encounter regularly.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Vocabulary" label="Vocabulary"/>
+    <category term="Daily Life" label="Daily Life"/>
+    <category term="Basic" label="Basic"/>
+  </entry>
+
+  <!-- Present Simple Tense -->
+  <entry>
+    <title>Master the Present Simple Tense</title>
+    <link href="https://english-project.com/blog/present-simple-tense/" rel="alternate" type="text/html"/>
+    <id>https://english-project.com/blog/present-simple-tense/</id>
+    <updated>2025-05-30T09:35:00Z</updated>
+    <published>2025-05-30T09:35:00Z</published>
+    <summary>Learn the fundamentals of the present simple tense with clear explanations, examples, and interactive practice exercises.</summary>
+    <content type="html"><![CDATA[<p>Learn the fundamentals of the present simple tense with clear explanations, examples, and interactive practice exercises. Essential for all English learners.</p>]]></content>
+    <author>
+      <name>English Project Team</name>
+    </author>
+    <category term="Grammar" label="Grammar"/>
+    <category term="Beginner" label="Beginner"/>
+    <category term="Tenses" label="Tenses"/>
+  </entry>
+
+</feed>
