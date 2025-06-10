@@ -95,7 +95,8 @@ const { scenario, dialogue, characters, id } = Astro.props;
     </div>
     <p class="progress-text">
       Progress: <span class="current-line">0</span>/<span class="total-lines"
-        >{dialogue.length}</span>
+        >{dialogue.length}</span
+      >
     </p>
   </div>
 
@@ -444,7 +445,14 @@ const { scenario, dialogue, characters, id } = Astro.props;
 
 <script>
   class InteractiveDialogue {
-    constructor(container) {
+    container: HTMLElement;
+    currentLine: number;
+    totalLines: number;
+    correctChoices: number;
+    totalChoices: number;
+    isActive: boolean;
+
+    constructor(container: HTMLElement) {
       this.container = container;
       this.currentLine = 0;
       this.totalLines =
@@ -459,12 +467,19 @@ const { scenario, dialogue, characters, id } = Astro.props;
       this.bindEvents();
       this.updateProgress();
     }
-
     bindEvents() {
-      const startBtn = this.container.querySelector(".start-dialogue-btn");
-      const nextBtn = this.container.querySelector(".next-line-btn");
-      const repeatBtn = this.container.querySelector(".repeat-btn");
-      const restartBtn = this.container.querySelector(".restart-dialogue-btn");
+      const startBtn = this.container.querySelector(
+        ".start-dialogue-btn"
+      ) as HTMLButtonElement;
+      const nextBtn = this.container.querySelector(
+        ".next-line-btn"
+      ) as HTMLButtonElement;
+      const repeatBtn = this.container.querySelector(
+        ".repeat-btn"
+      ) as HTMLButtonElement;
+      const restartBtn = this.container.querySelector(
+        ".restart-dialogue-btn"
+      ) as HTMLButtonElement;
 
       if (startBtn) {
         startBtn.addEventListener("click", () => this.startDialogue());
@@ -483,29 +498,32 @@ const { scenario, dialogue, characters, id } = Astro.props;
       }
 
       // Play dialogue buttons
-      this.container.addEventListener("click", (e) => {
-        if (e.target.classList.contains("play-dialogue-btn")) {
-          const text = e.target.dataset.text;
-          this.playDialogue(text, e.target);
+      this.container.addEventListener("click", (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target && target.classList.contains("play-dialogue-btn")) {
+          const text = target.dataset.text || "";
+          this.playDialogue(text, target);
         }
 
-        if (e.target.classList.contains("dialogue-option")) {
-          this.handleOptionClick(e.target);
+        if (target && target.classList.contains("dialogue-option")) {
+          this.handleOptionClick(target);
         }
       });
     }
-
     startDialogue() {
       this.isActive = true;
       this.showCurrentLine();
 
-      const startBtn = this.container.querySelector(".start-dialogue-btn");
-      const repeatBtn = this.container.querySelector(".repeat-btn");
+      const startBtn = this.container.querySelector(
+        ".start-dialogue-btn"
+      ) as HTMLElement;
+      const repeatBtn = this.container.querySelector(
+        ".repeat-btn"
+      ) as HTMLElement;
 
       if (startBtn) startBtn.style.display = "none";
       if (repeatBtn) repeatBtn.style.display = "inline-block";
     }
-
     showCurrentLine() {
       const lines = this.container.querySelectorAll(".dialogue-line");
 
@@ -515,11 +533,13 @@ const { scenario, dialogue, characters, id } = Astro.props;
       });
 
       if (this.currentLine < this.totalLines) {
-        const currentLineElement = lines[this.currentLine];
+        const currentLineElement = lines[this.currentLine] as HTMLElement;
         currentLineElement.classList.add("active");
 
         // Check if this line has options
-        const choiceBubble = currentLineElement.querySelector(".choice-bubble");
+        const choiceBubble = currentLineElement.querySelector(
+          ".choice-bubble"
+        ) as HTMLElement;
         if (choiceBubble) {
           choiceBubble.style.display = "block";
           this.totalChoices++;
@@ -535,9 +555,10 @@ const { scenario, dialogue, characters, id } = Astro.props;
         this.completeDialogue();
       }
     }
-
     showNextButton() {
-      const nextBtn = this.container.querySelector(".next-line-btn");
+      const nextBtn = this.container.querySelector(
+        ".next-line-btn"
+      ) as HTMLElement;
       if (nextBtn && this.currentLine < this.totalLines - 1) {
         nextBtn.style.display = "inline-block";
       }
@@ -547,35 +568,39 @@ const { scenario, dialogue, characters, id } = Astro.props;
       this.currentLine++;
       this.showCurrentLine();
 
-      const nextBtn = this.container.querySelector(".next-line-btn");
+      const nextBtn = this.container.querySelector(
+        ".next-line-btn"
+      ) as HTMLElement;
       if (nextBtn) nextBtn.style.display = "none";
     }
 
     repeatCurrent() {
       const currentLineElement =
         this.container.querySelectorAll(".dialogue-line")[this.currentLine];
-      const playBtn = currentLineElement?.querySelector(".play-dialogue-btn");
+      const playBtn = currentLineElement?.querySelector(
+        ".play-dialogue-btn"
+      ) as HTMLButtonElement;
       if (playBtn) {
         playBtn.click();
       }
     }
-
-    handleOptionClick(optionButton) {
+    handleOptionClick(optionButton: HTMLElement) {
       const options =
-        optionButton.parentElement.querySelectorAll(".dialogue-option");
-      const correct = parseInt(optionButton.dataset.correct);
-      const selected = parseInt(optionButton.dataset.optionIndex);
-      const lineIndex = parseInt(optionButton.dataset.line);
-
-      // Disable all options
-      options.forEach((opt, index) => {
-        opt.disabled = true;
-        if (index === correct) {
-          opt.classList.add("correct");
-        } else if (index === selected && index !== correct) {
-          opt.classList.add("incorrect");
-        }
-      });
+        optionButton.parentElement?.querySelectorAll(".dialogue-option");
+      const correct = parseInt(optionButton.dataset.correct || "0");
+      const selected = parseInt(optionButton.dataset.optionIndex || "0");
+      const lineIndex = parseInt(optionButton.dataset.line || "0"); // Disable all options
+      if (options) {
+        options.forEach((opt, index) => {
+          const optElement = opt as HTMLButtonElement;
+          optElement.disabled = true;
+          if (index === correct) {
+            opt.classList.add("correct");
+          } else if (index === selected && index !== correct) {
+            opt.classList.add("incorrect");
+          }
+        });
+      }
 
       if (selected === correct) {
         this.correctChoices++;
@@ -584,7 +609,7 @@ const { scenario, dialogue, characters, id } = Astro.props;
       // Show explanation if available
       const explanation = optionButton
         .closest(".choice-bubble")
-        .querySelector(".option-explanation");
+        ?.querySelector(".option-explanation") as HTMLElement;
       if (explanation) {
         explanation.style.display = "block";
       }
@@ -594,8 +619,7 @@ const { scenario, dialogue, characters, id } = Astro.props;
         this.showNextButton();
       }, 2000);
     }
-
-    playDialogue(text, button) {
+    playDialogue(text: string, button: HTMLElement) {
       if ("speechSynthesis" in window) {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 0.9;
@@ -603,45 +627,53 @@ const { scenario, dialogue, characters, id } = Astro.props;
 
         const originalText = button.textContent;
         button.textContent = "🔊 Playing...";
-        button.disabled = true;
+        (button as HTMLButtonElement).disabled = true;
 
         utterance.onend = () => {
           button.textContent = originalText;
-          button.disabled = false;
+          (button as HTMLButtonElement).disabled = false;
         };
 
         speechSynthesis.speak(utterance);
       }
     }
-
     updateProgress() {
-      const progressFill = this.container.querySelector(".progress-fill");
-      const currentSpan = this.container.querySelector(".current-line");
-      const totalSpan = this.container.querySelector(".total-lines");
+      const progressFill = this.container.querySelector(
+        ".progress-fill"
+      ) as HTMLElement;
+      const currentSpan = this.container.querySelector(
+        ".current-line"
+      ) as HTMLElement;
+      const totalSpan = this.container.querySelector(
+        ".total-lines"
+      ) as HTMLElement;
 
       if (progressFill) {
         const percentage = (this.currentLine / this.totalLines) * 100;
         progressFill.style.width = `${percentage}%`;
       }
 
-      if (currentSpan) currentSpan.textContent = this.currentLine;
-      if (totalSpan) totalSpan.textContent = this.totalLines;
+      if (currentSpan) currentSpan.textContent = this.currentLine.toString();
+      if (totalSpan) totalSpan.textContent = this.totalLines.toString();
     }
 
     completeDialogue() {
-      const completion = this.container.querySelector(".dialogue-completion");
-      const correctSpan = document.getElementById("correct-choices");
-      const totalSpan = document.getElementById("total-choices");
+      const completion = this.container.querySelector(
+        ".dialogue-completion"
+      ) as HTMLElement;
+      const correctSpan = document.getElementById(
+        "correct-choices"
+      ) as HTMLElement;
+      const totalSpan = document.getElementById("total-choices") as HTMLElement;
 
       if (completion) {
         completion.style.display = "block";
         completion.scrollIntoView({ behavior: "smooth" });
       }
 
-      if (correctSpan) correctSpan.textContent = this.correctChoices;
-      if (totalSpan) totalSpan.textContent = this.totalChoices;
+      if (correctSpan) correctSpan.textContent = this.correctChoices.toString();
+      if (totalSpan) totalSpan.textContent = this.totalChoices.toString();
     }
-
     restart() {
       this.currentLine = 0;
       this.correctChoices = 0;
@@ -656,22 +688,35 @@ const { scenario, dialogue, characters, id } = Astro.props;
         // Reset options
         const options = line.querySelectorAll(".dialogue-option");
         options.forEach((opt) => {
-          opt.disabled = false;
+          const optElement = opt as HTMLButtonElement;
+          optElement.disabled = false;
           opt.classList.remove("correct", "incorrect");
         });
 
         // Hide explanations and choice bubbles
-        const explanation = line.querySelector(".option-explanation");
-        const choiceBubble = line.querySelector(".choice-bubble");
+        const explanation = line.querySelector(
+          ".option-explanation"
+        ) as HTMLElement;
+        const choiceBubble = line.querySelector(
+          ".choice-bubble"
+        ) as HTMLElement;
         if (explanation) explanation.style.display = "none";
         if (choiceBubble) choiceBubble.style.display = "none";
       });
 
       // Reset buttons
-      const startBtn = this.container.querySelector(".start-dialogue-btn");
-      const nextBtn = this.container.querySelector(".next-line-btn");
-      const repeatBtn = this.container.querySelector(".repeat-btn");
-      const completion = this.container.querySelector(".dialogue-completion");
+      const startBtn = this.container.querySelector(
+        ".start-dialogue-btn"
+      ) as HTMLElement;
+      const nextBtn = this.container.querySelector(
+        ".next-line-btn"
+      ) as HTMLElement;
+      const repeatBtn = this.container.querySelector(
+        ".repeat-btn"
+      ) as HTMLElement;
+      const completion = this.container.querySelector(
+        ".dialogue-completion"
+      ) as HTMLElement;
 
       if (startBtn) startBtn.style.display = "inline-block";
       if (nextBtn) nextBtn.style.display = "none";
@@ -681,11 +726,10 @@ const { scenario, dialogue, characters, id } = Astro.props;
       this.updateProgress();
     }
   }
-
   // Initialize all interactive dialogue components
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".interactive-dialogue").forEach((container) => {
-      new InteractiveDialogue(container);
+      new InteractiveDialogue(container as HTMLElement);
     });
   });
 </script>

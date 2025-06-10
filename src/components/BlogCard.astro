@@ -11,7 +11,11 @@ const { slug } = post;
 const { title, description, category, level, tags, readingTime } = post.data;
 ---
 
-<article class={`blog-card ${featured ? "featured" : ""}`}>
+<article
+  class={`blog-card ${featured ? "featured" : ""}`}
+  data-level={level}
+  data-category={category}
+>
   <div class="card-header">
     <div class="card-meta">
       <span class={`level-badge level-${level}`}>{level}</span>

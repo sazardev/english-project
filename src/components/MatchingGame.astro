@@ -269,44 +269,60 @@ const { words, title = "Match the Words", id } = Astro.props;
   document.addEventListener("DOMContentLoaded", function () {
     const matchingGames = document.querySelectorAll(".matching-game");
 
-    matchingGames.forEach((game) => {
-      const wordItems = game.querySelectorAll(".word-item");
-      const translationItems = game.querySelectorAll(".translation-item");
-      const scoreElement = game.querySelector(".score-value");
-      const totalElement = game.querySelector(".total-score");
-      const gameResult = game.querySelector(".game-result");
-      const examplesSection = game.querySelector(".examples-section");
-      const playAgainBtn = game.querySelector(".play-again-btn");
+    matchingGames.forEach((game: Element) => {
+      const wordItems = game.querySelectorAll(
+        ".word-item"
+      ) as NodeListOf<HTMLElement>;
+      const translationItems = game.querySelectorAll(
+        ".translation-item"
+      ) as NodeListOf<HTMLElement>;
+      const scoreElement = game.querySelector(
+        ".score-value"
+      ) as HTMLElement | null;
+      const totalElement = game.querySelector(
+        ".total-score"
+      ) as HTMLElement | null;
+      const gameResult = game.querySelector(
+        ".game-result"
+      ) as HTMLElement | null;
+      const examplesSection = game.querySelector(
+        ".examples-section"
+      ) as HTMLElement | null;
+      const playAgainBtn = game.querySelector(
+        ".play-again-btn"
+      ) as HTMLButtonElement | null;
 
-      let selectedWord = null;
-      let selectedTranslation = null;
-      let score = 0;
-      let totalPairs = parseInt(totalElement.textContent);
-
-      function resetGame() {
+      let selectedWord: HTMLElement | null = null;
+      let selectedTranslation: HTMLElement | null = null;
+      let score: number = 0;
+      let totalPairs: number = parseInt(totalElement?.textContent || "0");
+      function resetGame(): void {
         score = 0;
         selectedWord = null;
         selectedTranslation = null;
-        scoreElement.textContent = "0";
-        gameResult.style.display = "none";
-        examplesSection.style.display = "none";
+        if (scoreElement) scoreElement.textContent = "0";
+        if (gameResult) gameResult.style.display = "none";
+        if (examplesSection) examplesSection.style.display = "none";
 
-        wordItems.forEach((item) => {
+        wordItems.forEach((item: HTMLElement) => {
           item.classList.remove("selected", "matched", "disabled");
         });
 
-        translationItems.forEach((item) => {
+        translationItems.forEach((item: HTMLElement) => {
           item.classList.remove("selected", "matched", "disabled");
         });
 
         // Hide all examples
-        const examples = examplesSection.querySelectorAll(".example-item");
-        examples.forEach((example) => {
-          example.style.display = "none";
-        });
+        if (examplesSection) {
+          const examples = examplesSection.querySelectorAll(
+            ".example-item"
+          ) as NodeListOf<HTMLElement>;
+          examples.forEach((example: HTMLElement) => {
+            example.style.display = "none";
+          });
+        }
       }
-
-      function checkMatch() {
+      function checkMatch(): void {
         if (selectedWord && selectedTranslation) {
           const wordId = selectedWord.dataset.wordId;
           const translationId = selectedTranslation.dataset.translationId;
@@ -319,21 +335,23 @@ const { words, title = "Match the Words", id } = Astro.props;
             selectedTranslation.classList.remove("selected");
 
             score++;
-            scoreElement.textContent = score.toString();
+            if (scoreElement) scoreElement.textContent = score.toString();
 
             // Show example if available
-            const example = examplesSection.querySelector(
-              `[data-example-id="${wordId}"]`
-            );
-            if (example) {
-              examplesSection.style.display = "block";
-              example.style.display = "block";
+            if (examplesSection) {
+              const example = examplesSection.querySelector(
+                `[data-example-id="${wordId}"]`
+              ) as HTMLElement | null;
+              if (example) {
+                examplesSection.style.display = "block";
+                example.style.display = "block";
+              }
             }
 
             // Check if game is complete
             if (score === totalPairs) {
               setTimeout(() => {
-                gameResult.style.display = "block";
+                if (gameResult) gameResult.style.display = "block";
               }, 500);
             }
           } else {
@@ -346,13 +364,12 @@ const { words, title = "Match the Words", id } = Astro.props;
           selectedTranslation = null;
         }
       }
-
-      wordItems.forEach((item) => {
-        item.addEventListener("click", function () {
+      wordItems.forEach((item: HTMLElement) => {
+        item.addEventListener("click", function (this: HTMLElement) {
           if (this.classList.contains("matched")) return;
 
           // Clear previous word selection
-          wordItems.forEach((w) => w.classList.remove("selected"));
+          wordItems.forEach((w: HTMLElement) => w.classList.remove("selected"));
 
           selectedWord = this;
           this.classList.add("selected");
@@ -361,12 +378,14 @@ const { words, title = "Match the Words", id } = Astro.props;
         });
       });
 
-      translationItems.forEach((item) => {
-        item.addEventListener("click", function () {
+      translationItems.forEach((item: HTMLElement) => {
+        item.addEventListener("click", function (this: HTMLElement) {
           if (this.classList.contains("matched")) return;
 
           // Clear previous translation selection
-          translationItems.forEach((t) => t.classList.remove("selected"));
+          translationItems.forEach((t: HTMLElement) =>
+            t.classList.remove("selected")
+          );
 
           selectedTranslation = this;
           this.classList.add("selected");
@@ -375,7 +394,9 @@ const { words, title = "Match the Words", id } = Astro.props;
         });
       });
 
-      playAgainBtn.addEventListener("click", resetGame);
+      if (playAgainBtn) {
+        playAgainBtn.addEventListener("click", resetGame);
+      }
     });
   });
 </script>

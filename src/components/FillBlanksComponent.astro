@@ -285,27 +285,45 @@ blanks.forEach((blank, index) => {
     );
 
     fillBlanksComponents.forEach((component) => {
-      const selects = component.querySelectorAll(".blank-select");
-      const checkBtn = component.querySelector(".check-answers-btn");
-      const resetBtn = component.querySelector(".reset-btn");
-      const result = component.querySelector(".blanks-result");
-      const resultIcon = component.querySelector(".result-icon");
-      const resultText = component.querySelector(".result-text");
-      const correctCount = component.querySelector(".correct-count");
-      const totalCount = component.querySelector(".total-count");
-      const feedbackItems = component.querySelectorAll(".feedback-item");
+      const selects = component.querySelectorAll(
+        ".blank-select"
+      ) as NodeListOf<HTMLSelectElement>;
+      const checkBtn = component.querySelector(
+        ".check-answers-btn"
+      ) as HTMLButtonElement | null;
+      const resetBtn = component.querySelector(
+        ".reset-btn"
+      ) as HTMLButtonElement | null;
+      const result = component.querySelector(
+        ".blanks-result"
+      ) as HTMLElement | null;
+      const resultIcon = component.querySelector(
+        ".result-icon"
+      ) as HTMLElement | null;
+      const resultText = component.querySelector(
+        ".result-text"
+      ) as HTMLElement | null;
+      const correctCount = component.querySelector(
+        ".correct-count"
+      ) as HTMLElement | null;
+      const totalCount = component.querySelector(
+        ".total-count"
+      ) as HTMLElement | null;
+      const feedbackItems = component.querySelectorAll(
+        ".feedback-item"
+      ) as NodeListOf<HTMLElement>;
 
-      let checked = false;
+      let checked: boolean = false;
 
-      function checkAnswers() {
+      function checkAnswers(): void {
         if (checked) return;
 
         checked = true;
-        let correct = 0;
+        let correct: number = 0;
 
-        selects.forEach((select, index) => {
+        selects.forEach((select: HTMLSelectElement, index: number) => {
           const selectedValue = select.value;
-          const correctValue = select.dataset.correct;
+          const correctValue = select.dataset.correct || "";
 
           select.classList.add("disabled");
           select.disabled = true;
@@ -317,9 +335,15 @@ blanks.forEach((blank, index) => {
             // Show positive feedback
             const feedback = feedbackItems[index];
             if (feedback) {
-              feedback.style.display = "flex";
-              feedback.querySelector(".feedback-icon").textContent = "✅";
-              feedback.querySelector(".feedback-text").textContent = "Correct!";
+              (feedback as HTMLElement).style.display = "flex";
+              const feedbackIcon = feedback.querySelector(
+                ".feedback-icon"
+              ) as HTMLElement;
+              const feedbackText = feedback.querySelector(
+                ".feedback-text"
+              ) as HTMLElement;
+              if (feedbackIcon) feedbackIcon.textContent = "✅";
+              if (feedbackText) feedbackText.textContent = "Correct!";
             }
           } else {
             select.classList.add("incorrect");
@@ -327,60 +351,76 @@ blanks.forEach((blank, index) => {
             // Show corrective feedback
             const feedback = feedbackItems[index];
             if (feedback) {
-              feedback.style.display = "flex";
-              feedback.querySelector(".feedback-icon").textContent = "❌";
-              feedback.querySelector(".feedback-text").textContent =
-                `Correct answer: ${correctValue}`;
+              (feedback as HTMLElement).style.display = "flex";
+              const feedbackIcon = feedback.querySelector(
+                ".feedback-icon"
+              ) as HTMLElement;
+              const feedbackText = feedback.querySelector(
+                ".feedback-text"
+              ) as HTMLElement;
+              if (feedbackIcon) feedbackIcon.textContent = "❌";
+              if (feedbackText)
+                feedbackText.textContent = `Correct answer: ${correctValue}`;
             }
           }
         });
 
         // Update score
-        correctCount.textContent = correct.toString();
+        if (correctCount) {
+          correctCount.textContent = correct.toString();
+        }
 
         // Show result
-        result.style.display = "block";
+        if (result) {
+          result.style.display = "block";
+        }
 
         if (correct === selects.length) {
-          resultIcon.textContent = "🎉";
-          resultText.textContent = "Perfect! All answers are correct!";
-          resultText.style.color = "#22c55e";
+          if (resultIcon) resultIcon.textContent = "🎉";
+          if (resultText) {
+            resultText.textContent = "Perfect! All answers are correct!";
+            resultText.style.color = "#22c55e";
+          }
         } else if (correct >= selects.length * 0.7) {
-          resultIcon.textContent = "👍";
-          resultText.textContent = "Good job! Most answers are correct.";
-          resultText.style.color = "#3b82f6";
+          if (resultIcon) resultIcon.textContent = "👍";
+          if (resultText) {
+            resultText.textContent = "Good job! Most answers are correct.";
+            resultText.style.color = "#3b82f6";
+          }
         } else {
-          resultIcon.textContent = "💪";
-          resultText.textContent = "Keep practicing! You can do better.";
-          resultText.style.color = "#f59e0b";
+          if (resultIcon) resultIcon.textContent = "💪";
+          if (resultText) {
+            resultText.textContent = "Keep practicing! You can do better.";
+            resultText.style.color = "#f59e0b";
+          }
         }
 
         // Show reset button
-        checkBtn.style.display = "none";
-        resetBtn.style.display = "inline-block";
+        if (checkBtn) checkBtn.style.display = "none";
+        if (resetBtn) resetBtn.style.display = "inline-block";
       }
 
-      function resetExercise() {
+      function resetExercise(): void {
         checked = false;
 
-        selects.forEach((select) => {
+        selects.forEach((select: HTMLSelectElement) => {
           select.value = "";
           select.disabled = false;
           select.classList.remove("disabled", "correct", "incorrect");
         });
 
-        feedbackItems.forEach((feedback) => {
+        feedbackItems.forEach((feedback: HTMLElement) => {
           feedback.style.display = "none";
         });
 
-        result.style.display = "none";
-        checkBtn.style.display = "inline-block";
-        resetBtn.style.display = "none";
-        correctCount.textContent = "0";
+        if (result) result.style.display = "none";
+        if (checkBtn) checkBtn.style.display = "inline-block";
+        if (resetBtn) resetBtn.style.display = "none";
+        if (correctCount) correctCount.textContent = "0";
       }
 
-      checkBtn.addEventListener("click", checkAnswers);
-      resetBtn.addEventListener("click", resetExercise);
+      if (checkBtn) checkBtn.addEventListener("click", checkAnswers);
+      if (resetBtn) resetBtn.addEventListener("click", resetExercise);
     });
   });
 </script>

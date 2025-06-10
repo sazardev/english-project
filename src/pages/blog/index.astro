@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 
 const allPosts = await getCollection("blog");
 
-// Sort posts by publish date (newest first)
+// Sort all posts by publish date (newest first)
 const sortedPosts = allPosts.sort((a, b) => {
   const dateA = a.data.publishDate || new Date(0);
   const dateB = b.data.publishDate || new Date(0);
@@ -64,33 +64,48 @@ const postsByLevel = {
       </div>
     </div>
   </div>
-
   <!-- Filters -->
   <section class="filters">
     <div class="container">
       <div class="filter-section">
         <h3>Filter by Level</h3>
         <div class="filter-grid">
-          <a href="/blog" class="filter-item active">
+          <button
+            class="filter-item active"
+            data-filter-type="level"
+            data-filter-value=""
+          >
             <span class="filter-icon">🌐</span>
             <span class="filter-name">All Levels</span>
             <span class="filter-count">{allPosts.length}</span>
-          </a>
-          <a href="/blog?level=beginner" class="filter-item beginner">
+          </button>
+          <button
+            class="filter-item beginner"
+            data-filter-type="level"
+            data-filter-value="beginner"
+          >
             <span class="filter-icon">🌱</span>
             <span class="filter-name">Beginner</span>
             <span class="filter-count">{postsByLevel.beginner.length}</span>
-          </a>
-          <a href="/blog?level=intermediate" class="filter-item intermediate">
+          </button>
+          <button
+            class="filter-item intermediate"
+            data-filter-type="level"
+            data-filter-value="intermediate"
+          >
             <span class="filter-icon">🚀</span>
             <span class="filter-name">Intermediate</span>
             <span class="filter-count">{postsByLevel.intermediate.length}</span>
-          </a>
-          <a href="/blog?level=advanced" class="filter-item advanced">
+          </button>
+          <button
+            class="filter-item advanced"
+            data-filter-type="level"
+            data-filter-value="advanced"
+          >
             <span class="filter-icon">🎯</span>
             <span class="filter-name">Advanced</span>
             <span class="filter-count">{postsByLevel.advanced.length}</span>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -99,7 +114,11 @@ const postsByLevel = {
         <div class="filter-grid category-filters">
           {
             categories.map((category) => (
-              <a href={`/blog?category=${category}`} class="filter-item">
+              <button
+                class="filter-item"
+                data-filter-type="category"
+                data-filter-value={category}
+              >
                 <span class="filter-icon">
                   {category === "grammar" && "📝"}
                   {category === "vocabulary" && "📚"}
@@ -116,40 +135,46 @@ const postsByLevel = {
                 <span class="filter-count">
                   {postsByCategory[category].length}
                 </span>
-              </a>
+              </button>
             ))
           }
         </div>
       </div>
+
+      <div class="active-filters" style="display: none;">
+        <h4>Active Filters:</h4>
+        <div class="filter-tags">
+          <button class="clear-all-filters">Clear All</button>
+        </div>
+      </div>
     </div>
   </section>
-
   <!-- Posts Grid -->
   <section class="posts-section">
     <div class="container">
       <div class="posts-header">
-        <h2>All Lessons ({sortedPosts.length})</h2>
-        <p class="text-light">Sorted by newest first</p>
+        <h2 id="posts-title">All Lessons ({sortedPosts.length})</h2>
+        <p class="text-light" id="posts-subtitle">Sorted by newest first</p>
       </div>
 
-      <div class="posts-grid">
+      <div class="posts-grid" id="posts-grid">
         {sortedPosts.map((post) => <BlogCard post={post} />)}
       </div>
 
-      {
-        sortedPosts.length === 0 && (
-          <div class="empty-state">
-            <h3>No lessons found</h3>
-            <p>We're working on adding more content. Check back soon!</p>
-            <a
-              href="https://github.com/sazardev/english-project"
-              class="btn btn-primary"
-            >
-              Contribute a Lesson
-            </a>
-          </div>
-        )
-      }
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <h3>No lessons found for this filter</h3>
+        <p>
+          Try adjusting your filters or <button class="clear-all-filters"
+            >view all lessons</button
+          >.
+        </p>
+        <a
+          href="https://github.com/sazardev/english-project"
+          class="btn btn-primary"
+        >
+          Contribute a Lesson
+        </a>
+      </div>
     </div>
   </section>
 
@@ -312,10 +337,81 @@ const postsByLevel = {
     font-weight: 600;
     color: var(--color-text-light);
   }
-
   .filter-item.active .filter-count {
     background: rgba(255, 255, 255, 0.2);
     color: white;
+  }
+
+  .active-filters {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .active-filters h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .remove-filter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 1;
+    transition: background-color 0.2s ease;
+  }
+
+  .remove-filter:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    text-decoration: none;
+  }
+
+  .clear-all-filters {
+    padding: 0.5rem 1rem;
+    background: var(--color-text-light);
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+
+  .clear-all-filters:hover {
+    background: var(--color-text);
+    color: white;
+    text-decoration: none;
   }
 
   .posts-section {
@@ -407,32 +503,236 @@ const postsByLevel = {
   }
 </style>
 
-<script>
-  // Client-side filtering functionality
+<script is:inline>
+  // Blog filtering functionality
   document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const levelParam = urlParams.get("level");
-    const categoryParam = urlParams.get("category");
+    let currentFilters = {
+      level: "",
+      category: "",
+    };
 
-    // Update active filter states based on URL parameters
-    const filterItems = document.querySelectorAll(".filter-item");
-    filterItems.forEach((item) => {
-      const href = item.getAttribute("href");
-      if (href) {
-        const url = new URL(href, window.location.origin);
-        const itemLevel = url.searchParams.get("level");
-        const itemCategory = url.searchParams.get("category");
+    function collectPosts() {
+      const postCards = document.querySelectorAll(".posts-grid .blog-card");
+      return Array.from(postCards).map((card) => ({
+        element: card,
+        level: card.dataset.level || "",
+        category: card.dataset.category || "",
+        title: card.querySelector("h3")?.textContent || "",
+      }));
+    }
 
-        if (levelParam && itemLevel === levelParam) {
-          item.classList.add("active");
-        } else if (categoryParam && itemCategory === categoryParam) {
-          item.classList.add("active");
-        } else if (!levelParam && !categoryParam && href === "/blog") {
-          item.classList.add("active");
-        } else {
-          item.classList.remove("active");
+    function applyFilter(filterType, filterValue) {
+      currentFilters[filterType] = filterValue;
+
+      // Update URL without page reload
+      const params = new URLSearchParams();
+      if (currentFilters.level) {
+        params.set("level", currentFilters.level);
+      }
+      if (currentFilters.category) {
+        params.set("category", currentFilters.category);
+      }
+
+      const newUrl = params.toString()
+        ? `${window.location.pathname}?${params.toString()}`
+        : window.location.pathname;
+
+      window.history.replaceState({}, "", newUrl);
+
+      updateFilterButtons();
+      filterPosts();
+      updateActiveFilters();
+      updatePostsHeader();
+    }
+
+    function clearAllFilters() {
+      currentFilters = { level: "", category: "" };
+      window.history.replaceState({}, "", window.location.pathname);
+
+      updateFilterButtons();
+      filterPosts();
+      updateActiveFilters();
+      updatePostsHeader();
+    }
+
+    function updateFilterButtons() {
+      // Update level filter buttons
+      document
+        .querySelectorAll('[data-filter-type="level"]')
+        .forEach((button) => {
+          const isActive = button.dataset.filterValue === currentFilters.level;
+          button.classList.toggle("active", isActive);
+        });
+
+      // Update category filter buttons
+      document
+        .querySelectorAll('[data-filter-type="category"]')
+        .forEach((button) => {
+          const isActive =
+            button.dataset.filterValue === currentFilters.category;
+          button.classList.toggle("active", isActive);
+        });
+
+      // Special case for "All Levels" button
+      const allLevelsButton = document.querySelector(
+        '[data-filter-type="level"][data-filter-value=""]'
+      );
+      if (allLevelsButton) {
+        const isActive = !currentFilters.level && !currentFilters.category;
+        allLevelsButton.classList.toggle("active", isActive);
+      }
+    }
+
+    function filterPosts() {
+      const allPosts = collectPosts();
+      let visibleCount = 0;
+
+      allPosts.forEach((post) => {
+        const matchesLevel =
+          !currentFilters.level || post.level === currentFilters.level;
+        const matchesCategory =
+          !currentFilters.category || post.category === currentFilters.category;
+        const isVisible = matchesLevel && matchesCategory;
+
+        post.element.style.display = isVisible ? "block" : "none";
+        if (isVisible) visibleCount++;
+      });
+
+      // Show/hide empty state
+      const emptyState = document.getElementById("empty-state");
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? "block" : "none";
+      }
+
+      // Hide posts grid if no results
+      const postsGrid = document.getElementById("posts-grid");
+      if (postsGrid) {
+        postsGrid.style.display = visibleCount === 0 ? "none" : "grid";
+      }
+    }
+
+    function updateActiveFilters() {
+      const activeFiltersSection = document.querySelector(".active-filters");
+      const filterTags = document.querySelector(".filter-tags");
+
+      if (!activeFiltersSection || !filterTags) return;
+
+      // Clear existing filter tags (except clear all button)
+      const existingTags = filterTags.querySelectorAll(".filter-tag");
+      existingTags.forEach((tag) => tag.remove());
+
+      const hasActiveFilters = currentFilters.level || currentFilters.category;
+      activeFiltersSection.style.display = hasActiveFilters ? "block" : "none";
+
+      if (hasActiveFilters) {
+        const clearButton = filterTags.querySelector(".clear-all-filters");
+
+        if (currentFilters.level) {
+          const levelTag = createFilterTag(
+            "Level",
+            currentFilters.level,
+            "level"
+          );
+          filterTags.insertBefore(levelTag, clearButton);
+        }
+
+        if (currentFilters.category) {
+          const categoryTag = createFilterTag(
+            "Category",
+            currentFilters.category,
+            "category"
+          );
+          filterTags.insertBefore(categoryTag, clearButton);
         }
       }
+    }
+
+    function createFilterTag(label, value, filterType) {
+      const tag = document.createElement("span");
+      tag.className = "filter-tag";
+      tag.innerHTML = `
+        ${label}: ${value.charAt(0).toUpperCase() + value.slice(1)}
+        <button class="remove-filter" data-filter-type="${filterType}">×</button>
+      `;
+
+      // Add click event to remove button
+      const removeButton = tag.querySelector(".remove-filter");
+      if (removeButton) {
+        removeButton.addEventListener("click", () => {
+          applyFilter(filterType, "");
+        });
+      }
+
+      return tag;
+    }
+
+    function updatePostsHeader() {
+      const title = document.getElementById("posts-title");
+      const subtitle = document.getElementById("posts-subtitle");
+
+      if (!title || !subtitle) return;
+
+      const allPosts = collectPosts();
+      const visiblePosts = allPosts.filter((post) => {
+        const matchesLevel =
+          !currentFilters.level || post.level === currentFilters.level;
+        const matchesCategory =
+          !currentFilters.category || post.category === currentFilters.category;
+        return matchesLevel && matchesCategory;
+      });
+
+      const hasFilters = currentFilters.level || currentFilters.category;
+
+      if (hasFilters) {
+        let titleText = "";
+        if (currentFilters.level) {
+          titleText += `${currentFilters.level.charAt(0).toUpperCase() + currentFilters.level.slice(1)} Level `;
+        }
+        if (currentFilters.category) {
+          titleText += `${currentFilters.category.charAt(0).toUpperCase() + currentFilters.category.slice(1)} `;
+        }
+        titleText += `Lessons (${visiblePosts.length})`;
+
+        title.textContent = titleText;
+        subtitle.textContent =
+          "Showing filtered results • Sorted by newest first";
+      } else {
+        title.textContent = `All Lessons (${visiblePosts.length})`;
+        subtitle.textContent = "Sorted by newest first";
+      }
+    }
+
+    function checkUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const level = params.get("level");
+      const category = params.get("category");
+
+      if (level) {
+        applyFilter("level", level);
+      }
+      if (category) {
+        applyFilter("category", category);
+      }
+    }
+
+    // Bind events
+    document.querySelectorAll("[data-filter-type]").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const filterType = button.dataset.filterType;
+        const filterValue = button.dataset.filterValue;
+        applyFilter(filterType, filterValue);
+      });
     });
+
+    document.querySelectorAll(".clear-all-filters").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        clearAllFilters();
+      });
+    });
+
+    // Initialize
+    checkUrlParams();
   });
 </script>
