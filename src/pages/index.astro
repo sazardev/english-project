@@ -38,14 +38,15 @@ const postsByCategory = allPosts.reduce(
   description="A collaborative platform for English learners with resources, lessons, and community-driven content organized by levels and categories."
 >
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero" data-parallax="0.3">
+    <div class="hero-background"></div>
     <div class="hero-background">
       <div class="hero-gradient"></div>
       <div class="hero-patterns"></div>
     </div>
     <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge">
+      <div class="hero-content animate-fade-in">
+        <div class="hero-badge animate-bounce-in">
           <span class="badge-icon">✨</span>
           <span>100% Open Source • Always Free</span>
         </div>
@@ -58,22 +59,25 @@ const postsByCategory = allPosts.reduce(
           Access premium-quality resources, interactive exercises, and
           personalized learning paths—completely free.
         </p>
-        <div class="hero-stats">
-          <div class="stat-item">
+        <div class="hero-stats stagger-children">
+          <div class="stat-item animate-bounce-in hover-lift">
             <span class="stat-number">{allPosts.length}+</span>
             <span class="stat-label">Lessons</span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item animate-bounce-in hover-lift">
             <span class="stat-number">8</span>
             <span class="stat-label">Categories</span>
           </div>
-          <div class="stat-item">
+          <div class="stat-item animate-bounce-in hover-lift">
             <span class="stat-number">3</span>
             <span class="stat-label">Levels</span>
           </div>
         </div>
-        <div class="hero-actions">
-          <a href="/blog" class="cta-primary cta-enhanced">
+        <div class="hero-actions stagger-children">
+          <a
+            href="/blog"
+            class="cta-primary cta-enhanced hover-lift button-ripple"
+          >
             <span class="cta-icon">🚀</span>
             <span class="cta-content">
               <span class="cta-title">Start Learning Now</span>
@@ -82,7 +86,10 @@ const postsByCategory = allPosts.reduce(
             <span class="cta-arrow">→</span>
             <div class="cta-glow"></div>
           </a>
-          <a href="#levels" class="cta-secondary cta-enhanced">
+          <a
+            href="#levels"
+            class="cta-secondary cta-enhanced hover-lift button-ripple"
+          >
             <span class="cta-icon">📊</span>
             <span class="cta-content">
               <span class="cta-title">Choose Your Level</span>
@@ -105,52 +112,54 @@ const postsByCategory = allPosts.reduce(
   </section>
 
   <!-- Features Section -->
-  <section class="features">
+  <section class="features scroll-reveal">
     <div class="container">
-      <h2 class="text-center mb-8">Why Choose English Project?</h2>
-      <div class="grid grid-3">
-        <div class="feature-card">
-          <div class="feature-icon">📚</div>
+      <h2 class="text-center mb-8 animate-fade-in-down hover-glow">
+        Why Choose English Project?
+      </h2>
+      <div class="grid grid-3 stagger-children">
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">📚</div>
           <h3>Organized by Levels</h3>
           <p>
             Content structured from beginner to advanced levels, making it easy
             to find materials that match your current proficiency.
           </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🤝</div>
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">🤝</div>
           <h3>Community Driven</h3>
           <p>
             Anyone can contribute! Submit new lessons, exercises, and resources
             through GitHub pull requests.
           </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🏷️</div>
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">🏷️</div>
           <h3>Categorized Content</h3>
           <p>
             Find exactly what you need with content organized by grammar,
             vocabulary, speaking, listening, and more.
           </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">🌐</div>
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">🌐</div>
           <h3>Always Free</h3>
           <p>
             100% open source and free forever. No subscriptions, no paywalls,
             just quality English learning resources.
           </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📱</div>
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">📱</div>
           <h3>Mobile Friendly</h3>
           <p>
             Learn anywhere, anytime. Our platform works seamlessly on all
             devices and screen sizes.
           </p>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
+        <div class="feature-card hover-lift">
+          <div class="feature-icon hover-float">⚡</div>
           <h3>Fast & Modern</h3>
           <p>
             Built with modern web technologies for a lightning-fast, smooth
@@ -162,14 +171,16 @@ const postsByCategory = allPosts.reduce(
   </section>
 
   <!-- Learning Levels Section -->
-  <section class="levels" id="levels">
+  <section class="levels scroll-reveal" id="levels">
     <div class="container">
-      <h2 class="text-center mb-8">Choose Your Level</h2>
-      <div class="grid grid-3">
-        <div class="level-card beginner">
+      <h2 class="text-center mb-8 animate-fade-in-down hover-glow">
+        Choose Your Level
+      </h2>
+      <div class="grid grid-3 stagger-children">
+        <div class="level-card beginner hover-lift">
           <div class="level-header">
-            <h3>🌱 Beginner</h3>
-            <span class="level-count"
+            <h3 class="hover-float">🌱 Beginner</h3>
+            <span class="level-count animate-bounce-in"
               >{postsByLevel.beginner.length} lessons</span
             >
           </div>
@@ -183,13 +194,16 @@ const postsByCategory = allPosts.reduce(
             <li>Common phrases</li>
             <li>Pronunciation basics</li>
           </ul>
-          <a href="/blog?level=beginner" class="btn btn-primary">Start Here</a>
+          <a
+            href="/blog?level=beginner"
+            class="btn btn-primary hover-lift button-ripple">Start Here</a
+          >
         </div>
 
-        <div class="level-card intermediate">
+        <div class="level-card intermediate hover-lift">
           <div class="level-header">
-            <h3>🚀 Intermediate</h3>
-            <span class="level-count"
+            <h3 class="hover-float">🚀 Intermediate</h3>
+            <span class="level-count animate-bounce-in"
               >{postsByLevel.intermediate.length} lessons</span
             >
           </div>
@@ -203,15 +217,17 @@ const postsByCategory = allPosts.reduce(
             <li>Business vocabulary</li>
             <li>Conversation skills</li>
           </ul>
-          <a href="/blog?level=intermediate" class="btn btn-primary"
+          <a
+            href="/blog?level=intermediate"
+            class="btn btn-primary hover-lift button-ripple"
             >Continue Learning</a
           >
         </div>
 
-        <div class="level-card advanced">
+        <div class="level-card advanced hover-lift">
           <div class="level-header">
-            <h3>🎯 Advanced</h3>
-            <span class="level-count"
+            <h3 class="hover-float">🎯 Advanced</h3>
+            <span class="level-count animate-bounce-in"
               >{postsByLevel.advanced.length} lessons</span
             >
           </div>
@@ -225,7 +241,9 @@ const postsByCategory = allPosts.reduce(
             <li>Academic writing</li>
             <li>Cultural nuances</li>
           </ul>
-          <a href="/blog?level=advanced" class="btn btn-primary"
+          <a
+            href="/blog?level=advanced"
+            class="btn btn-primary hover-lift button-ripple"
             >Perfect Your English</a
           >
         </div>
@@ -234,14 +252,19 @@ const postsByCategory = allPosts.reduce(
   </section>
 
   <!-- Categories Section -->
-  <section class="categories">
+  <section class="categories scroll-reveal">
     <div class="container">
-      <h2 class="text-center mb-8">Learn by Category</h2>
-      <div class="grid grid-4">
+      <h2 class="text-center mb-8 animate-fade-in-down hover-glow">
+        Learn by Category
+      </h2>
+      <div class="grid grid-4 stagger-children">
         {
           Object.entries(postsByCategory).map(([category, posts]) => (
-            <a href={`/blog?category=${category}`} class="category-card">
-              <div class="category-icon">
+            <a
+              href={`/blog?category=${category}`}
+              class="category-card hover-lift button-ripple"
+            >
+              <div class="category-icon hover-float">
                 {category === "grammar" && "📝"}
                 {category === "vocabulary" && "📚"}
                 {category === "speaking" && "🗣️"}
@@ -252,7 +275,9 @@ const postsByCategory = allPosts.reduce(
                 {category === "culture" && "🌍"}
               </div>
               <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
-              <span class="category-count">{posts.length} lessons</span>
+              <span class="category-count animate-bounce-in">
+                {posts.length} lessons
+              </span>
             </a>
           ))
         }
@@ -277,32 +302,40 @@ const postsByCategory = allPosts.reduce(
   }
 
   <!-- Recent Posts Section -->
-  <section class="recent-posts">
+  <section class="recent-posts scroll-reveal">
     <div class="container">
-      <h2 class="text-center mb-8">Latest Lessons</h2>
-      <div class="grid grid-3">
+      <h2 class="text-center mb-8 animate-fade-in-down hover-glow">
+        Latest Lessons
+      </h2>
+      <div class="grid grid-3 stagger-children">
         {recentPosts.map((post) => <BlogCard post={post} />)}
       </div>
       <div class="text-center mt-8">
-        <a href="/blog" class="btn btn-secondary">View All Lessons</a>
+        <a href="/blog" class="btn btn-secondary hover-lift button-ripple"
+          >View All Lessons</a
+        >
       </div>
     </div>
   </section>
 
   <!-- CTA Section -->
-  <section class="cta">
+  <section class="cta scroll-reveal">
     <div class="container text-center">
-      <h2>Ready to Start Your English Journey?</h2>
-      <p class="text-lg mb-6">
+      <h2 class="animate-fade-in-down hover-glow">
+        Ready to Start Your English Journey?
+      </h2>
+      <p class="text-lg mb-6 animate-fade-in">
         Join our community of learners and contributors. Start learning today or
         help others by contributing new content.
       </p>
-      <div class="cta-actions">
-        <a href="/blog" class="btn btn-primary">Start Learning Now</a>
+      <div class="cta-actions stagger-children">
+        <a href="/blog" class="btn btn-primary hover-lift button-ripple"
+          >Start Learning Now</a
+        >
         <a
           href="https://github.com/sazardev/english-project"
           target="_blank"
-          class="btn btn-secondary"
+          class="btn btn-secondary hover-lift button-ripple"
         >
           Contribute on GitHub
         </a>

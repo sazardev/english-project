@@ -80,10 +80,10 @@ const levelInfo = {
   title="Learning Levels - English Project"
   description="Choose your English learning path based on your current skill level. From beginner basics to advanced proficiency, we have lessons for every stage."
 >
-  <div class="levels-header">
+  <div class="levels-header scroll-reveal">
     <div class="container">
-      <h1>Choose Your Learning Level</h1>
-      <p class="levels-description">
+      <h1 class="animate-fade-in-down">Choose Your Learning Level</h1>
+      <p class="levels-description animate-fade-in">
         Our curriculum is carefully structured to guide you through your English
         learning journey. Start at your current level and progress at your own
         pace with our comprehensive lessons.
@@ -97,30 +97,34 @@ const levelInfo = {
         Object.entries(levelInfo).map(([level, info]) => {
           const posts = postsByLevel[level as keyof typeof postsByLevel];
           return (
-            <section class={`level-section ${level}`} id={level}>
-              <div class="level-overview">
+            <section class={`level-section ${level} scroll-reveal`} id={level}>
+              <div class="level-overview animate-fade-in">
+                {" "}
                 <div class="level-header">
-                  <div class="level-title">
-                    <span class="level-icon">{info.icon}</span>
+                  <div class="level-title animate-fade-in-down">
+                    <span class="level-icon hover-float">{info.icon}</span>
                     <div>
-                      <h2>{info.title}</h2>
-                      <span class="post-count">
+                      <h2 class="hover-glow">{info.title}</h2>
+                      <span class="post-count animate-bounce-in">
                         ({posts.length} lessons available)
                       </span>
                     </div>
                   </div>
                   <div class="level-actions">
-                    <a href={`/blog?level=${level}`} class="btn btn-primary">
+                    <a
+                      href={`/blog?level=${level}`}
+                      class="btn btn-primary hover-lift button-ripple"
+                    >
                       Start Learning
                     </a>
                   </div>
                 </div>
-
-                <p class="level-description">{info.description}</p>
-
-                <div class="level-details">
+                <p class="level-description animate-fade-in">
+                  {info.description}
+                </p>
+                <div class="level-details stagger-children">
                   <div class="level-info">
-                    <div class="info-item">
+                    <div class="info-item animate-fade-in hover-lift-subtle">
                       <h4>📋 What You'll Learn</h4>
                       <ul class="topics-list">
                         {info.topics.map((topic) => (
@@ -129,12 +133,12 @@ const levelInfo = {
                       </ul>
                     </div>
 
-                    <div class="info-item">
+                    <div class="info-item animate-fade-in hover-lift-subtle">
                       <h4>🎯 Prerequisites</h4>
                       <p>{info.prerequisites}</p>
                     </div>
 
-                    <div class="info-item">
+                    <div class="info-item animate-fade-in hover-lift-subtle">
                       <h4>⏱️ Estimated Duration</h4>
                       <p>{info.duration}</p>
                     </div>
@@ -148,20 +152,19 @@ const levelInfo = {
                   <a href={`/blog?level=${level}`} class="view-all-link">
                     View All {info.title} Lessons →
                   </a>
-                </div>
-
+                </div>{" "}
                 {posts.length > 0 ? (
-                  <div class="posts-grid">
+                  <div class="posts-grid stagger-children">
                     {posts.slice(0, 3).map((post) => (
                       <BlogCard post={post} />
                     ))}
                   </div>
                 ) : (
-                  <div class="empty-level">
+                  <div class="empty-level animate-fade-in">
                     <p>No lessons available for this level yet.</p>
                     <a
                       href="https://github.com/sazardev/english-project"
-                      class="btn btn-secondary"
+                      class="btn btn-secondary hover-lift button-ripple"
                     >
                       Contribute the First Lesson
                     </a>

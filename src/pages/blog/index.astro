@@ -38,17 +38,17 @@ const postsByLevel = {
   title="All Lessons - English Project"
   description="Browse all English learning resources organized by level and category. Find grammar, vocabulary, speaking, and listening lessons."
 >
-  <div class="blog-header">
+  <div class="blog-header scroll-reveal">
     <div class="container">
-      <h1>English Learning Resources</h1>
-      <p class="blog-description">
+      <h1 class="animate-fade-in-down">English Learning Resources</h1>
+      <p class="blog-description animate-fade-in">
         Discover comprehensive English lessons organized by skill level and
         learning category. All content is community-contributed and completely
         free.
       </p>
 
       <!-- Stats -->
-      <div class="stats">
+      <div class="stats stagger-children">
         <div class="stat">
           <span class="stat-number">{allPosts.length}</span>
           <span class="stat-label">Total Lessons</span>
@@ -65,13 +65,13 @@ const postsByLevel = {
     </div>
   </div>
   <!-- Filters -->
-  <section class="filters">
+  <section class="filters scroll-reveal">
     <div class="container">
       <div class="filter-section">
-        <h3>Filter by Level</h3>
-        <div class="filter-grid">
+        <h3 class="animate-fade-in">Filter by Level</h3>
+        <div class="filter-grid stagger-children">
           <button
-            class="filter-item active"
+            class="filter-item active hover-lift button-ripple"
             data-filter-type="level"
             data-filter-value=""
           >
@@ -80,7 +80,7 @@ const postsByLevel = {
             <span class="filter-count">{allPosts.length}</span>
           </button>
           <button
-            class="filter-item beginner"
+            class="filter-item beginner hover-lift button-ripple"
             data-filter-type="level"
             data-filter-value="beginner"
           >
@@ -89,7 +89,7 @@ const postsByLevel = {
             <span class="filter-count">{postsByLevel.beginner.length}</span>
           </button>
           <button
-            class="filter-item intermediate"
+            class="filter-item intermediate hover-lift button-ripple"
             data-filter-type="level"
             data-filter-value="intermediate"
           >
@@ -98,7 +98,7 @@ const postsByLevel = {
             <span class="filter-count">{postsByLevel.intermediate.length}</span>
           </button>
           <button
-            class="filter-item advanced"
+            class="filter-item advanced hover-lift button-ripple"
             data-filter-type="level"
             data-filter-value="advanced"
           >
@@ -110,12 +110,12 @@ const postsByLevel = {
       </div>
 
       <div class="filter-section">
-        <h3>Filter by Category</h3>
-        <div class="filter-grid category-filters">
+        <h3 class="animate-fade-in">Filter by Category</h3>
+        <div class="filter-grid category-filters stagger-children">
           {
             categories.map((category) => (
               <button
-                class="filter-item"
+                class="filter-item hover-lift button-ripple"
                 data-filter-type="category"
                 data-filter-value={category}
               >
@@ -141,10 +141,12 @@ const postsByLevel = {
         </div>
       </div>
 
-      <div class="active-filters" style="display: none;">
+      <div class="active-filters animate-fade-in" style="display: none;">
         <h4>Active Filters:</h4>
         <div class="filter-tags">
-          <button class="clear-all-filters">Clear All</button>
+          <button class="clear-all-filters btn btn-outline hover-lift"
+            >Clear All</button
+          >
         </div>
       </div>
     </div>
@@ -172,20 +174,26 @@ const postsByLevel = {
         </div>
       </div>
 
-      <div class="posts-grid" id="posts-grid">
+      <div class="posts-grid scroll-reveal stagger-children" id="posts-grid">
         {sortedPosts.map((post) => <BlogCard post={post} />)}
       </div>
 
-      <div class="empty-state" id="empty-state" style="display: none;">
+      <div
+        class="empty-state animate-fade-in"
+        id="empty-state"
+        style="display: none;"
+      >
         <div class="empty-state-content">
-          <div class="empty-state-icon">🔍</div>
-          <h3>No lessons found for this filter</h3>
-          <p>
+          <div class="empty-state-icon animate-bounce-in">🔍</div>
+          <h3 class="animate-fade-in-down">No lessons found for this filter</h3>
+          <p class="animate-fade-in">
             We couldn't find any lessons matching your current filters. Try
             adjusting your criteria or explore all available content.
           </p>
           <div class="empty-state-actions">
-            <button class="btn btn-secondary clear-all-filters">
+            <button
+              class="btn btn-secondary clear-all-filters hover-lift button-ripple"
+            >
               <span class="btn-icon">🔄</span>
               View All Lessons
             </button>

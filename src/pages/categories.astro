@@ -73,10 +73,10 @@ const categoryInfo = {
   title="Categories - English Project"
   description="Browse English learning content organized by category. Find grammar, vocabulary, speaking, listening, writing, reading, pronunciation, and culture lessons."
 >
-  <div class="categories-header">
+  <div class="categories-header scroll-reveal">
     <div class="container">
-      <h1>Learning Categories</h1>
-      <p class="categories-description">
+      <h1 class="animate-fade-in-down">Learning Categories</h1>
+      <p class="categories-description animate-fade-in">
         Explore our comprehensive collection of English learning materials
         organized by skill area. Each category contains lessons designed to help
         you master different aspects of the English language.
@@ -88,38 +88,46 @@ const categoryInfo = {
     <div class="container">
       {
         Object.entries(postsByCategory).map(([category, posts]) => (
-          <section class="category-section" id={category}>
+          <section class="category-section scroll-reveal" id={category}>
             <div class="category-header">
-              <div class="category-title">
-                <span class="category-icon">
+              <div class="category-title animate-fade-in-down">
+                <span class="category-icon hover-float">
                   {categoryInfo[category as keyof typeof categoryInfo]?.icon}
                 </span>
-                <h2>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
-                <span class="post-count">({posts.length} lessons)</span>
+                <h2 class="hover-glow">
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </h2>
+                <span class="post-count animate-bounce-in">
+                  ({posts.length} lessons)
+                </span>
               </div>
-              <p class="category-description">
+              <p class="category-description animate-fade-in">
                 {
                   categoryInfo[category as keyof typeof categoryInfo]
                     ?.description
                 }
-              </p>
-              <a href={`/blog?category=${category}`} class="view-all-btn">
+              </p>{" "}
+              <a
+                href={`/blog?category=${category}`}
+                class="view-all-btn hover-lift button-ripple"
+              >
                 View All {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
                 Lessons →
               </a>
             </div>
 
-            <div class="posts-grid">
+            <div class="posts-grid stagger-children">
               {posts.slice(0, 3).map((post) => (
                 <BlogCard post={post} />
               ))}
             </div>
 
             {posts.length === 0 && (
-              <div class="empty-category">
+              <div class="empty-category animate-fade-in">
                 <p>No lessons available in this category yet.</p>
                 <a
                   href="https://github.com/sazardev/english-project"
+                  class="hover-lift button-ripple"
                   class="btn btn-primary"
                 >
                   Contribute the First Lesson

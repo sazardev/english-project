@@ -15,6 +15,9 @@
 /* Import Interactive Components */
 @import "./interactive.css";
 
+/* Import Sophisticated Animations */
+@import "./animations.css";
+
 /* Additional Global Styles */
 
 /* Custom Content Boxes for Blog Posts */

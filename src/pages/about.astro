@@ -6,10 +6,10 @@ import MainLayout from "../layouts/MainLayout.astro";
   title="About - English Project"
   description="Learn about the English Project - an open-source platform for English learners. Discover our mission, how to contribute, and join our community."
 >
-  <div class="about-header">
+  <div class="about-header scroll-reveal">
     <div class="container">
-      <h1>About English Project</h1>
-      <p class="about-subtitle">
+      <h1 class="animate-fade-in-down">About English Project</h1>
+      <p class="about-subtitle animate-fade-in">
         An open-source community dedicated to making English learning accessible
         for everyone
       </p>
@@ -19,10 +19,10 @@ import MainLayout from "../layouts/MainLayout.astro";
   <div class="about-content">
     <div class="container">
       <!-- Mission Section -->
-      <section class="mission-section">
+      <section class="mission-section scroll-reveal">
         <div class="grid grid-2">
-          <div class="mission-text">
-            <h2>Our Mission</h2>
+          <div class="mission-text animate-fade-in">
+            <h2 class="hover-glow">Our Mission</h2>
             <p>
               The English Project is a collaborative platform designed to help
               English learners improve their language skills through a variety
@@ -35,16 +35,16 @@ import MainLayout from "../layouts/MainLayout.astro";
               serve learners at every level.
             </p>
           </div>
-          <div class="mission-visual">
-            <div class="visual-card">
+          <div class="mission-visual stagger-children">
+            <div class="visual-card hover-lift">
               <h3>🌍 Global Community</h3>
               <p>Learners and contributors from around the world</p>
             </div>
-            <div class="visual-card">
+            <div class="visual-card hover-lift">
               <h3>📚 Quality Content</h3>
               <p>Comprehensive lessons reviewed by the community</p>
             </div>
-            <div class="visual-card">
+            <div class="visual-card hover-lift">
               <h3>🔓 Always Free</h3>
               <p>No subscriptions, no paywalls, just learning</p>
             </div>
