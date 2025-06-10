@@ -73,6 +73,21 @@
   --scale-in: scale(0.95);
   --scale-out: scale(1.02);
 
+  /* Enhanced Animation Variables */
+  --magnetic-strength: 0.15;
+  --text-reveal-delay: 50ms;
+  --card-lift-distance: -8px;
+  --card-scale-factor: 1.02;
+  --glow-opacity: 0.3;
+  --ripple-duration: 600ms;
+  --scroll-reveal-distance: 30px;
+  --parallax-speed: 0.5;
+
+  /* Loading Animation Variables */
+  --loading-spinner-size: 20px;
+  --loading-bar-height: 4px;
+  --skeleton-animation-duration: 1.5s;
+
   /* ===== COLORS ===== */
   /* Base Colors */
   --color-white: #ffffff;

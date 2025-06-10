@@ -30,6 +30,18 @@ body {
   transition: var(--transition-colors);
 }
 
+/* Enhanced Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed header if any */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* Typography Hierarchy */
 h1,
 h2,

@@ -184,15 +184,104 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-});
 
-// ===== CSS KEYFRAMES VIA JAVASCRIPT =====
+  // ===== SCROLL PROGRESS INDICATOR =====
 
-// Add ripple keyframes if not already present
-if (!document.querySelector("#ripple-keyframes")) {
-  const style = document.createElement("style");
-  style.id = "ripple-keyframes";
-  style.textContent = `
+  // Create scroll progress bar
+  const scrollIndicator = document.createElement("div");
+  scrollIndicator.className = "scroll-indicator";
+  document.body.appendChild(scrollIndicator);
+
+  function updateScrollProgress() {
+    const scrolled = window.pageYOffset;
+    const maxHeight = document.body.scrollHeight - window.innerHeight;
+    const progress = (scrolled / maxHeight) * 100;
+    scrollIndicator.style.transform = `scaleX(${progress / 100})`;
+  }
+
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
+
+  // ===== MAGNETIC BUTTONS =====
+
+  const magneticElements = document.querySelectorAll(".magnetic");
+
+  magneticElements.forEach((element) => {
+    element.addEventListener("mousemove", function (e) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      const moveX = x * 0.15;
+      const moveY = y * 0.15;
+
+      element.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+
+    element.addEventListener("mouseleave", function () {
+      element.style.transform = "translate(0, 0)";
+    });
+  });
+
+  // ===== TEXT REVEAL ANIMATIONS =====
+
+  function initTextReveal() {
+    const textElements = document.querySelectorAll(".text-reveal");
+
+    textElements.forEach((element) => {
+      const text = element.textContent;
+      const chars = text.split("");
+      element.innerHTML = "";
+
+      chars.forEach((char) => {
+        const span = document.createElement("span");
+        span.textContent = char === " " ? "\u00A0" : char;
+        element.appendChild(span);
+      });
+    });
+
+    const textObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          textObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    textElements.forEach((el) => textObserver.observe(el));
+  }
+
+  // Initialize text reveal after DOM is fully loaded
+  initTextReveal();
+
+  // ===== ENHANCED CARD INTERACTIONS =====
+
+  const interactiveCards = document.querySelectorAll(
+    ".card, .feature-card, .level-card, .category-card"
+  );
+
+  interactiveCards.forEach((card) => {
+    card.addEventListener("mouseenter", function () {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      this.style.transform = "translateY(-8px) scale(1.02)";
+      this.style.transition = "transform 0.3s var(--ease-out-expo)";
+    });
+
+    card.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)";
+    });
+  });
+
+  // ===== CSS KEYFRAMES VIA JAVASCRIPT =====
+
+  // Add ripple keyframes if not already present
+  if (!document.querySelector("#ripple-keyframes")) {
+    const style = document.createElement("style");
+    style.id = "ripple-keyframes";
+    style.textContent = `
     @keyframes ripple {
       to {
         transform: scale(4);
@@ -200,5 +289,99 @@ if (!document.querySelector("#ripple-keyframes")) {
       }
     }
   `;
+    document.head.appendChild(style);
+  }
+
+  // ===== PAGE LOADING ANIMATION =====
+
+  // Create page loader
+  const pageLoader = document.createElement("div");
+  pageLoader.id = "page-loader";
+  pageLoader.innerHTML = `
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">Loading English Project...</div>
+    </div>
+  `;
+  pageLoader.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  `;
+
+  const loaderContent = pageLoader.querySelector(".loader-content");
+  loaderContent.style.cssText = `
+    text-align: center;
+    animation: fade-in-up 0.6s ease-out;
+  `;
+
+  const loaderSpinner = pageLoader.querySelector(".loader-spinner");
+  loaderSpinner.style.cssText = `
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  `;
+
+  const loaderText = pageLoader.querySelector(".loader-text");
+  loaderText.style.cssText = `
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+  `;
+
+  // Add keyframes
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
   document.head.appendChild(style);
-}
+
+  // Show loader immediately
+  document.body.appendChild(pageLoader);
+
+  // Hide loader after page is fully loaded
+  window.addEventListener("load", function () {
+    setTimeout(() => {
+      pageLoader.style.opacity = "0";
+      pageLoader.style.visibility = "hidden";
+      setTimeout(() => {
+        if (pageLoader.parentNode) {
+          pageLoader.parentNode.removeChild(pageLoader);
+        }
+      }, 500);
+    }, 300); // Small delay to ensure smooth transition
+  });
+
+  // Fallback: hide loader after 3 seconds regardless
+  setTimeout(() => {
+    if (pageLoader.parentNode) {
+      pageLoader.style.opacity = "0";
+      pageLoader.style.visibility = "hidden";
+    }
+  }, 3000);
+});
