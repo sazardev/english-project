@@ -343,181 +343,224 @@ const { instruction, sentences, id } = Astro.props;
   document.addEventListener("DOMContentLoaded", function () {
     const dragDropComponents = document.querySelectorAll(
       ".drag-drop-component"
-    );
+    ) as NodeListOf<HTMLElement>;
 
-    dragDropComponents.forEach((component) => {
-      const sentences = component.querySelectorAll(".sentence-exercise");
-      const overallResult = component.querySelector(".overall-result");
-      const finalScore = component.querySelector(".final-score");
-      const restartBtn = component.querySelector(".restart-btn");
+    dragDropComponents.forEach((component: HTMLElement) => {
+      const sentences = component.querySelectorAll(
+        ".sentence-exercise"
+      ) as NodeListOf<HTMLElement>;
+      const overallResult = component.querySelector(
+        ".overall-result"
+      ) as HTMLElement | null;
+      const finalScore = component.querySelector(
+        ".final-score"
+      ) as HTMLElement | null;
+      const restartBtn = component.querySelector(
+        ".restart-btn"
+      ) as HTMLButtonElement | null;
 
-      let completedSentences = 0;
-      let totalSentences = sentences.length;
-      let correctSentences = 0;
+      let completedSentences: number = 0;
+      let totalSentences: number = sentences.length;
+      let correctSentences: number = 0;
 
-      sentences.forEach((sentenceEl, sentenceIndex) => {
-        const draggableWords = sentenceEl.querySelectorAll(".draggable-word");
-        const dropSlots = sentenceEl.querySelectorAll(".drop-slot");
-        const checkBtn = sentenceEl.querySelector(".check-sentence-btn");
-        const result = sentenceEl.querySelector(".sentence-result");
-        const resultIcon = sentenceEl.querySelector(".result-icon");
-        const resultMessage = sentenceEl.querySelector(".result-message");
+      sentences.forEach((sentenceEl: HTMLElement, sentenceIndex: number) => {
+        const draggableWords = sentenceEl.querySelectorAll(
+          ".draggable-word"
+        ) as NodeListOf<HTMLElement>;
+        const dropSlots = sentenceEl.querySelectorAll(
+          ".drop-slot"
+        ) as NodeListOf<HTMLElement>;
+        const checkBtn = sentenceEl.querySelector(
+          ".check-sentence-btn"
+        ) as HTMLButtonElement | null;
+        const result = sentenceEl.querySelector(
+          ".sentence-result"
+        ) as HTMLElement | null;
+        const resultIcon = sentenceEl.querySelector(
+          ".result-icon"
+        ) as HTMLElement | null;
+        const resultMessage = sentenceEl.querySelector(
+          ".result-message"
+        ) as HTMLElement | null;
 
-        let draggedElement = null;
-
-        // Drag and drop event listeners
-        draggableWords.forEach((word) => {
-          word.addEventListener("dragstart", function (e) {
-            draggedElement = this;
-            this.classList.add("dragging");
-            e.dataTransfer.effectAllowed = "move";
+        let draggedElement: HTMLElement | null = null; // Drag and drop event listeners
+        draggableWords.forEach((word: HTMLElement) => {
+          word.addEventListener("dragstart", (e: DragEvent) => {
+            draggedElement = word;
+            word.classList.add("dragging");
+            if (e.dataTransfer) {
+              e.dataTransfer.effectAllowed = "move";
+            }
           });
 
-          word.addEventListener("dragend", function () {
-            this.classList.remove("dragging");
+          word.addEventListener("dragend", () => {
+            word.classList.remove("dragging");
             draggedElement = null;
           });
         });
 
-        dropSlots.forEach((slot) => {
-          slot.addEventListener("dragover", function (e) {
+        dropSlots.forEach((slot: HTMLElement) => {
+          slot.addEventListener("dragover", (e: DragEvent) => {
             e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-            this.classList.add("drag-over");
+            if (e.dataTransfer) {
+              e.dataTransfer.dropEffect = "move";
+            }
+            slot.classList.add("drag-over");
           });
 
-          slot.addEventListener("dragleave", function () {
-            this.classList.remove("drag-over");
+          slot.addEventListener("dragleave", () => {
+            slot.classList.remove("drag-over");
           });
 
-          slot.addEventListener("drop", function (e) {
+          slot.addEventListener("drop", (e: DragEvent) => {
             e.preventDefault();
-            this.classList.remove("drag-over");
+            slot.classList.remove("drag-over");
 
-            if (draggedElement && !this.classList.contains("filled")) {
-              this.textContent = draggedElement.dataset.word;
-              this.classList.add("filled");
-              this.dataset.placedWord = draggedElement.dataset.word;
-              draggedElement.classList.add("used");
-              draggedElement.draggable = false;
+            if (draggedElement && !slot.classList.contains("filled")) {
+              const word = draggedElement.dataset.word;
+              if (word) {
+                slot.textContent = word;
+                slot.classList.add("filled");
+                slot.dataset.placedWord = word;
+                draggedElement.classList.add("used");
+                (draggedElement as any).draggable = false;
+              }
             }
           });
 
           // Click to remove word
-          slot.addEventListener("click", function () {
-            if (this.classList.contains("filled")) {
-              const placedWord = this.dataset.placedWord;
+          slot.addEventListener("click", () => {
+            if (slot.classList.contains("filled")) {
+              const placedWord = slot.dataset.placedWord;
 
               // Find and restore the draggable word
               const wordToRestore = sentenceEl.querySelector(
                 `[data-word="${placedWord}"]`
-              );
+              ) as HTMLElement | null;
               if (wordToRestore) {
                 wordToRestore.classList.remove("used");
-                wordToRestore.draggable = true;
+                (wordToRestore as any).draggable = true;
               }
 
               // Clear the slot
-              this.textContent = "Drop here";
-              this.classList.remove("filled", "correct", "incorrect");
-              delete this.dataset.placedWord;
+              slot.textContent = "Drop here";
+              slot.classList.remove("filled", "correct", "incorrect");
+              delete slot.dataset.placedWord;
             }
           });
         });
 
-        checkBtn.addEventListener("click", function () {
-          const correctWords =
-            sentenceEl.dataset.sentenceIndex !== undefined
-              ? sentences[sentenceIndex]
-                  .querySelector(".sentence-builder")
-                  .parentElement.parentElement.querySelector(
-                    "[data-sentence-index]"
-                  )
-                  .previousElementSibling.previousElementSibling.querySelector(
-                    ".draggable-words"
-                  )
-                  .querySelectorAll(".draggable-word")
-              : [];
+        if (checkBtn) {
+          checkBtn.addEventListener("click", () => {
+            let allCorrect: boolean = true;
+            let correctCount: number = 0;
 
-          let allCorrect = true;
-          let correctCount = 0;
+            dropSlots.forEach((slot: HTMLElement, slotIndex: number) => {
+              const placedWord = slot.dataset.placedWord;
+              const expectedWord =
+                Array.from(draggableWords)[slotIndex]?.dataset.word;
 
-          dropSlots.forEach((slot, slotIndex) => {
-            const placedWord = slot.dataset.placedWord;
-            const expectedWord =
-              Array.from(draggableWords)[slotIndex].dataset.word;
+              if (placedWord === expectedWord) {
+                slot.classList.add("correct");
+                slot.classList.remove("incorrect");
+                correctCount++;
+              } else {
+                slot.classList.add("incorrect");
+                slot.classList.remove("correct");
+                allCorrect = false;
+              }
+            });
 
-            if (placedWord === expectedWord) {
-              slot.classList.add("correct");
-              slot.classList.remove("incorrect");
-              correctCount++;
+            // Show result
+            if (result) {
+              result.style.display = "block";
+            }
+
+            if (allCorrect) {
+              if (resultIcon) {
+                resultIcon.textContent = "🎉";
+              }
+              if (resultMessage) {
+                resultMessage.textContent = "Perfect! Sentence is correct!";
+                resultMessage.style.color = "#22c55e";
+              }
+              correctSentences++;
             } else {
-              slot.classList.add("incorrect");
-              slot.classList.remove("correct");
-              allCorrect = false;
+              if (resultIcon) {
+                resultIcon.textContent = "❌";
+              }
+              if (resultMessage) {
+                resultMessage.textContent = `${correctCount}/${dropSlots.length} words correct. Try again!`;
+                resultMessage.style.color = "#ef4444";
+              }
+            }
+
+            completedSentences++;
+            checkBtn.disabled = true;
+
+            // Check if all sentences are completed
+            if (completedSentences === totalSentences) {
+              setTimeout(() => {
+                if (finalScore) {
+                  finalScore.textContent = `You got ${correctSentences} out of ${totalSentences} sentences completely correct!`;
+                }
+                if (overallResult) {
+                  overallResult.style.display = "block";
+                }
+              }, 1500);
+            }
+          });
+        }
+      });
+      if (restartBtn) {
+        restartBtn.addEventListener("click", () => {
+          // Reset all sentences
+          sentences.forEach((sentenceEl: HTMLElement) => {
+            const draggableWords = sentenceEl.querySelectorAll(
+              ".draggable-word"
+            ) as NodeListOf<HTMLElement>;
+            const dropSlots = sentenceEl.querySelectorAll(
+              ".drop-slot"
+            ) as NodeListOf<HTMLElement>;
+            const checkBtn = sentenceEl.querySelector(
+              ".check-sentence-btn"
+            ) as HTMLButtonElement | null;
+            const result = sentenceEl.querySelector(
+              ".sentence-result"
+            ) as HTMLElement | null;
+
+            draggableWords.forEach((word: HTMLElement) => {
+              word.classList.remove("used");
+              (word as any).draggable = true;
+            });
+
+            dropSlots.forEach((slot: HTMLElement) => {
+              slot.textContent = "Drop here";
+              slot.classList.remove(
+                "filled",
+                "correct",
+                "incorrect",
+                "drag-over"
+              );
+              delete slot.dataset.placedWord;
+            });
+
+            if (checkBtn) {
+              checkBtn.disabled = false;
+            }
+            if (result) {
+              result.style.display = "none";
             }
           });
 
-          // Show result
-          result.style.display = "block";
-
-          if (allCorrect) {
-            resultIcon.textContent = "🎉";
-            resultMessage.textContent = "Perfect! Sentence is correct!";
-            resultMessage.style.color = "#22c55e";
-            correctSentences++;
-          } else {
-            resultIcon.textContent = "❌";
-            resultMessage.textContent = `${correctCount}/${dropSlots.length} words correct. Try again!`;
-            resultMessage.style.color = "#ef4444";
-          }
-
-          completedSentences++;
-          this.disabled = true;
-
-          // Check if all sentences are completed
-          if (completedSentences === totalSentences) {
-            setTimeout(() => {
-              finalScore.textContent = `You got ${correctSentences} out of ${totalSentences} sentences completely correct!`;
-              overallResult.style.display = "block";
-            }, 1500);
+          // Reset counters
+          completedSentences = 0;
+          correctSentences = 0;
+          if (overallResult) {
+            overallResult.style.display = "none";
           }
         });
-      });
-
-      restartBtn.addEventListener("click", function () {
-        // Reset all sentences
-        sentences.forEach((sentenceEl) => {
-          const draggableWords = sentenceEl.querySelectorAll(".draggable-word");
-          const dropSlots = sentenceEl.querySelectorAll(".drop-slot");
-          const checkBtn = sentenceEl.querySelector(".check-sentence-btn");
-          const result = sentenceEl.querySelector(".sentence-result");
-
-          draggableWords.forEach((word) => {
-            word.classList.remove("used");
-            word.draggable = true;
-          });
-
-          dropSlots.forEach((slot) => {
-            slot.textContent = "Drop here";
-            slot.classList.remove(
-              "filled",
-              "correct",
-              "incorrect",
-              "drag-over"
-            );
-            delete slot.dataset.placedWord;
-          });
-
-          checkBtn.disabled = false;
-          result.style.display = "none";
-        });
-
-        // Reset counters
-        completedSentences = 0;
-        correctSentences = 0;
-        overallResult.style.display = "none";
-      });
+      }
     });
   });
 </script>
