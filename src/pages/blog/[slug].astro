@@ -1,0 +1,155 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"blog">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Get related posts (same category or level)
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts
+  .filter(
+    (post) =>
+      post.slug !== entry.slug &&
+      (post.data.category === entry.data.category ||
+        post.data.level === entry.data.level)
+  )
+  .slice(0, 3);
+---
+
+<BlogLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  post={entry}
+>
+  <Content />
+
+  {
+    relatedPosts.length > 0 && (
+      <div class="related-posts">
+        <h3>Related Lessons</h3>
+        <div class="related-grid">
+          {relatedPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="related-post">
+              <div class="related-meta">
+                <span class={`level-badge ${post.data.level}`}>
+                  {post.data.level}
+                </span>
+                <span class="category-badge">{post.data.category}</span>
+              </div>
+              <h4>{post.data.title}</h4>
+              <p>{post.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</BlogLayout>
+
+<style>
+  .related-posts {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-posts h3 {
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .related-post {
+    padding: 1.5rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    border: 1px solid var(--color-border);
+  }
+
+  .related-post:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .related-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .level-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .level-badge.beginner {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .level-badge.intermediate {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .level-badge.advanced {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .category-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--color-bg);
+    color: var(--color-text-light);
+    border: 1px solid var(--color-border);
+  }
+
+  .related-post h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  .related-post p {
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

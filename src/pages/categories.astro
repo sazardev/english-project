@@ -1,0 +1,370 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+
+// Group posts by category
+const postsByCategory = allPosts.reduce(
+  (acc, post) => {
+    const category = post.data.category;
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(post);
+    return acc;
+  },
+  {} as Record<string, any[]>
+);
+
+// Sort posts within each category by date
+Object.keys(postsByCategory).forEach((category) => {
+  postsByCategory[category].sort((a, b) => {
+    const dateA = a.data.publishDate || new Date(0);
+    const dateB = b.data.publishDate || new Date(0);
+    return dateB.getTime() - dateA.getTime();
+  });
+});
+
+const categoryInfo = {
+  grammar: {
+    icon: "📝",
+    description:
+      "Master English grammar rules, tenses, and sentence structures with clear explanations and examples.",
+  },
+  vocabulary: {
+    icon: "📚",
+    description:
+      "Expand your vocabulary with themed word lists, definitions, and practical usage examples.",
+  },
+  speaking: {
+    icon: "🗣️",
+    description:
+      "Improve your speaking skills with pronunciation guides, conversation practice, and speaking exercises.",
+  },
+  listening: {
+    icon: "👂",
+    description:
+      "Enhance your listening comprehension with audio exercises, listening strategies, and practice materials.",
+  },
+  writing: {
+    icon: "✍️",
+    description:
+      "Develop your writing abilities with guides on structure, style, and different types of writing.",
+  },
+  reading: {
+    icon: "📖",
+    description:
+      "Strengthen your reading skills with comprehension exercises, reading strategies, and varied texts.",
+  },
+  pronunciation: {
+    icon: "🔊",
+    description:
+      "Perfect your pronunciation with phonetic guides, sound practice, and accent training materials.",
+  },
+  culture: {
+    icon: "🌍",
+    description:
+      "Learn about English-speaking cultures, customs, idioms, and cultural context for better communication.",
+  },
+};
+---
+
+<MainLayout
+  title="Categories - English Project"
+  description="Browse English learning content organized by category. Find grammar, vocabulary, speaking, listening, writing, reading, pronunciation, and culture lessons."
+>
+  <div class="categories-header">
+    <div class="container">
+      <h1>Learning Categories</h1>
+      <p class="categories-description">
+        Explore our comprehensive collection of English learning materials
+        organized by skill area. Each category contains lessons designed to help
+        you master different aspects of the English language.
+      </p>
+    </div>
+  </div>
+
+  <div class="categories-content">
+    <div class="container">
+      {
+        Object.entries(postsByCategory).map(([category, posts]) => (
+          <section class="category-section" id={category}>
+            <div class="category-header">
+              <div class="category-title">
+                <span class="category-icon">
+                  {categoryInfo[category as keyof typeof categoryInfo]?.icon}
+                </span>
+                <h2>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+                <span class="post-count">({posts.length} lessons)</span>
+              </div>
+              <p class="category-description">
+                {
+                  categoryInfo[category as keyof typeof categoryInfo]
+                    ?.description
+                }
+              </p>
+              <a href={`/blog?category=${category}`} class="view-all-btn">
+                View All {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
+                Lessons →
+              </a>
+            </div>
+
+            <div class="posts-grid">
+              {posts.slice(0, 3).map((post) => (
+                <BlogCard post={post} />
+              ))}
+            </div>
+
+            {posts.length === 0 && (
+              <div class="empty-category">
+                <p>No lessons available in this category yet.</p>
+                <a
+                  href="https://github.com/yourusername/english-project"
+                  class="btn btn-primary"
+                >
+                  Contribute the First Lesson
+                </a>
+              </div>
+            )}
+          </section>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Quick Navigation -->
+  <div class="quick-nav">
+    <div class="container">
+      <h3>Quick Navigation</h3>
+      <div class="nav-grid">
+        {
+          Object.entries(categoryInfo).map(([category, info]) => (
+            <a href={`#${category}`} class="nav-item">
+              <span class="nav-icon">{info.icon}</span>
+              <span class="nav-name">
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </span>
+              <span class="nav-count">
+                {postsByCategory[category]?.length || 0}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .categories-header {
+    background: linear-gradient(
+      135deg,
+      var(--color-bg) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .categories-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .categories-description {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .categories-content {
+    padding: 2rem 0;
+  }
+
+  .category-section {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .category-section:last-child {
+    border-bottom: none;
+    margin-bottom: 2rem;
+  }
+
+  .category-header {
+    margin-bottom: 2rem;
+  }
+
+  .category-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-icon {
+    font-size: 2.5rem;
+  }
+
+  .category-title h2 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .post-count {
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .category-description {
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    max-width: 600px;
+  }
+
+  .view-all-btn {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .view-all-btn:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .empty-category {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    border: 2px dashed var(--color-border);
+  }
+
+  .empty-category p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .quick-nav {
+    background: var(--color-bg-secondary);
+    padding: 3rem 0;
+    margin-top: 3rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+  }
+
+  .quick-nav h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: var(--color-text);
+    border-color: var(--color-primary);
+  }
+
+  .nav-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  .nav-count {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    background: var(--color-bg-secondary);
+    padding: 0.125rem 0.5rem;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .categories-header h1 {
+      font-size: 2.25rem;
+    }
+
+    .category-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .category-title h2 {
+      font-size: 1.75rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-grid {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+  }
+</style>
+
+<script>
+  // Smooth scrolling for category navigation
+  document.addEventListener("DOMContentLoaded", () => {
+    const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+
+    navItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetId = item.getAttribute("href")?.substring(1);
+        const targetElement = document.getElementById(targetId!);
+
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      });
+    });
+  });
+</script>

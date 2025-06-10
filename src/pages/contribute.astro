@@ -1,0 +1,759 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="How to Contribute - English Project"
+  description="Learn how to contribute to the English Project. Help other learners by adding new lessons, improving content, and sharing your knowledge."
+>
+  <div class="contribute-header">
+    <div class="container">
+      <h1>Contributing to English Project</h1>
+      <p class="contribute-subtitle">
+        Help make English learning accessible for everyone by contributing your
+        knowledge and expertise
+      </p>
+    </div>
+  </div>
+
+  <div class="contribute-content">
+    <div class="container">
+      <!-- Quick Start Section -->
+      <section class="quick-start">
+        <h2>🚀 Quick Start Guide</h2>
+        <div class="steps-grid">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Fork the Repository</h3>
+            <p>Create your own copy of the project on GitHub</p>
+            <a
+              href="https://github.com/yourusername/english-project/fork"
+              class="btn btn-primary"
+              target="_blank"
+            >
+              Fork on GitHub
+            </a>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Create Your Lesson</h3>
+            <p>Write your lesson using our MDX template</p>
+            <a href="#content-guidelines" class="btn btn-secondary"
+              >View Guidelines</a
+            >
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Submit a Pull Request</h3>
+            <p>Share your contribution with the community</p>
+            <a href="#pull-request" class="btn btn-secondary">Learn How</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Guidelines -->
+      <section class="content-guidelines" id="content-guidelines">
+        <h2>📝 Content Guidelines</h2>
+
+        <div class="guideline-section">
+          <h3>Lesson Structure</h3>
+          <p>Every lesson should follow this basic structure:</p>
+
+          <div class="code-example">
+            <pre><code>---
+title: "Your Lesson Title"
+description: "Brief description of what learners will gain"
+category: "grammar" | "vocabulary" | "speaking" | "listening" | "writing" | "reading" | "pronunciation" | "culture"
+level: "beginner" | "intermediate" | "advanced"
+tags: ["tag1", "tag2", "tag3"]
+author: "Your Name"
+readingTime: 10
+featured: false
+publishDate: 2024-06-10
+---
+
+# Your Lesson Title
+
+Introduction paragraph explaining the topic...
+
+## Main Content Sections
+
+### Subsection 1
+Content with examples...
+
+### Subsection 2
+More content...
+
+## Practice Exercises
+
+Interactive elements for learners...
+
+## Key Takeaways
+
+Summary of main points...
+</code></pre>
+          </div>
+        </div>
+
+        <div class="guideline-section">
+          <h3>Content Categories</h3>
+          <div class="categories-grid">
+            <div class="category">
+              <h4>📝 Grammar</h4>
+              <p>Tenses, sentence structure, parts of speech, punctuation</p>
+            </div>
+            <div class="category">
+              <h4>📚 Vocabulary</h4>
+              <p>Word lists, definitions, synonyms, collocations</p>
+            </div>
+            <div class="category">
+              <h4>🗣️ Speaking</h4>
+              <p>Pronunciation, conversation skills, speaking exercises</p>
+            </div>
+            <div class="category">
+              <h4>👂 Listening</h4>
+              <p>Comprehension exercises, listening strategies</p>
+            </div>
+            <div class="category">
+              <h4>✍️ Writing</h4>
+              <p>Essays, emails, creative writing, structure</p>
+            </div>
+            <div class="category">
+              <h4>📖 Reading</h4>
+              <p>Comprehension, strategies, text analysis</p>
+            </div>
+            <div class="category">
+              <h4>🔊 Pronunciation</h4>
+              <p>Phonetics, stress patterns, intonation</p>
+            </div>
+            <div class="category">
+              <h4>🌍 Culture</h4>
+              <p>Idioms, cultural context, social language</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guideline-section">
+          <h3>Skill Levels</h3>
+          <div class="levels-info">
+            <div class="level-info beginner">
+              <h4>🌱 Beginner</h4>
+              <ul>
+                <li>Basic vocabulary (1000-2000 words)</li>
+                <li>Simple present tense</li>
+                <li>Elementary grammar structures</li>
+                <li>Common phrases and expressions</li>
+              </ul>
+            </div>
+            <div class="level-info intermediate">
+              <h4>🚀 Intermediate</h4>
+              <ul>
+                <li>Expanded vocabulary (3000-5000 words)</li>
+                <li>Multiple tenses and modal verbs</li>
+                <li>Complex sentence structures</li>
+                <li>Professional and academic contexts</li>
+              </ul>
+            </div>
+            <div class="level-info advanced">
+              <h4>🎯 Advanced</h4>
+              <ul>
+                <li>Sophisticated vocabulary (5000+ words)</li>
+                <li>Complex grammar and nuances</li>
+                <li>Idiomatic expressions</li>
+                <li>Cultural subtleties</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Special Components -->
+      <section class="components-section">
+        <h2>🧩 Special Components</h2>
+        <p>Use these special MDX components to enhance your lessons:</p>
+
+        <div class="component-examples">
+          <div class="component-example">
+            <h3>Example Box</h3>
+            <div class="code-snippet">
+              <code
+                >&lt;div class="example-box"&gt;<br />
+                Your examples here...<br />
+                &lt;/div&gt;</code
+              >
+            </div>
+            <div class="example-box">This is how an example box looks!</div>
+          </div>
+
+          <div class="component-example">
+            <h3>Vocabulary Box</h3>
+            <div class="code-snippet">
+              <code
+                >&lt;div class="vocabulary-box"&gt;<br />
+                **Word:** Definition<br />
+                &lt;/div&gt;</code
+              >
+            </div>
+            <div class="vocabulary-box">
+              <strong>Word:</strong> Definition and usage example
+            </div>
+          </div>
+
+          <div class="component-example">
+            <h3>Tip Box</h3>
+            <div class="code-snippet">
+              <code
+                >&lt;div class="tip-box"&gt;<br />
+                💡 **Pro Tip:** Your helpful tip here<br />
+                &lt;/div&gt;</code
+              >
+            </div>
+            <div class="tip-box">
+              💡 <strong>Pro Tip:</strong> This is a helpful tip for learners!
+            </div>
+          </div>
+
+          <div class="component-example">
+            <h3>Exercise Box</h3>
+            <div class="code-snippet">
+              <code
+                >&lt;div class="exercise-box"&gt;<br />
+                **Exercise:** Complete the sentences...<br />
+                &lt;/div&gt;</code
+              >
+            </div>
+            <div class="exercise-box">
+              <strong>Exercise:</strong> Fill in the blanks with the correct form
+              of the verb.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- File Organization -->
+      <section class="file-organization">
+        <h2>📁 File Organization</h2>
+        <div class="file-structure">
+          <h3>Where to Place Your Files</h3>
+          <div class="folder-structure">
+            <pre><code>src/
+  content/
+    blog/
+      your-lesson-title.mdx   ← Add your lesson here
+      
+public/
+  images/
+    lessons/
+      your-lesson-title/     ← Add lesson images here
+        image1.jpg
+        image2.png</code></pre>
+          </div>
+
+          <div class="naming-conventions">
+            <h3>Naming Conventions</h3>
+            <ul>
+              <li>
+                <strong>File names:</strong> Use kebab-case (lowercase with hyphens)
+              </li>
+              <li>
+                <strong>Examples:</strong>
+                <code>present-simple-tense.mdx</code>, <code
+                  >business-vocabulary.mdx</code>
+              </li>
+              <li>
+                <strong>Images:</strong> Descriptive names related to content
+              </li>
+              <li><strong>Folders:</strong> Match your lesson file name</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pull Request Process -->
+      <section class="pull-request" id="pull-request">
+        <h2>🔄 Pull Request Process</h2>
+
+        <div class="pr-steps">
+          <div class="pr-step">
+            <h3>1. Prepare Your Contribution</h3>
+            <ul>
+              <li>✅ Follow the lesson structure template</li>
+              <li>✅ Use appropriate category and level</li>
+              <li>✅ Include practical examples</li>
+              <li>✅ Add exercises or practice activities</li>
+              <li>✅ Proofread for grammar and clarity</li>
+            </ul>
+          </div>
+
+          <div class="pr-step">
+            <h3>2. Create Your Pull Request</h3>
+            <ul>
+              <li>📝 Write a clear title describing your lesson</li>
+              <li>📝 Provide a brief description of the content</li>
+              <li>📝 Mention any special features or components used</li>
+              <li>📝 Tag relevant maintainers if needed</li>
+            </ul>
+          </div>
+
+          <div class="pr-step">
+            <h3>3. Review Process</h3>
+            <ul>
+              <li>👀 Community members will review your contribution</li>
+              <li>💬 Respond to feedback and make requested changes</li>
+              <li>✅ Once approved, your lesson will be merged</li>
+              <li>🎉 Your content is now live and helping learners!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community Guidelines -->
+      <section class="community-guidelines">
+        <h2>🤝 Community Guidelines</h2>
+
+        <div class="guidelines-grid">
+          <div class="guideline">
+            <h3>Be Respectful</h3>
+            <p>
+              Treat all contributors and learners with respect and kindness.
+            </p>
+          </div>
+          <div class="guideline">
+            <h3>Quality First</h3>
+            <p>
+              Focus on creating high-quality, accurate, and helpful content.
+            </p>
+          </div>
+          <div class="guideline">
+            <h3>Inclusive Language</h3>
+            <p>
+              Use inclusive language that welcomes learners from all
+              backgrounds.
+            </p>
+          </div>
+          <div class="guideline">
+            <h3>Original Content</h3>
+            <p>
+              Ensure your contributions are original or properly attributed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Get Help -->
+      <section class="get-help">
+        <h2>🆘 Need Help?</h2>
+        <div class="help-options">
+          <div class="help-option">
+            <h3>📚 Documentation</h3>
+            <p>Check our comprehensive docs for detailed guides</p>
+            <a
+              href="https://github.com/yourusername/english-project/wiki"
+              class="btn btn-secondary"
+              target="_blank"
+            >
+              View Docs
+            </a>
+          </div>
+          <div class="help-option">
+            <h3>💬 Discussions</h3>
+            <p>Ask questions and connect with other contributors</p>
+            <a
+              href="https://github.com/yourusername/english-project/discussions"
+              class="btn btn-secondary"
+              target="_blank"
+            >
+              Join Discussion
+            </a>
+          </div>
+          <div class="help-option">
+            <h3>🐛 Issues</h3>
+            <p>Report bugs or request new features</p>
+            <a
+              href="https://github.com/yourusername/english-project/issues"
+              class="btn btn-secondary"
+              target="_blank"
+            >
+              Report Issue
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .contribute-header {
+    background: linear-gradient(
+      135deg,
+      var(--color-bg) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+
+  .contribute-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .contribute-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .contribute-content {
+    padding: 2rem 0;
+  }
+
+  .contribute-content section {
+    margin-bottom: 5rem;
+  }
+
+  .quick-start h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .step {
+    text-align: center;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--color-border);
+    transition: all 0.2s ease;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+  }
+
+  .step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 1.5rem;
+  }
+
+  .step h3 {
+    margin-bottom: 1rem;
+  }
+
+  .step p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .content-guidelines h2 {
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .guideline-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .guideline-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+  }
+
+  .code-example {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .code-example pre {
+    margin: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .category {
+    padding: 1rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--color-primary);
+  }
+
+  .category h4 {
+    margin-bottom: 0.5rem;
+  }
+
+  .category p {
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .levels-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .level-info {
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border-left: 4px solid;
+  }
+
+  .level-info.beginner {
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+  }
+
+  .level-info.intermediate {
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+  }
+
+  .level-info.advanced {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+  }
+
+  .level-info h4 {
+    margin-bottom: 1rem;
+  }
+
+  .level-info ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .level-info li {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+  }
+
+  .components-section h2 {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+
+  .component-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .component-example {
+    background: var(--color-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .component-example h3 {
+    margin-bottom: 1rem;
+  }
+
+  .code-snippet {
+    background: var(--color-bg-secondary);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+    font-size: 0.875rem;
+  }
+
+  .file-organization h2 {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+
+  .file-structure {
+    background: var(--color-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .folder-structure {
+    background: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+  }
+
+  .folder-structure pre {
+    margin: 0;
+    background: transparent;
+    border: none;
+  }
+
+  .naming-conventions {
+    margin-top: 2rem;
+  }
+
+  .naming-conventions h3 {
+    margin-bottom: 1rem;
+  }
+
+  .naming-conventions ul {
+    padding-left: 1.5rem;
+  }
+
+  .naming-conventions li {
+    margin-bottom: 0.5rem;
+  }
+
+  .naming-conventions code {
+    background: var(--color-bg-secondary);
+    padding: 0.125rem 0.25rem;
+    border-radius: 3px;
+  }
+
+  .pull-request h2 {
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .pr-steps {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .pr-step {
+    background: var(--color-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--color-primary);
+  }
+
+  .pr-step h3 {
+    margin-bottom: 1rem;
+  }
+
+  .pr-step ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .pr-step li {
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+  }
+
+  .community-guidelines h2 {
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+  }
+
+  .guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .guideline {
+    text-align: center;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .guideline h3 {
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+  }
+
+  .guideline p {
+    color: var(--color-text-light);
+    margin: 0;
+  }
+
+  .get-help h2 {
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .help-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .help-option {
+    text-align: center;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+  }
+
+  .help-option:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .help-option h3 {
+    margin-bottom: 1rem;
+  }
+
+  .help-option p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .contribute-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .steps-grid,
+    .component-examples,
+    .levels-info,
+    .guidelines-grid,
+    .help-options {
+      grid-template-columns: 1fr;
+    }
+
+    .contribute-content section {
+      margin-bottom: 3rem;
+    }
+  }
+</style>

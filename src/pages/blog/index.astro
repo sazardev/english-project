@@ -1,0 +1,438 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+
+// Sort posts by publish date (newest first)
+const sortedPosts = allPosts.sort((a, b) => {
+  const dateA = a.data.publishDate || new Date(0);
+  const dateB = b.data.publishDate || new Date(0);
+  return dateB.getTime() - dateA.getTime();
+});
+
+// Get unique categories and levels for filters
+const categories = [...new Set(allPosts.map((post) => post.data.category))];
+const levels = ["beginner", "intermediate", "advanced"];
+
+// Group posts by category and level for stats
+const postsByCategory = allPosts.reduce(
+  (acc, post) => {
+    const category = post.data.category;
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(post);
+    return acc;
+  },
+  {} as Record<string, any[]>
+);
+
+const postsByLevel = {
+  beginner: allPosts.filter((post) => post.data.level === "beginner"),
+  intermediate: allPosts.filter((post) => post.data.level === "intermediate"),
+  advanced: allPosts.filter((post) => post.data.level === "advanced"),
+};
+---
+
+<MainLayout
+  title="All Lessons - English Project"
+  description="Browse all English learning resources organized by level and category. Find grammar, vocabulary, speaking, and listening lessons."
+>
+  <div class="blog-header">
+    <div class="container">
+      <h1>English Learning Resources</h1>
+      <p class="blog-description">
+        Discover comprehensive English lessons organized by skill level and
+        learning category. All content is community-contributed and completely
+        free.
+      </p>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-number">{allPosts.length}</span>
+          <span class="stat-label">Total Lessons</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{categories.length}</span>
+          <span class="stat-label">Categories</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">3</span>
+          <span class="stat-label">Skill Levels</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <section class="filters">
+    <div class="container">
+      <div class="filter-section">
+        <h3>Filter by Level</h3>
+        <div class="filter-grid">
+          <a href="/blog" class="filter-item active">
+            <span class="filter-icon">🌐</span>
+            <span class="filter-name">All Levels</span>
+            <span class="filter-count">{allPosts.length}</span>
+          </a>
+          <a href="/blog?level=beginner" class="filter-item beginner">
+            <span class="filter-icon">🌱</span>
+            <span class="filter-name">Beginner</span>
+            <span class="filter-count">{postsByLevel.beginner.length}</span>
+          </a>
+          <a href="/blog?level=intermediate" class="filter-item intermediate">
+            <span class="filter-icon">🚀</span>
+            <span class="filter-name">Intermediate</span>
+            <span class="filter-count">{postsByLevel.intermediate.length}</span>
+          </a>
+          <a href="/blog?level=advanced" class="filter-item advanced">
+            <span class="filter-icon">🎯</span>
+            <span class="filter-name">Advanced</span>
+            <span class="filter-count">{postsByLevel.advanced.length}</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h3>Filter by Category</h3>
+        <div class="filter-grid category-filters">
+          {
+            categories.map((category) => (
+              <a href={`/blog?category=${category}`} class="filter-item">
+                <span class="filter-icon">
+                  {category === "grammar" && "📝"}
+                  {category === "vocabulary" && "📚"}
+                  {category === "speaking" && "🗣️"}
+                  {category === "listening" && "👂"}
+                  {category === "writing" && "✍️"}
+                  {category === "reading" && "📖"}
+                  {category === "pronunciation" && "🔊"}
+                  {category === "culture" && "🌍"}
+                </span>
+                <span class="filter-name">
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </span>
+                <span class="filter-count">
+                  {postsByCategory[category].length}
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posts Grid -->
+  <section class="posts-section">
+    <div class="container">
+      <div class="posts-header">
+        <h2>All Lessons ({sortedPosts.length})</h2>
+        <p class="text-light">Sorted by newest first</p>
+      </div>
+
+      <div class="posts-grid">
+        {sortedPosts.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      {
+        sortedPosts.length === 0 && (
+          <div class="empty-state">
+            <h3>No lessons found</h3>
+            <p>We're working on adding more content. Check back soon!</p>
+            <a
+              href="https://github.com/yourusername/english-project"
+              class="btn btn-primary"
+            >
+              Contribute a Lesson
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Contribute CTA -->
+  <section class="contribute-cta">
+    <div class="container text-center">
+      <h2>Share Your Knowledge</h2>
+      <p>
+        Help other English learners by contributing your own lessons and
+        resources. It's easy to get started with our GitHub-based contribution
+        system.
+      </p>
+      <div class="cta-actions">
+        <a
+          href="https://github.com/yourusername/english-project"
+          target="_blank"
+          class="btn btn-primary"
+        >
+          Contribute on GitHub
+        </a>
+        <a href="/contribute" class="btn btn-secondary">
+          Learn How to Contribute
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .blog-header {
+    background: linear-gradient(
+      135deg,
+      var(--color-bg) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .blog-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-description {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 2rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .filters {
+    background: var(--color-bg-secondary);
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+  }
+
+  .filter-section {
+    margin-bottom: 2rem;
+  }
+
+  .filter-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .filter-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-filters {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .filter-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+
+  .filter-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .filter-item.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .filter-item.beginner:hover {
+    border-color: #10b981;
+  }
+  .filter-item.intermediate:hover {
+    border-color: #f59e0b;
+  }
+  .filter-item.advanced:hover {
+    border-color: #ef4444;
+  }
+
+  .filter-icon {
+    font-size: 1.5rem;
+  }
+
+  .filter-name {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  .filter-count {
+    background: var(--color-bg-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+  }
+
+  .filter-item.active .filter-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  .posts-section {
+    padding: 2rem 0;
+  }
+
+  .posts-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .posts-header h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+  }
+
+  .empty-state h3 {
+    margin-bottom: 1rem;
+    color: var(--color-text-light);
+  }
+
+  .empty-state p {
+    margin-bottom: 2rem;
+    color: var(--color-text-light);
+  }
+
+  .contribute-cta {
+    background: var(--color-bg-secondary);
+    padding: 4rem 0;
+    margin-top: 4rem;
+  }
+
+  .contribute-cta h2 {
+    margin-bottom: 1rem;
+  }
+
+  .contribute-cta p {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .blog-header h1 {
+      font-size: 2.25rem;
+    }
+
+    .stats {
+      gap: 2rem;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+
+    .filter-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>
+
+<script>
+  // Client-side filtering functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const levelParam = urlParams.get("level");
+    const categoryParam = urlParams.get("category");
+
+    // Update active filter states based on URL parameters
+    const filterItems = document.querySelectorAll(".filter-item");
+    filterItems.forEach((item) => {
+      const href = item.getAttribute("href");
+      if (href) {
+        const url = new URL(href, window.location.origin);
+        const itemLevel = url.searchParams.get("level");
+        const itemCategory = url.searchParams.get("category");
+
+        if (levelParam && itemLevel === levelParam) {
+          item.classList.add("active");
+        } else if (categoryParam && itemCategory === categoryParam) {
+          item.classList.add("active");
+        } else if (!levelParam && !categoryParam && href === "/blog") {
+          item.classList.add("active");
+        } else {
+          item.classList.remove("active");
+        }
+      }
+    });
+  });
+</script>

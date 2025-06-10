@@ -1,0 +1,220 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Page Not Found - English Project"
+  description="The page you're looking for doesn't exist. Return to our English learning resources and continue your language journey."
+>
+  <div class="error-page">
+    <div class="container">
+      <div class="error-content">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Oops! Page Not Found</h2>
+        <p class="error-description">
+          The page you're looking for seems to have wandered off. Don't worry
+          though - there's plenty of great English content waiting for you!
+        </p>
+
+        <div class="error-suggestions">
+          <h3>Here's what you can do:</h3>
+          <div class="suggestions-grid">
+            <a href="/" class="suggestion-card">
+              <span class="suggestion-icon">🏠</span>
+              <h4>Go Home</h4>
+              <p>Return to our homepage</p>
+            </a>
+
+            <a href="/blog" class="suggestion-card">
+              <span class="suggestion-icon">📚</span>
+              <h4>Browse Lessons</h4>
+              <p>Explore all our content</p>
+            </a>
+
+            <a href="/categories" class="suggestion-card">
+              <span class="suggestion-icon">🏷️</span>
+              <h4>View Categories</h4>
+              <p>Find content by topic</p>
+            </a>
+
+            <a href="/levels" class="suggestion-card">
+              <span class="suggestion-icon">📊</span>
+              <h4>Choose Your Level</h4>
+              <p>Find your learning path</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="search-help">
+          <h3>Looking for something specific?</h3>
+          <p>
+            Try using our navigation menu above or check out these popular
+            topics:
+          </p>
+          <div class="popular-tags">
+            <a href="/blog?category=grammar" class="tag">Grammar</a>
+            <a href="/blog?category=vocabulary" class="tag">Vocabulary</a>
+            <a href="/blog?level=beginner" class="tag">Beginner</a>
+            <a href="/blog?level=intermediate" class="tag">Intermediate</a>
+            <a href="/blog?category=speaking" class="tag">Speaking</a>
+            <a href="/blog?category=listening" class="tag">Listening</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 0;
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+
+  .error-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .error-description {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+
+  .error-suggestions {
+    margin-bottom: 4rem;
+  }
+
+  .error-suggestions h3 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .suggestion-card {
+    display: block;
+    padding: 2rem 1rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .suggestion-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .suggestion-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .suggestion-card h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+  }
+
+  .suggestion-card p {
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .search-help h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .search-help p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .popular-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .tag {
+    padding: 0.5rem 1rem;
+    background: var(--color-bg-secondary);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid var(--color-border);
+  }
+
+  .tag:hover {
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 6rem;
+    }
+
+    .error-title {
+      font-size: 2rem;
+    }
+
+    .error-description {
+      font-size: 1.125rem;
+    }
+
+    .suggestions-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .suggestion-card {
+      padding: 1.5rem 1rem;
+    }
+
+    .popular-tags {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,502 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+
+// Group posts by level
+const postsByLevel = {
+  beginner: allPosts.filter((post) => post.data.level === "beginner"),
+  intermediate: allPosts.filter((post) => post.data.level === "intermediate"),
+  advanced: allPosts.filter((post) => post.data.level === "advanced"),
+};
+
+// Sort posts within each level by date
+Object.keys(postsByLevel).forEach((level) => {
+  postsByLevel[level as keyof typeof postsByLevel].sort((a, b) => {
+    const dateA = a.data.publishDate || new Date(0);
+    const dateB = b.data.publishDate || new Date(0);
+    return dateB.getTime() - dateA.getTime();
+  });
+});
+
+const levelInfo = {
+  beginner: {
+    icon: "🌱",
+    color: "#10b981",
+    title: "Beginner Level",
+    description:
+      "Perfect for those just starting their English learning journey. Focus on basic vocabulary, simple grammar structures, and essential communication skills.",
+    topics: [
+      "Basic vocabulary (colors, numbers, family, etc.)",
+      "Present simple tense",
+      "Common greetings and phrases",
+      "Pronunciation fundamentals",
+      "Simple sentence structures",
+      "Basic listening comprehension",
+    ],
+    prerequisites: "No prior English knowledge required",
+    duration: "3-6 months of consistent study",
+  },
+  intermediate: {
+    icon: "🚀",
+    color: "#f59e0b",
+    title: "Intermediate Level",
+    description:
+      "Build upon your foundation with more complex grammar, expanded vocabulary, and improved communication skills for everyday situations.",
+    topics: [
+      "Past and future tenses",
+      "Conditional sentences",
+      "Business and academic vocabulary",
+      "Conversation and discussion skills",
+      "Reading comprehension",
+      "Writing structured paragraphs",
+    ],
+    prerequisites: "Basic English grammar and vocabulary",
+    duration: "6-12 months of regular practice",
+  },
+  advanced: {
+    icon: "🎯",
+    color: "#ef4444",
+    title: "Advanced Level",
+    description:
+      "Master sophisticated language use, cultural nuances, and professional communication for academic and business contexts.",
+    topics: [
+      "Complex grammar structures",
+      "Idiomatic expressions and phrasal verbs",
+      "Academic and professional writing",
+      "Cultural context and nuances",
+      "Advanced reading strategies",
+      "Public speaking and presentations",
+    ],
+    prerequisites: "Solid intermediate English skills",
+    duration: "12+ months of advanced practice",
+  },
+};
+---
+
+<MainLayout
+  title="Learning Levels - English Project"
+  description="Choose your English learning path based on your current skill level. From beginner basics to advanced proficiency, we have lessons for every stage."
+>
+  <div class="levels-header">
+    <div class="container">
+      <h1>Choose Your Learning Level</h1>
+      <p class="levels-description">
+        Our curriculum is carefully structured to guide you through your English
+        learning journey. Start at your current level and progress at your own
+        pace with our comprehensive lessons.
+      </p>
+    </div>
+  </div>
+
+  <div class="levels-content">
+    <div class="container">
+      {
+        Object.entries(levelInfo).map(([level, info]) => {
+          const posts = postsByLevel[level as keyof typeof postsByLevel];
+          return (
+            <section class={`level-section ${level}`} id={level}>
+              <div class="level-overview">
+                <div class="level-header">
+                  <div class="level-title">
+                    <span class="level-icon">{info.icon}</span>
+                    <div>
+                      <h2>{info.title}</h2>
+                      <span class="post-count">
+                        ({posts.length} lessons available)
+                      </span>
+                    </div>
+                  </div>
+                  <div class="level-actions">
+                    <a href={`/blog?level=${level}`} class="btn btn-primary">
+                      Start Learning
+                    </a>
+                  </div>
+                </div>
+
+                <p class="level-description">{info.description}</p>
+
+                <div class="level-details">
+                  <div class="level-info">
+                    <div class="info-item">
+                      <h4>📋 What You'll Learn</h4>
+                      <ul class="topics-list">
+                        {info.topics.map((topic) => (
+                          <li>{topic}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div class="info-item">
+                      <h4>🎯 Prerequisites</h4>
+                      <p>{info.prerequisites}</p>
+                    </div>
+
+                    <div class="info-item">
+                      <h4>⏱️ Estimated Duration</h4>
+                      <p>{info.duration}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="level-lessons">
+                <div class="lessons-header">
+                  <h3>Recent Lessons</h3>
+                  <a href={`/blog?level=${level}`} class="view-all-link">
+                    View All {info.title} Lessons →
+                  </a>
+                </div>
+
+                {posts.length > 0 ? (
+                  <div class="posts-grid">
+                    {posts.slice(0, 3).map((post) => (
+                      <BlogCard post={post} />
+                    ))}
+                  </div>
+                ) : (
+                  <div class="empty-level">
+                    <p>No lessons available for this level yet.</p>
+                    <a
+                      href="https://github.com/yourusername/english-project"
+                      class="btn btn-secondary"
+                    >
+                      Contribute the First Lesson
+                    </a>
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <!-- Learning Path -->
+  <section class="learning-path">
+    <div class="container">
+      <h2 class="text-center mb-8">Your Learning Journey</h2>
+      <div class="path-visualization">
+        <div class="path-step">
+          <div class="step-icon beginner">🌱</div>
+          <h3>Beginner</h3>
+          <p>Build your foundation</p>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-step">
+          <div class="step-icon intermediate">🚀</div>
+          <h3>Intermediate</h3>
+          <p>Expand your skills</p>
+        </div>
+        <div class="path-arrow">→</div>
+        <div class="path-step">
+          <div class="step-icon advanced">🎯</div>
+          <h3>Advanced</h3>
+          <p>Master the language</p>
+        </div>
+      </div>
+      <div class="path-description">
+        <p>
+          Progress through each level at your own pace. Each stage builds upon
+          the previous one, ensuring a solid foundation for advanced learning.
+        </p>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .levels-header {
+    background: linear-gradient(
+      135deg,
+      var(--color-bg) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .levels-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .levels-description {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .levels-content {
+    padding: 2rem 0;
+  }
+
+  .level-section {
+    margin-bottom: 5rem;
+    padding: 3rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    border-left: 5px solid var(--color-border);
+  }
+
+  .level-section.beginner {
+    border-left-color: #10b981;
+  }
+
+  .level-section.intermediate {
+    border-left-color: #f59e0b;
+  }
+
+  .level-section.advanced {
+    border-left-color: #ef4444;
+  }
+
+  .level-overview {
+    margin-bottom: 3rem;
+  }
+
+  .level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  .level-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .level-icon {
+    font-size: 3rem;
+  }
+
+  .level-title h2 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+
+  .post-count {
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .level-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .level-description {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .level-details {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    padding: 2rem;
+  }
+
+  .level-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .info-item h4 {
+    margin-bottom: 1rem;
+    color: var(--color-text);
+  }
+
+  .topics-list {
+    list-style: none;
+    margin: 0;
+  }
+
+  .topics-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border-light);
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .topics-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+
+  .topics-list li:last-child {
+    border-bottom: none;
+  }
+
+  .level-lessons {
+    margin-top: 3rem;
+  }
+
+  .lessons-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .lessons-header h3 {
+    margin: 0;
+  }
+
+  .view-all-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .view-all-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .empty-level {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+    border: 2px dashed var(--color-border);
+  }
+
+  .empty-level p {
+    color: var(--color-text-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .learning-path {
+    background: var(--color-bg-secondary);
+    padding: 4rem 0;
+    margin-top: 3rem;
+  }
+
+  .path-visualization {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .path-step {
+    text-align: center;
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .step-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1rem;
+    color: white;
+  }
+
+  .step-icon.beginner {
+    background: #10b981;
+  }
+
+  .step-icon.intermediate {
+    background: #f59e0b;
+  }
+
+  .step-icon.advanced {
+    background: #ef4444;
+  }
+
+  .path-arrow {
+    font-size: 2rem;
+    color: var(--color-text-light);
+  }
+
+  .path-description {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .path-description p {
+    color: var(--color-text-light);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1024px) {
+    .level-info {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .levels-header h1 {
+      font-size: 2.25rem;
+    }
+
+    .level-section {
+      padding: 2rem 1rem;
+    }
+
+    .level-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .level-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .level-title h2 {
+      font-size: 2rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .path-visualization {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .path-arrow {
+      transform: rotate(90deg);
+    }
+
+    .lessons-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+</style>

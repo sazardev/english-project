@@ -1,16 +1,498 @@
 ---
+import MainLayout from "../layouts/MainLayout.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
 
+// Get all blog posts and sort by featured and date
+const allPosts = await getCollection("blog");
+const featuredPosts = allPosts.filter((post) => post.data.featured);
+const recentPosts = allPosts
+  .sort((a, b) => {
+    const dateA = a.data.publishDate || new Date(0);
+    const dateB = b.data.publishDate || new Date(0);
+    return dateB.getTime() - dateA.getTime();
+  })
+  .slice(0, 6);
+
+// Group posts by level for quick access
+const postsByLevel = {
+  beginner: allPosts.filter((post) => post.data.level === "beginner"),
+  intermediate: allPosts.filter((post) => post.data.level === "intermediate"),
+  advanced: allPosts.filter((post) => post.data.level === "advanced"),
+};
+
+// Group posts by category
+const postsByCategory = allPosts.reduce(
+  (acc, post) => {
+    const category = post.data.category;
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(post);
+    return acc;
+  },
+  {} as Record<string, any[]>
+);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+  title="English Project - Learn English with Open Source Notes"
+  description="A collaborative platform for English learners with resources, lessons, and community-driven content organized by levels and categories."
+>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container text-center">
+      <h1 class="hero-title">
+        Master English with
+        <span class="gradient-text">Open Source Learning</span>
+      </h1>
+      <p class="hero-description">
+        Join thousands of learners in our collaborative platform. Access free
+        resources, contribute your knowledge, and learn English together through
+        community-driven content.
+      </p>
+      <div class="hero-actions">
+        <a href="/blog" class="btn btn-primary">Start Learning</a>
+        <a href="#levels" class="btn btn-secondary">Browse by Level</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="text-center mb-8">Why Choose English Project?</h2>
+      <div class="grid grid-3">
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3>Organized by Levels</h3>
+          <p>
+            Content structured from beginner to advanced levels, making it easy
+            to find materials that match your current proficiency.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Community Driven</h3>
+          <p>
+            Anyone can contribute! Submit new lessons, exercises, and resources
+            through GitHub pull requests.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏷️</div>
+          <h3>Categorized Content</h3>
+          <p>
+            Find exactly what you need with content organized by grammar,
+            vocabulary, speaking, listening, and more.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3>Always Free</h3>
+          <p>
+            100% open source and free forever. No subscriptions, no paywalls,
+            just quality English learning resources.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile Friendly</h3>
+          <p>
+            Learn anywhere, anytime. Our platform works seamlessly on all
+            devices and screen sizes.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Fast & Modern</h3>
+          <p>
+            Built with modern web technologies for a lightning-fast, smooth
+            learning experience.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning Levels Section -->
+  <section class="levels" id="levels">
+    <div class="container">
+      <h2 class="text-center mb-8">Choose Your Level</h2>
+      <div class="grid grid-3">
+        <div class="level-card beginner">
+          <div class="level-header">
+            <h3>🌱 Beginner</h3>
+            <span class="level-count"
+              >{postsByLevel.beginner.length} lessons</span
+            >
+          </div>
+          <p>
+            Start your English journey with basic vocabulary, simple grammar,
+            and essential phrases.
+          </p>
+          <ul class="level-topics">
+            <li>Basic vocabulary</li>
+            <li>Present simple tense</li>
+            <li>Common phrases</li>
+            <li>Pronunciation basics</li>
+          </ul>
+          <a href="/blog?level=beginner" class="btn btn-primary">Start Here</a>
+        </div>
+
+        <div class="level-card intermediate">
+          <div class="level-header">
+            <h3>🚀 Intermediate</h3>
+            <span class="level-count"
+              >{postsByLevel.intermediate.length} lessons</span
+            >
+          </div>
+          <p>
+            Build on your foundation with more complex grammar structures and
+            expanded vocabulary.
+          </p>
+          <ul class="level-topics">
+            <li>Past and future tenses</li>
+            <li>Conditional sentences</li>
+            <li>Business vocabulary</li>
+            <li>Conversation skills</li>
+          </ul>
+          <a href="/blog?level=intermediate" class="btn btn-primary"
+            >Continue Learning</a
+          >
+        </div>
+
+        <div class="level-card advanced">
+          <div class="level-header">
+            <h3>🎯 Advanced</h3>
+            <span class="level-count"
+              >{postsByLevel.advanced.length} lessons</span
+            >
+          </div>
+          <p>
+            Master advanced grammar, idiomatic expressions, and professional
+            communication skills.
+          </p>
+          <ul class="level-topics">
+            <li>Complex grammar</li>
+            <li>Idioms & expressions</li>
+            <li>Academic writing</li>
+            <li>Cultural nuances</li>
+          </ul>
+          <a href="/blog?level=advanced" class="btn btn-primary"
+            >Perfect Your English</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories">
+    <div class="container">
+      <h2 class="text-center mb-8">Learn by Category</h2>
+      <div class="grid grid-4">
+        {
+          Object.entries(postsByCategory).map(([category, posts]) => (
+            <a href={`/blog?category=${category}`} class="category-card">
+              <div class="category-icon">
+                {category === "grammar" && "📝"}
+                {category === "vocabulary" && "📚"}
+                {category === "speaking" && "🗣️"}
+                {category === "listening" && "👂"}
+                {category === "writing" && "✍️"}
+                {category === "reading" && "📖"}
+                {category === "pronunciation" && "🔊"}
+                {category === "culture" && "🌍"}
+              </div>
+              <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+              <span class="category-count">{posts.length} lessons</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Posts Section -->
+  {
+    featuredPosts.length > 0 && (
+      <section class="featured-posts">
+        <div class="container">
+          <h2 class="text-center mb-8">Featured Lessons</h2>
+          <div class="grid grid-2">
+            {featuredPosts.slice(0, 4).map((post) => (
+              <BlogCard post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Recent Posts Section -->
+  <section class="recent-posts">
+    <div class="container">
+      <h2 class="text-center mb-8">Latest Lessons</h2>
+      <div class="grid grid-3">
+        {recentPosts.map((post) => <BlogCard post={post} />)}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/blog" class="btn btn-secondary">View All Lessons</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container text-center">
+      <h2>Ready to Start Your English Journey?</h2>
+      <p class="text-lg mb-6">
+        Join our community of learners and contributors. Start learning today or
+        help others by contributing new content.
+      </p>
+      <div class="cta-actions">
+        <a href="/blog" class="btn btn-primary">Start Learning Now</a>
+        <a
+          href="https://github.com/yourusername/english-project"
+          target="_blank"
+          class="btn btn-secondary"
+        >
+          Contribute on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(
+      135deg,
+      var(--color-bg) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .features {
+    padding: 4rem 0;
+    background: var(--color-bg-secondary);
+  }
+
+  .feature-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .levels {
+    padding: 4rem 0;
+  }
+
+  .level-card {
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .level-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .level-card.beginner {
+    border-color: #10b981;
+  }
+  .level-card.intermediate {
+    border-color: #f59e0b;
+  }
+  .level-card.advanced {
+    border-color: #ef4444;
+  }
+
+  .level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .level-count {
+    background: var(--color-bg-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .level-topics {
+    list-style: none;
+    margin: 1.5rem 0;
+    text-align: left;
+  }
+
+  .level-topics li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .level-topics li:before {
+    content: "✓";
+    color: var(--color-primary);
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+
+  .categories {
+    padding: 4rem 0;
+    background: var(--color-bg-secondary);
+  }
+
+  .category-card {
+    display: block;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .category-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .category-count {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    margin-top: 0.5rem;
+  }
+
+  .featured-posts,
+  .recent-posts {
+    padding: 4rem 0;
+  }
+
+  .cta {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-top: 4rem;
+  }
+
+  .cta h2 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .cta p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta .btn-primary {
+    background: white;
+    color: var(--color-primary);
+  }
+
+  .cta .btn-primary:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-primary-dark);
+  }
+
+  .cta .btn-secondary {
+    background: transparent;
+    color: white;
+    border-color: white;
+  }
+
+  .cta .btn-secondary:hover {
+    background: white;
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+    }
+
+    .hero-actions,
+    .cta-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .feature-card,
+    .level-card {
+      padding: 1.5rem;
+    }
+  }
+</style>
