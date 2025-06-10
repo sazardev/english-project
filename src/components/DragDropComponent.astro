@@ -383,7 +383,9 @@ const { instruction, sentences, id } = Astro.props;
           ".result-message"
         ) as HTMLElement | null;
 
-        let draggedElement: HTMLElement | null = null; // Drag and drop event listeners
+        let draggedElement: HTMLElement | null = null;
+
+        // Drag and drop event listeners
         draggableWords.forEach((word: HTMLElement) => {
           word.addEventListener("dragstart", (e: DragEvent) => {
             draggedElement = word;
@@ -457,8 +459,9 @@ const { instruction, sentences, id } = Astro.props;
 
             dropSlots.forEach((slot: HTMLElement, slotIndex: number) => {
               const placedWord = slot.dataset.placedWord;
-              const expectedWord =
-                Array.from(draggableWords)[slotIndex]?.dataset.word;
+              const expectedWord = (
+                Array.from(draggableWords)[slotIndex] as HTMLElement
+              )?.dataset.word;
 
               if (placedWord === expectedWord) {
                 slot.classList.add("correct");
@@ -482,7 +485,7 @@ const { instruction, sentences, id } = Astro.props;
               }
               if (resultMessage) {
                 resultMessage.textContent = "Perfect! Sentence is correct!";
-                resultMessage.style.color = "#22c55e";
+                (resultMessage as HTMLElement).style.color = "#22c55e";
               }
               correctSentences++;
             } else {
@@ -491,7 +494,7 @@ const { instruction, sentences, id } = Astro.props;
               }
               if (resultMessage) {
                 resultMessage.textContent = `${correctCount}/${dropSlots.length} words correct. Try again!`;
-                resultMessage.style.color = "#ef4444";
+                (resultMessage as HTMLElement).style.color = "#ef4444";
               }
             }
 
@@ -512,6 +515,7 @@ const { instruction, sentences, id } = Astro.props;
           });
         }
       });
+
       if (restartBtn) {
         restartBtn.addEventListener("click", () => {
           // Reset all sentences

@@ -591,7 +591,15 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
 
 <script>
   class SentenceConstructor {
-    constructor(container) {
+    container: HTMLElement;
+    currentExercise: number;
+    exercises: NodeListOf<HTMLElement>;
+    totalExercises: number;
+    score: number;
+    correctAnswers: number;
+    draggedElement: HTMLElement | null;
+
+    constructor(container: HTMLElement) {
       this.container = container;
       this.currentExercise = 0;
       this.exercises = this.container.querySelectorAll(".exercise-card");
@@ -602,40 +610,46 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       this.init();
     }
 
-    init() {
+    init(): void {
       this.bindEvents();
       this.updateStats();
       this.initializeDragAndDrop();
     }
 
-    bindEvents() {
-      // Hint toggles
-      this.container.addEventListener("click", (e) => {
-        if (e.target.classList.contains("hint-toggle")) {
-          this.toggleHint(e.target);
+    bindEvents(): void {
+      this.container.addEventListener("click", (e: Event) => {
+        const target = e.target as HTMLElement;
+
+        if (target.classList.contains("hint-toggle")) {
+          this.toggleHint(target);
         }
 
-        if (e.target.classList.contains("check-sentence-btn")) {
+        if (target.classList.contains("check-sentence-btn")) {
           this.checkSentence();
         }
 
-        if (e.target.classList.contains("clear-sentence-btn")) {
+        if (target.classList.contains("clear-sentence-btn")) {
           this.clearSentence();
         }
 
-        if (e.target.classList.contains("show-answer-btn")) {
+        if (target.classList.contains("show-answer-btn")) {
           this.showAnswer();
         }
 
-        if (e.target.classList.contains("play-correct-btn")) {
-          this.playCorrectSentence(e.target.dataset.sentence);
+        if (target.classList.contains("play-correct-btn")) {
+          this.playCorrectSentence(target.dataset.sentence || "");
         }
       });
 
-      // Navigation
-      const prevBtn = this.container.querySelector(".prev-exercise-btn");
-      const nextBtn = this.container.querySelector(".next-exercise-btn");
-      const restartBtn = this.container.querySelector(".restart-game-btn");
+      const prevBtn = this.container.querySelector(
+        ".prev-exercise-btn"
+      ) as HTMLButtonElement;
+      const nextBtn = this.container.querySelector(
+        ".next-exercise-btn"
+      ) as HTMLButtonElement;
+      const restartBtn = this.container.querySelector(
+        ".restart-game-btn"
+      ) as HTMLButtonElement;
 
       if (prevBtn) {
         prevBtn.addEventListener("click", () => this.previousExercise());
@@ -650,91 +664,105 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    initializeDragAndDrop() {
-      this.container.addEventListener("dragstart", (e) => {
-        if (e.target.classList.contains("word-tile")) {
-          this.draggedElement = e.target;
-          e.target.classList.add("dragging");
+    initializeDragAndDrop(): void {
+      this.container.addEventListener("dragstart", (e: DragEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("word-tile")) {
+          this.draggedElement = target;
+          target.classList.add("dragging");
         }
       });
 
-      this.container.addEventListener("dragend", (e) => {
-        if (e.target.classList.contains("word-tile")) {
-          e.target.classList.remove("dragging");
+      this.container.addEventListener("dragend", (e: DragEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("word-tile")) {
+          target.classList.remove("dragging");
           this.draggedElement = null;
         }
       });
 
-      this.container.addEventListener("dragover", (e) => {
+      this.container.addEventListener("dragover", (e: DragEvent) => {
         e.preventDefault();
-        if (e.target.classList.contains("word-slot")) {
-          e.target.classList.add("drag-over");
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("word-slot")) {
+          target.classList.add("drag-over");
         }
       });
 
-      this.container.addEventListener("dragleave", (e) => {
-        if (e.target.classList.contains("word-slot")) {
-          e.target.classList.remove("drag-over");
+      this.container.addEventListener("dragleave", (e: DragEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("word-slot")) {
+          target.classList.remove("drag-over");
         }
       });
 
-      this.container.addEventListener("drop", (e) => {
+      this.container.addEventListener("drop", (e: DragEvent) => {
         e.preventDefault();
-        if (e.target.classList.contains("word-slot") && this.draggedElement) {
-          this.handleDrop(e.target);
+        const target = e.target as HTMLElement;
+        if (target.classList.contains("word-slot") && this.draggedElement) {
+          this.handleDrop(target);
         }
       });
     }
 
-    handleDrop(slot) {
+    handleDrop(slot: HTMLElement): void {
       slot.classList.remove("drag-over");
 
-      // If slot is already occupied, return the word to bank
       if (slot.classList.contains("occupied")) {
-        const existingWord = slot.textContent.trim();
+        const existingWord = slot.textContent?.trim() || "";
         this.returnWordToBank(existingWord);
       }
 
-      // Place the new word
-      slot.textContent = this.draggedElement.dataset.word;
-      slot.classList.add("occupied");
-
-      // Remove the word from the bank
-      this.draggedElement.remove();
+      if (this.draggedElement) {
+        slot.textContent = this.draggedElement.dataset.word || "";
+        slot.classList.add("occupied");
+        this.draggedElement.remove();
+      }
     }
 
-    returnWordToBank(word) {
+    returnWordToBank(word: string): void {
       const currentExercise = this.exercises[this.currentExercise];
-      const wordBank = currentExercise.querySelector(".draggable-words");
+      const wordBank = currentExercise.querySelector(
+        ".draggable-words"
+      ) as HTMLElement;
 
-      const wordTile = document.createElement("div");
-      wordTile.className = "word-tile";
-      wordTile.draggable = true;
-      wordTile.dataset.word = word;
-      wordTile.textContent = word;
-
-      wordBank.appendChild(wordTile);
+      if (wordBank) {
+        const wordTile = document.createElement("div");
+        wordTile.className = "word-tile";
+        wordTile.draggable = true;
+        wordTile.dataset.word = word;
+        wordTile.textContent = word;
+        wordBank.appendChild(wordTile);
+      }
     }
 
-    toggleHint(button) {
-      const hintText = button.nextElementSibling;
-      const isVisible = hintText.style.display !== "none";
+    toggleHint(button: HTMLElement): void {
+      const hintText = button.nextElementSibling as HTMLElement;
+      const isVisible = hintText && hintText.style.display !== "none";
 
-      hintText.style.display = isVisible ? "none" : "block";
+      if (hintText) {
+        hintText.style.display = isVisible ? "none" : "block";
+      }
       button.textContent = isVisible ? "💡 Show Hint" : "🙈 Hide Hint";
     }
 
-    checkSentence() {
+    checkSentence(): void {
       const currentExercise = this.exercises[this.currentExercise];
-      const slots = currentExercise.querySelectorAll(".word-slot");
-      const correctSentence =
-        currentExercise.querySelector(".draggable-words").dataset.sentence;
+      const slots = currentExercise.querySelectorAll(
+        ".word-slot"
+      ) as NodeListOf<HTMLElement>;
+      const wordBank = currentExercise.querySelector(
+        ".draggable-words"
+      ) as HTMLElement;
+      const correctSentence = wordBank?.dataset.sentence || "";
 
       const userSentence = Array.from(slots)
-        .map((slot) =>
-          slot.classList.contains("occupied") ? slot.textContent.trim() : ""
+        .map((slot: HTMLElement) =>
+          slot.classList.contains("occupied")
+            ? slot.textContent?.trim() || ""
+            : ""
         )
-        .filter((word) => word !== "")
+        .filter((word: string) => word !== "")
         .join(" ");
 
       const isCorrect =
@@ -756,7 +784,7 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       this.updateStats();
     }
 
-    getDifficultyPoints() {
+    getDifficultyPoints(): number {
       const currentExercise = this.exercises[this.currentExercise];
       const difficulty = currentExercise.dataset.difficulty;
 
@@ -772,75 +800,93 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    showResult(isCorrect, userSentence, correctSentence, exerciseElement) {
-      const resultDiv = exerciseElement.querySelector(".exercise-result");
-      const resultIcon = resultDiv.querySelector(".result-icon");
-      const resultMessage = resultDiv.querySelector(".result-message");
+    showResult(
+      isCorrect: boolean,
+      userSentence: string,
+      correctSentence: string,
+      exerciseElement: HTMLElement
+    ): void {
+      const resultDiv = exerciseElement.querySelector(
+        ".exercise-result"
+      ) as HTMLElement;
+      const resultIcon = resultDiv?.querySelector(
+        ".result-icon"
+      ) as HTMLElement;
+      const resultMessage = resultDiv?.querySelector(
+        ".result-message"
+      ) as HTMLElement;
 
-      if (isCorrect) {
-        resultIcon.textContent = "🎉";
-        resultMessage.textContent =
-          "Perfect! You built the sentence correctly!";
-        resultDiv.style.background = "rgba(34, 197, 94, 0.2)";
-      } else {
-        resultIcon.textContent = "❌";
-        resultMessage.textContent =
-          "Not quite right. Try again or check the answer below.";
-        resultDiv.style.background = "rgba(239, 68, 68, 0.2)";
+      if (resultDiv) {
+        if (isCorrect) {
+          if (resultIcon) resultIcon.textContent = "🎉";
+          if (resultMessage)
+            resultMessage.textContent =
+              "Perfect! You built the sentence correctly!";
+          resultDiv.style.background = "rgba(34, 197, 94, 0.2)";
+        } else {
+          if (resultIcon) resultIcon.textContent = "❌";
+          if (resultMessage)
+            resultMessage.textContent =
+              "Not quite right. Try again or check the answer below.";
+          resultDiv.style.background = "rgba(239, 68, 68, 0.2)";
+        }
+
+        resultDiv.style.display = "block";
+        resultDiv.scrollIntoView({ behavior: "smooth" });
       }
-
-      resultDiv.style.display = "block";
-      resultDiv.scrollIntoView({ behavior: "smooth" });
     }
 
-    clearSentence() {
+    clearSentence(): void {
       const currentExercise = this.exercises[this.currentExercise];
-      const slots = currentExercise.querySelectorAll(".word-slot");
-      const wordBank = currentExercise.querySelector(".draggable-words");
-      const originalSentence = wordBank.dataset.sentence;
+      const slots = currentExercise.querySelectorAll(
+        ".word-slot"
+      ) as NodeListOf<HTMLElement>;
 
-      // Return all words to bank
-      slots.forEach((slot) => {
+      slots.forEach((slot: HTMLElement) => {
         if (slot.classList.contains("occupied")) {
-          const word = slot.textContent.trim();
+          const word = slot.textContent?.trim() || "";
           this.returnWordToBank(word);
           slot.textContent = "Drop word here";
           slot.classList.remove("occupied");
         }
       });
 
-      // Hide result
-      const resultDiv = currentExercise.querySelector(".exercise-result");
-      resultDiv.style.display = "none";
+      const resultDiv = currentExercise.querySelector(
+        ".exercise-result"
+      ) as HTMLElement;
+      if (resultDiv) {
+        resultDiv.style.display = "none";
+      }
     }
 
-    showAnswer() {
+    showAnswer(): void {
       const currentExercise = this.exercises[this.currentExercise];
-      const slots = currentExercise.querySelectorAll(".word-slot");
-      const correctSentence =
-        currentExercise.querySelector(".draggable-words").dataset.sentence;
+      const slots = currentExercise.querySelectorAll(
+        ".word-slot"
+      ) as NodeListOf<HTMLElement>;
+      const wordBank = currentExercise.querySelector(
+        ".draggable-words"
+      ) as HTMLElement;
+      const correctSentence = wordBank?.dataset.sentence || "";
       const words = correctSentence.split(" ");
 
-      // Clear current sentence
       this.clearSentence();
 
-      // Place correct words
-      slots.forEach((slot, index) => {
+      slots.forEach((slot: HTMLElement, index: number) => {
         if (index < words.length) {
           slot.textContent = words[index];
           slot.classList.add("occupied");
         }
       });
 
-      // Remove words from bank
-      const wordBank = currentExercise.querySelector(".draggable-words");
-      wordBank.innerHTML = "";
+      if (wordBank) {
+        wordBank.innerHTML = "";
+      }
 
-      // Show result as correct
       this.showResult(true, correctSentence, correctSentence, currentExercise);
     }
 
-    playCorrectSentence(sentence) {
+    playCorrectSentence(sentence: string): void {
       if ("speechSynthesis" in window) {
         const utterance = new SpeechSynthesisUtterance(sentence);
         utterance.rate = 0.8;
@@ -848,7 +894,7 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    nextExercise() {
+    nextExercise(): void {
       if (this.currentExercise < this.totalExercises - 1) {
         this.exercises[this.currentExercise].classList.remove("active");
         this.currentExercise++;
@@ -860,7 +906,7 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    previousExercise() {
+    previousExercise(): void {
       if (this.currentExercise > 0) {
         this.exercises[this.currentExercise].classList.remove("active");
         this.currentExercise--;
@@ -870,9 +916,13 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    updateNavigation() {
-      const prevBtn = this.container.querySelector(".prev-exercise-btn");
-      const nextBtn = this.container.querySelector(".next-exercise-btn");
+    updateNavigation(): void {
+      const prevBtn = this.container.querySelector(
+        ".prev-exercise-btn"
+      ) as HTMLButtonElement;
+      const nextBtn = this.container.querySelector(
+        ".next-exercise-btn"
+      ) as HTMLButtonElement;
 
       if (prevBtn) {
         prevBtn.disabled = this.currentExercise === 0;
@@ -886,38 +936,47 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       }
     }
 
-    updateStats() {
-      const currentSpan = this.container.querySelector("#current-exercise");
-      const scoreSpan = this.container.querySelector("#score");
+    updateStats(): void {
+      const currentSpan = this.container.querySelector(
+        "#current-exercise"
+      ) as HTMLElement;
+      const scoreSpan = this.container.querySelector("#score") as HTMLElement;
 
-      if (currentSpan) currentSpan.textContent = this.currentExercise + 1;
-      if (scoreSpan) scoreSpan.textContent = this.score;
+      if (currentSpan)
+        currentSpan.textContent = (this.currentExercise + 1).toString();
+      if (scoreSpan) scoreSpan.textContent = this.score.toString();
     }
 
-    showFinalResults() {
-      const finalResults = this.container.querySelector(".final-results");
+    showFinalResults(): void {
+      const finalResults = this.container.querySelector(
+        ".final-results"
+      ) as HTMLElement;
       const exerciseContainer = this.container.querySelector(
         ".exercise-container"
-      );
+      ) as HTMLElement;
       const navigationControls = this.container.querySelector(
         ".navigation-controls"
-      );
+      ) as HTMLElement;
 
-      // Hide exercise interface
-      exerciseContainer.style.display = "none";
-      navigationControls.style.display = "none";
+      if (exerciseContainer) exerciseContainer.style.display = "none";
+      if (navigationControls) navigationControls.style.display = "none";
 
-      // Update final stats
-      const finalScore = this.container.querySelector("#final-score");
-      const correctAnswers = this.container.querySelector("#correct-answers");
+      const finalScore = this.container.querySelector(
+        "#final-score"
+      ) as HTMLElement;
+      const correctAnswers = this.container.querySelector(
+        "#correct-answers"
+      ) as HTMLElement;
       const completionPercentage = this.container.querySelector(
         "#completion-percentage"
-      );
-      const achievementBadge =
-        this.container.querySelector("#achievement-badge");
+      ) as HTMLElement;
+      const achievementBadge = this.container.querySelector(
+        "#achievement-badge"
+      ) as HTMLElement;
 
-      if (finalScore) finalScore.textContent = this.score;
-      if (correctAnswers) correctAnswers.textContent = this.correctAnswers;
+      if (finalScore) finalScore.textContent = this.score.toString();
+      if (correctAnswers)
+        correctAnswers.textContent = this.correctAnswers.toString();
 
       const percentage = Math.round(
         (this.correctAnswers / this.totalExercises) * 100
@@ -925,86 +984,88 @@ const { exercises, title = "Sentence Construction Game", id } = Astro.props;
       if (completionPercentage)
         completionPercentage.textContent = `${percentage}%`;
 
-      // Show achievement badge for perfect score
       if (percentage === 100 && achievementBadge) {
         achievementBadge.style.display = "inline-block";
       }
 
-      // Show final results
-      finalResults.style.display = "block";
-      finalResults.scrollIntoView({ behavior: "smooth" });
+      if (finalResults) {
+        finalResults.style.display = "block";
+        finalResults.scrollIntoView({ behavior: "smooth" });
+      }
     }
 
-    restart() {
-      // Reset stats
+    restart(): void {
       this.currentExercise = 0;
       this.score = 0;
       this.correctAnswers = 0;
 
-      // Reset exercises
-      this.exercises.forEach((exercise, index) => {
+      this.exercises.forEach((exercise: HTMLElement, index: number) => {
         exercise.classList.toggle("active", index === 0);
 
-        // Reset word bank and slots
-        const originalSentence =
-          exercise.querySelector(".draggable-words").dataset.sentence;
+        const wordBank = exercise.querySelector(
+          ".draggable-words"
+        ) as HTMLElement;
+        const originalSentence = wordBank?.dataset.sentence || "";
         const words = originalSentence.split(" ");
 
-        // Recreate word bank
-        const wordBank = exercise.querySelector(".draggable-words");
-        wordBank.innerHTML = "";
-        words
-          .sort(() => Math.random() - 0.5)
-          .forEach((word, index) => {
-            const wordTile = document.createElement("div");
-            wordTile.className = "word-tile";
-            wordTile.draggable = true;
-            wordTile.dataset.word = word;
-            wordTile.dataset.originalPosition = index;
-            wordTile.textContent = word;
-            wordBank.appendChild(wordTile);
-          });
+        if (wordBank) {
+          wordBank.innerHTML = "";
+          words
+            .sort(() => Math.random() - 0.5)
+            .forEach((word: string, wordIndex: number) => {
+              const wordTile = document.createElement("div");
+              wordTile.className = "word-tile";
+              wordTile.draggable = true;
+              wordTile.dataset.word = word;
+              wordTile.dataset.originalPosition = wordIndex.toString();
+              wordTile.textContent = word;
+              wordBank.appendChild(wordTile);
+            });
+        }
 
-        // Reset slots
-        const slots = exercise.querySelectorAll(".word-slot");
-        slots.forEach((slot) => {
+        const slots = exercise.querySelectorAll(
+          ".word-slot"
+        ) as NodeListOf<HTMLElement>;
+        slots.forEach((slot: HTMLElement) => {
           slot.textContent = "Drop word here";
           slot.classList.remove("occupied");
         });
 
-        // Hide results
-        const resultDiv = exercise.querySelector(".exercise-result");
-        resultDiv.style.display = "none";
+        const resultDiv = exercise.querySelector(
+          ".exercise-result"
+        ) as HTMLElement;
+        if (resultDiv) resultDiv.style.display = "none";
 
-        // Hide hints
-        const hintText = exercise.querySelector(".hint-text");
-        const hintToggle = exercise.querySelector(".hint-toggle");
+        const hintText = exercise.querySelector(".hint-text") as HTMLElement;
+        const hintToggle = exercise.querySelector(
+          ".hint-toggle"
+        ) as HTMLElement;
         if (hintText) hintText.style.display = "none";
         if (hintToggle) hintToggle.textContent = "💡 Show Hint";
       });
 
-      // Show exercise interface
-      const finalResults = this.container.querySelector(".final-results");
+      const finalResults = this.container.querySelector(
+        ".final-results"
+      ) as HTMLElement;
       const exerciseContainer = this.container.querySelector(
         ".exercise-container"
-      );
+      ) as HTMLElement;
       const navigationControls = this.container.querySelector(
         ".navigation-controls"
-      );
+      ) as HTMLElement;
 
-      finalResults.style.display = "none";
-      exerciseContainer.style.display = "block";
-      navigationControls.style.display = "flex";
+      if (finalResults) finalResults.style.display = "none";
+      if (exerciseContainer) exerciseContainer.style.display = "block";
+      if (navigationControls) navigationControls.style.display = "flex";
 
       this.updateStats();
       this.updateNavigation();
     }
   }
 
-  // Initialize all sentence constructor components
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".sentence-constructor").forEach((container) => {
-      new SentenceConstructor(container);
+      new SentenceConstructor(container as HTMLElement);
     });
   });
 </script>
