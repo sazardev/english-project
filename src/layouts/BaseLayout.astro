@@ -490,9 +490,9 @@ const courseSchema = {
 
     <!-- PWA Install Prompt -->
     <script>
-      let deferredPrompt = null;
+      let deferredPrompt: any = null;
       
-      window.addEventListener("beforeinstallprompt", (e) => {
+      window.addEventListener("beforeinstallprompt", (e: any) => {
         e.preventDefault();
         deferredPrompt = e;
         
@@ -519,7 +519,7 @@ const courseSchema = {
             if (deferredPrompt && typeof deferredPrompt.prompt === 'function') {
               deferredPrompt.prompt();
               if (deferredPrompt.userChoice) {
-                deferredPrompt.userChoice.then((choiceResult) => {
+                deferredPrompt.userChoice.then((choiceResult: any) => {
                   if (choiceResult.outcome === "accepted") {
                     console.log("User accepted the A2HS prompt");
                   }
