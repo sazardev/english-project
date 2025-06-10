@@ -5,13 +5,22 @@ import Footer from "../components/Footer.astro";
 import { type CollectionEntry } from "astro:content";
 
 export interface Props {
-  frontmatter: CollectionEntry<"blog">["data"];
+  title?: string;
+  description?: string;
+  frontmatter?: CollectionEntry<"blog">["data"];
+  post?: CollectionEntry<"blog">;
 }
 
-const { frontmatter } = Astro.props;
+const { title, description, frontmatter, post } = Astro.props;
+
+// Use post data if available, otherwise fallback to frontmatter or individual props
+const postData = post?.data || frontmatter;
+const pageTitle = title || postData?.title || "Blog Post";
+const pageDescription =
+  description || postData?.description || "English learning content";
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+<BaseLayout title={pageTitle} description={pageDescription}>
   <Header />
   <main class="container">
     <article class="blog-post">
@@ -21,40 +30,38 @@ const { frontmatter } = Astro.props;
           <span>/</span>
           <a href="/blog">Blog</a>
           <span>/</span>
-          <span class="text-light">{frontmatter.category}</span>
+          <span class="text-light">{postData?.category}</span>
         </div>
-
         <div class="level-badge">
-          <span class={`badge badge-${frontmatter.level}`}>
-            {frontmatter.level.toUpperCase()}
+          <span class={`badge badge-${postData?.level}`}>
+            {postData?.level.toUpperCase()}
           </span>
         </div>
 
-        <h1 class="blog-title">{frontmatter.title}</h1>
+        <h1 class="blog-title">{postData?.title}</h1>
 
         {
-          frontmatter.description && (
+          postData?.description && (
             <p class="blog-description text-lg text-light">
-              {frontmatter.description}
+              {postData.description}
             </p>
           )
         }
-
         <div class="blog-meta">
           <div class="meta-item">
             <span class="meta-label">Category:</span>
-            <span class="meta-value">{frontmatter.category}</span>
+            <span class="meta-value">{postData?.category}</span>
           </div>
           <div class="meta-item">
             <span class="meta-label">Level:</span>
-            <span class="meta-value">{frontmatter.level}</span>
+            <span class="meta-value">{postData?.level}</span>
           </div>
           {
-            frontmatter.tags && (
+            postData?.tags && (
               <div class="meta-item">
                 <span class="meta-label">Tags:</span>
                 <div class="tags">
-                  {frontmatter.tags.map((tag: string) => (
+                  {postData.tags.map((tag: string) => (
                     <span class="tag">{tag}</span>
                   ))}
                 </div>
@@ -62,10 +69,10 @@ const { frontmatter } = Astro.props;
             )
           }
           {
-            frontmatter.readingTime && (
+            postData?.readingTime && (
               <div class="meta-item">
                 <span class="meta-label">Reading time:</span>
-                <span class="meta-value">{frontmatter.readingTime} min</span>
+                <span class="meta-value">{postData.readingTime} min</span>
               </div>
             )
           }
