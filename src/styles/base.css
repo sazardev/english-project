@@ -325,29 +325,154 @@ tr:hover {
   background: var(--color-gray-500);
 }
 
-/* Responsive Typography */
-@media (max-width: 768px) {
-  h1 {
-    font-size: var(--font-size-4xl);
+/* Enhanced Theme System Styles */
+
+/* Theme transition system */
+.theme-transitions {
+  transition: background-color var(--duration-normal) var(--ease-out-quart),
+    color var(--duration-normal) var(--ease-out-quart),
+    border-color var(--duration-normal) var(--ease-out-quart);
+}
+
+.theme-transitions *,
+.theme-transitions *::before,
+.theme-transitions *::after {
+  transition: background-color var(--duration-normal) var(--ease-out-quart),
+    color var(--duration-normal) var(--ease-out-quart),
+    border-color var(--duration-normal) var(--ease-out-quart),
+    box-shadow var(--duration-normal) var(--ease-out-quart),
+    backdrop-filter var(--duration-normal) var(--ease-out-quart);
+}
+
+/* Theme switching animation */
+.theme-switching {
+  animation: themePulse var(--duration-normal) var(--ease-out-quart);
+}
+
+@keyframes themePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+}
+
+/* Enhanced theme states */
+html:not([data-theme]) {
+  visibility: hidden;
+}
+
+html[data-theme] {
+  visibility: visible;
+}
+
+/* Prevent layout shift during theme changes */
+.theme-switching * {
+  pointer-events: none;
+}
+
+/* Theme-specific body styling */
+[data-resolved-theme="light"] body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+[data-resolved-theme="dark"] body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Enhanced focus states for theme system */
+[data-resolved-theme="dark"] *:focus-visible {
+  outline-color: var(--color-primary-400);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+[data-resolved-theme="light"] *:focus-visible {
+  outline-color: var(--color-primary-600);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Theme-specific text selection */
+[data-resolved-theme="dark"] ::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: inherit;
+}
+
+[data-resolved-theme="light"] ::selection {
+  background: rgba(59, 130, 246, 0.2);
+  color: inherit;
+}
+
+/* Theme-specific image filters for better integration */
+[data-resolved-theme="dark"] img:not([data-no-filter]) {
+  filter: brightness(0.9) contrast(1.1);
+  transition: filter var(--duration-normal) var(--ease-out-quart);
+}
+
+[data-resolved-theme="dark"] img:hover:not([data-no-filter]) {
+  filter: brightness(1) contrast(1);
+}
+
+/* Theme-specific code block styling */
+[data-resolved-theme="dark"] pre,
+[data-resolved-theme="dark"] code {
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+[data-resolved-theme="light"] pre,
+[data-resolved-theme="light"] code {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-light);
+}
+
+/* Enhanced reduced motion support for theme system */
+@media (prefers-reduced-motion: reduce) {
+  .theme-transitions,
+  .theme-transitions *,
+  .theme-transitions *::before,
+  .theme-transitions *::after {
+    transition: none !important;
   }
 
-  h2 {
-    font-size: var(--font-size-3xl);
+  .theme-switching {
+    animation: none !important;
   }
 
-  h3 {
-    font-size: var(--font-size-2xl);
+  .theme-pulse,
+  .theme-ripple {
+    display: none !important;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  [data-resolved-theme="dark"] {
+    --color-text: #ffffff;
+    --color-bg: #000000;
+    --color-border: #ffffff;
   }
 
-  h4 {
-    font-size: var(--font-size-xl);
+  [data-resolved-theme="light"] {
+    --color-text: #000000;
+    --color-bg: #ffffff;
+    --color-border: #000000;
   }
+}
 
-  h5 {
-    font-size: var(--font-size-lg);
-  }
-
-  h6 {
-    font-size: var(--font-size-base);
+/* Print styles for theme system */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }

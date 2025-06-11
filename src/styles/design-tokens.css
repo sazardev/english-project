@@ -103,8 +103,9 @@
   --color-gray-500: #6b7280;
   --color-gray-600: #4b5563;
   --color-gray-700: #374151;
+  --color-gray-750: #2d3748;
   --color-gray-800: #1f2937;
-  --color-gray-900: #0f172a;
+  --color-gray-900: #111827;
 
   /* Primary Brand Colors - Refined Blue */
   --color-primary-50: #eff6ff;
@@ -321,38 +322,197 @@
   --color-surface-elevated: var(--color-white);
 }
 
-/* Dark Mode Support */
+/* ===== DARK MODE SYSTEM ===== */
+
+/* Auto Dark Mode - System Preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     /* Background colors */
     --color-bg: var(--color-gray-900);
     --color-bg-secondary: var(--color-gray-800);
-    --color-bg-tertiary: var(--color-gray-700);
-    --color-bg-quaternary: var(--color-gray-600);
+    --color-bg-tertiary: var(--color-gray-750);
+    --color-bg-quaternary: var(--color-gray-700);
     --color-bg-inverse: var(--color-white);
+    --color-bg-overlay: rgba(0, 0, 0, 0.7);
 
     /* Text colors */
-    --color-text: var(--color-gray-100);
+    --color-text: var(--color-gray-50);
     --color-text-secondary: var(--color-gray-300);
     --color-text-tertiary: var(--color-gray-400);
     --color-text-quaternary: var(--color-gray-500);
     --color-text-inverse: var(--color-gray-900);
+    --color-text-link: var(--color-primary-400);
+    --color-text-link-hover: var(--color-primary-300);
+    --color-text-muted: var(--color-gray-400);
 
     /* Border colors */
     --color-border: var(--color-gray-700);
-    --color-border-light: var(--color-gray-800);
+    --color-border-light: var(--color-gray-750);
     --color-border-strong: var(--color-gray-600);
+    --color-border-interactive: var(--color-primary-500);
 
     /* Surface colors */
-    --color-surface: var(--color-gray-800);
-    --color-surface-secondary: var(--color-gray-700);
-    --color-surface-elevated: var(--color-gray-800);
+    --color-surface: rgba(31, 41, 55, 0.95);
+    --color-surface-secondary: var(--color-gray-800);
+    --color-surface-elevated: var(--color-gray-750);
 
     /* Input colors */
     --color-input-bg: var(--color-gray-800);
     --color-input-border: var(--color-gray-600);
+    --color-input-border-focus: var(--color-primary-400);
     --color-input-text: var(--color-gray-100);
+    --color-input-placeholder: var(--color-gray-500);
+
+    /* Interactive colors */
+    --color-primary: var(--color-primary-500);
+    --color-primary-light: var(--color-primary-400);
+    --color-primary-dark: var(--color-primary-600);
+    --color-primary-subtle: var(--color-primary-900);
+
+    /* Enhanced shadows for dark mode */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
+      0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+      0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
+      0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+    /* Colored shadows for dark mode */
+    --shadow-primary: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+    --shadow-success: 0 10px 25px -5px rgba(34, 197, 94, 0.3);
+    --shadow-warning: 0 10px 25px -5px rgba(245, 158, 11, 0.3);
+    --shadow-error: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
   }
+}
+
+/* Manual Dark Mode - User Selection */
+[data-theme="dark"] {
+  /* Background colors */
+  --color-bg: var(--color-gray-900);
+  --color-bg-secondary: var(--color-gray-800);
+  --color-bg-tertiary: var(--color-gray-750);
+  --color-bg-quaternary: var(--color-gray-700);
+  --color-bg-inverse: var(--color-white);
+  --color-bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text colors */
+  --color-text: var(--color-gray-50);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-tertiary: var(--color-gray-400);
+  --color-text-quaternary: var(--color-gray-500);
+  --color-text-inverse: var(--color-gray-900);
+  --color-text-link: var(--color-primary-400);
+  --color-text-link-hover: var(--color-primary-300);
+  --color-text-muted: var(--color-gray-400);
+
+  /* Border colors */
+  --color-border: var(--color-gray-700);
+  --color-border-light: var(--color-gray-750);
+  --color-border-strong: var(--color-gray-600);
+  --color-border-interactive: var(--color-primary-500);
+
+  /* Surface colors */
+  --color-surface: rgba(31, 41, 55, 0.95);
+  --color-surface-secondary: var(--color-gray-800);
+  --color-surface-elevated: var(--color-gray-750);
+
+  /* Input colors */
+  --color-input-bg: var(--color-gray-800);
+  --color-input-border: var(--color-gray-600);
+  --color-input-border-focus: var(--color-primary-400);
+  --color-input-text: var(--color-gray-100);
+  --color-input-placeholder: var(--color-gray-500);
+
+  /* Interactive colors */
+  --color-primary: var(--color-primary-500);
+  --color-primary-light: var(--color-primary-400);
+  --color-primary-dark: var(--color-primary-600);
+  --color-primary-subtle: var(--color-primary-900);
+
+  /* Enhanced shadows for dark mode */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  /* Colored shadows for dark mode */
+  --shadow-primary: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+  --shadow-success: 0 10px 25px -5px rgba(34, 197, 94, 0.3);
+  --shadow-warning: 0 10px 25px -5px rgba(245, 158, 11, 0.3);
+  --shadow-error: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+}
+
+/* Manual Light Mode - User Selection (Override system dark preference) */
+[data-theme="light"] {
+  /* Background colors */
+  --color-bg: var(--color-white);
+  --color-bg-secondary: var(--color-gray-25);
+  --color-bg-tertiary: var(--color-gray-50);
+  --color-bg-quaternary: var(--color-gray-100);
+  --color-bg-inverse: var(--color-gray-900);
+  --color-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Text colors */
+  --color-text: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-700);
+  --color-text-tertiary: var(--color-gray-500);
+  --color-text-quaternary: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+  --color-text-link: var(--color-primary-600);
+  --color-text-link-hover: var(--color-primary-700);
+  --color-text-muted: var(--color-gray-600);
+
+  /* Border colors */
+  --color-border: var(--color-gray-200);
+  --color-border-light: var(--color-gray-100);
+  --color-border-strong: var(--color-gray-300);
+  --color-border-interactive: var(--color-primary-300);
+
+  /* Interactive colors */
+  --color-primary: var(--color-primary-600);
+  --color-primary-light: var(--color-primary-500);
+  --color-primary-dark: var(--color-primary-700);
+  --color-primary-subtle: var(--color-primary-50);
+
+  /* Input colors */
+  --color-input-bg: var(--color-white);
+  --color-input-border: var(--color-gray-300);
+  --color-input-border-focus: var(--color-primary-500);
+  --color-input-text: var(--color-gray-900);
+  --color-input-placeholder: var(--color-gray-400);
+
+  /* Surface colors for cards and elevated content */
+  --color-surface: var(--color-white);
+  --color-surface-secondary: var(--color-gray-25);
+  --color-surface-elevated: var(--color-white);
+
+  /* Light mode shadows (reset to original) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Colored shadows for light mode */
+  --shadow-primary: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
+  --shadow-success: 0 10px 25px -5px rgba(34, 197, 94, 0.15);
+  --shadow-warning: 0 10px 25px -5px rgba(245, 158, 11, 0.15);
+  --shadow-error: 0 10px 25px -5px rgba(239, 68, 68, 0.15);
 }
 
 /* Print Styles */

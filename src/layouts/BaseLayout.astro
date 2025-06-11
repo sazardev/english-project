@@ -468,6 +468,32 @@ const courseSchema = {
       body { font-family: Inter, system-ui, sans-serif; }
       .hero { min-height: 80vh; display: flex; align-items: center; }
     </style>
+
+    <!-- Prevent Flash of Incorrect Theme (FOIT) -->
+    <script is:inline>
+      // Immediately set theme attribute to prevent flash
+      (function() {
+        try {
+          const theme = localStorage.getItem('theme') || 'auto';
+          const root = document.documentElement;
+          root.setAttribute('data-theme', theme);
+          
+          if (theme === 'auto') {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            root.setAttribute('data-resolved-theme', prefersDark ? 'dark' : 'light');
+          } else {
+            root.setAttribute('data-resolved-theme', theme);
+          }
+          
+          // Add transition class after a delay to prevent initial flash
+          setTimeout(() => {
+            root.classList.add('theme-transitions');
+          }, 100);
+        } catch (e) {
+          console.error('Theme initialization error:', e);
+        }
+      })();
+    </script>
   </head>
   <body>
     <slot />
@@ -554,3 +580,4 @@ const courseSchema = {
 </html>
 
 <script src="../scripts/animations.js"></script>
+<script src="../scripts/theme-manager.js"></script>
