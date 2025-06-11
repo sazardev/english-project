@@ -89,14 +89,24 @@ import ThemeToggle from "./ThemeToggle.astro";
 
 <style>
   .header {
-    background-color: var(--color-surface);
-    border-bottom: var(--border-width-1) solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: var(--z-index-sticky);
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: var(--shadow-xs);
+    background: var(--color-surface);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-border-light);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Enhanced header for dark mode */
+  [data-theme="dark"] .header,
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .header {
+      background: rgba(31, 41, 55, 0.95);
+      border-bottom: 1px solid var(--color-border);
+      backdrop-filter: blur(20px) saturate(180%);
+    }
   }
 
   .nav {
@@ -131,6 +141,7 @@ import ThemeToggle from "./ThemeToggle.astro";
     width: 24px;
     height: 24px;
     transition: transform var(--transition-normal);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
   }
 
   .brand-icon svg,
@@ -141,6 +152,19 @@ import ThemeToggle from "./ThemeToggle.astro";
 
   .brand-link:hover .brand-icon {
     transform: scale(1.1);
+    filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+  }
+
+  /* Enhanced logo visibility in dark mode */
+  [data-theme="dark"] .brand-icon,
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .brand-icon {
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3)) brightness(1.1);
+    }
+
+    :root:not([data-theme="light"]) .brand-link:hover .brand-icon {
+      filter: drop-shadow(0 2px 6px rgba(96, 165, 250, 0.4)) brightness(1.2);
+    }
   }
 
   .nav-links {
@@ -184,12 +208,13 @@ import ThemeToggle from "./ThemeToggle.astro";
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
     background-color: var(--color-text);
-    color: var(--color-white);
+    color: var(--color-text-inverse);
     border-radius: var(--radius-md);
     transition: all var(--transition-normal);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     box-shadow: var(--shadow-xs);
+    border: 1px solid transparent;
   }
 
   .github-link:hover {
@@ -198,6 +223,22 @@ import ThemeToggle from "./ThemeToggle.astro";
     text-decoration: none;
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+  }
+
+  /* Enhanced GitHub link for dark mode */
+  [data-theme="dark"] .github-link,
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .github-link {
+      background-color: var(--color-gray-100);
+      color: var(--color-gray-900);
+      border: 1px solid var(--color-border);
+    }
+
+    :root:not([data-theme="light"]) .github-link:hover {
+      background-color: var(--color-primary-500);
+      color: var(--color-white);
+      border-color: var(--color-primary-400);
+    }
   }
 
   .mobile-menu-toggle {
@@ -276,5 +317,26 @@ import ThemeToggle from "./ThemeToggle.astro";
     .mobile-menu-toggle {
       display: flex;
     }
+  }
+
+  /* Dark mode specific styles */
+  [data-resolved-theme="dark"] .header {
+    background: rgba(31, 41, 55, 0.95);
+    border-bottom-color: var(--color-gray-700);
+  }
+
+  [data-resolved-theme="dark"] .mobile-menu {
+    background: rgba(31, 41, 55, 0.98);
+    border-color: var(--color-gray-700);
+  }
+
+  [data-resolved-theme="dark"] .github-link {
+    background-color: var(--color-gray-700);
+    color: var(--color-gray-100);
+  }
+
+  [data-resolved-theme="dark"] .github-link:hover {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
   }
 </style>

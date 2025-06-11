@@ -33,22 +33,9 @@
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(20px);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
 }
 
-/* Light mode glassmorphism */
-[data-resolved-theme="light"] .card {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Dark mode glassmorphism */
-[data-resolved-theme="dark"] .card {
-  background: rgba(31, 41, 55, 0.8);
-  border: 1px solid rgba(75, 85, 99, 0.3);
-}
-
+/* Enhanced glassmorphism effect for cards */
 .card::before {
   content: "";
   position: absolute;
@@ -59,10 +46,30 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.1),
     transparent
   );
   transition: left var(--duration-slow) var(--ease-out-quart);
+}
+
+/* Light mode specific adjustments */
+[data-resolved-theme="light"] .card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+}
+
+/* Dark mode specific adjustments */
+[data-resolved-theme="dark"] .card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
 }
 
 .card::after {
@@ -87,7 +94,6 @@
   transform: var(--hover-lift);
   border-color: var(--color-border-strong);
   backdrop-filter: blur(30px);
-  background: rgba(255, 255, 255, 0.9);
 }
 
 .card:hover::after {

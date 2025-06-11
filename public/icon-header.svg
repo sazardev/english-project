@@ -9,38 +9,49 @@
       <stop offset="0%" style="stop-color:#ffffff"/>
       <stop offset="100%" style="stop-color:#f8fafc"/>
     </linearGradient>
+    
+    <!-- Dark mode gradients -->
+    <linearGradient id="headerGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+    
+    <linearGradient id="bookHeaderGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f1f5f9"/>
+      <stop offset="100%" style="stop-color:#e2e8f0"/>
+    </linearGradient>
   </defs>
   
-  <!-- Clean circular background -->
-  <circle cx="12" cy="12" r="10.5" fill="url(#headerGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+  <!-- Clean circular background with better dark mode visibility -->
+  <circle cx="12" cy="12" r="10.5" fill="url(#headerGrad)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
   
   <!-- Open book icon - simplified for small size -->
   <g transform="translate(12, 11)">
-    <!-- Book spine -->
-    <rect x="-0.5" y="-4" width="1" height="8" fill="rgba(255,255,255,0.3)" rx="0.5"/>
+    <!-- Book spine with enhanced contrast -->
+    <rect x="-0.5" y="-4" width="1" height="8" fill="rgba(255,255,255,0.4)" rx="0.5"/>
     
-    <!-- Left page -->
+    <!-- Left page with improved visibility -->
     <path d="M -5 -3.5 Q -5 -4 -4.5 -4 L -1 -4 L -1 4 L -4.5 4 Q -5 4 -5 3.5 Z" 
           fill="url(#bookHeaderGrad)" 
-          stroke="rgba(255,255,255,0.1)" 
+          stroke="rgba(255,255,255,0.2)" 
           stroke-width="0.3"/>
     
-    <!-- Right page -->
+    <!-- Right page with improved visibility -->
     <path d="M 1 -4 L 4.5 -4 Q 5 -4 5 -3.5 L 5 3.5 Q 5 4 4.5 4 L 1 4 Z" 
           fill="url(#bookHeaderGrad)" 
-          stroke="rgba(255,255,255,0.1)" 
+          stroke="rgba(255,255,255,0.2)" 
           stroke-width="0.3"/>
     
-    <!-- Text lines -->
-    <line x1="-4" y1="-2" x2="-1.5" y2="-2" stroke="#3b82f6" stroke-width="0.3" opacity="0.8"/>
-    <line x1="-4" y1="0" x2="-2" y2="0" stroke="#3b82f6" stroke-width="0.3" opacity="0.6"/>
-    <line x1="1.5" y1="-2" x2="4" y2="-2" stroke="#3b82f6" stroke-width="0.3" opacity="0.8"/>
-    <line x1="1.5" y1="0" x2="3.5" y2="0" stroke="#3b82f6" stroke-width="0.3" opacity="0.6"/>
+    <!-- Text lines with enhanced visibility -->
+    <line x1="-4" y1="-2" x2="-1.5" y2="-2" stroke="#1d4ed8" stroke-width="0.4" opacity="0.9"/>
+    <line x1="-4" y1="0" x2="-2" y2="0" stroke="#1d4ed8" stroke-width="0.4" opacity="0.7"/>
+    <line x1="1.5" y1="-2" x2="4" y2="-2" stroke="#1d4ed8" stroke-width="0.4" opacity="0.9"/>
+    <line x1="1.5" y1="0" x2="3.5" y2="0" stroke="#1d4ed8" stroke-width="0.4" opacity="0.7"/>
   </g>
   
-  <!-- "EN" text badge -->
+  <!-- "EN" text badge with enhanced contrast -->
   <g transform="translate(12, 18.5)">
-    <rect x="-4" y="-1.5" width="8" height="3" rx="1.5" fill="rgba(255,255,255,0.9)" opacity="0.8"/>
-    <text x="0" y="0.5" text-anchor="middle" font-family="system-ui, sans-serif" font-size="4" font-weight="600" fill="#1d4ed8">EN</text>
+    <rect x="-4" y="-1.5" width="8" height="3" rx="1.5" fill="rgba(255,255,255,0.95)" opacity="0.9" stroke="rgba(29,78,216,0.1)" stroke-width="0.2"/>
+    <text x="0" y="0.5" text-anchor="middle" font-family="system-ui, sans-serif" font-size="4" font-weight="700" fill="#1d4ed8">EN</text>
   </g>
 </svg>
