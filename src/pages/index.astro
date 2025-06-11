@@ -1323,6 +1323,41 @@ const postsByCategory = allPosts.reduce(
       background: rgba(31, 41, 55, 0.8);
       border-color: var(--color-gray-600);
     }
+
+    /* Hero Badges and Elements */
+    .hero-badge {
+      background: rgba(31, 41, 55, 0.9);
+      border-color: var(--color-gray-700);
+      color: var(--color-text);
+      backdrop-filter: blur(20px);
+    }
+
+    .trust-badge {
+      color: var(--color-text-secondary);
+    }
+
+    /* CTA Secondary Button for Dark Mode */
+    .cta-secondary.cta-enhanced {
+      background: rgba(31, 41, 55, 0.9);
+      color: var(--color-text);
+      border-color: var(--color-gray-600);
+    }
+
+    .cta-secondary.cta-enhanced:hover {
+      background: rgba(31, 41, 55, 0.95);
+      border-color: var(--color-primary-400);
+    }
+
+    /* Level and Category Counts */
+    .level-count {
+      background: var(--color-gray-800);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-gray-700);
+    }
+
+    .category-count {
+      color: var(--color-text-secondary);
+    }
   }
 
   /* Auto Dark Mode */
@@ -1421,6 +1456,41 @@ const postsByCategory = allPosts.reduce(
       .stats-grid .stat-card:hover {
         background: rgba(31, 41, 55, 0.8);
         border-color: var(--color-gray-600);
+      }
+
+      /* Hero Badges and Elements */
+      .hero-badge {
+        background: rgba(31, 41, 55, 0.9);
+        border-color: var(--color-gray-700);
+        color: var(--color-text);
+        backdrop-filter: blur(20px);
+      }
+
+      .trust-badge {
+        color: var(--color-text-secondary);
+      }
+
+      /* CTA Secondary Button for Dark Mode */
+      .cta-secondary.cta-enhanced {
+        background: rgba(31, 41, 55, 0.9);
+        color: var(--color-text);
+        border-color: var(--color-gray-600);
+      }
+
+      .cta-secondary.cta-enhanced:hover {
+        background: rgba(31, 41, 55, 0.95);
+        border-color: var(--color-primary-400);
+      }
+
+      /* Level and Category Counts */
+      .level-count {
+        background: var(--color-gray-800);
+        color: var(--color-text-secondary);
+        border: 1px solid var(--color-gray-700);
+      }
+
+      .category-count {
+        color: var(--color-text-secondary);
       }
     }
   }
