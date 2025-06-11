@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo base -->
+  <circle cx="12" cy="12" r="11" fill="url(#headerGrad)"/>
+  
+  <!-- Libro ultra minimalista -->
+  <g transform="translate(12, 10)">
+    <!-- Páginas del libro -->
+    <rect x="-6" y="-3" width="5" height="6" rx="1" fill="white" opacity="0.9"/>
+    <rect x="1" y="-3" width="5" height="6" rx="1" fill="white" opacity="0.9"/>
+    
+    <!-- Líneas de texto -->
+    <line x1="-5" y1="-1" x2="-2" y2="-1" stroke="#3b82f6" stroke-width="0.8"/>
+    <line x1="-5" y1="1" x2="-3" y2="1" stroke="#3b82f6" stroke-width="0.8"/>
+    <line x1="2" y1="-1" x2="5" y2="-1" stroke="#3b82f6" stroke-width="0.8"/>
+    <line x1="2" y1="1" x2="4" y2="1" stroke="#3b82f6" stroke-width="0.8"/>
+  </g>
+  
+  <!-- EN simplificado -->
+  <g transform="translate(12, 18)" stroke="white" stroke-width="1" fill="none" stroke-linecap="round">
+    <text x="0" y="0" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="bold" fill="white">EN</text>
+  </g>
+</svg>

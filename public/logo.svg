@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <!-- Gradiente para el círculo principal -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradiente para el texto -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e5e7eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Círculo de fondo principal -->
+  <circle cx="60" cy="60" r="55" fill="url(#primaryGradient)" stroke="none"/>
+  
+  <!-- Círculo interior con efecto de profundidad -->
+  <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  
+  <!-- Libro abierto (símbolo de aprendizaje) -->
+  <g transform="translate(60, 50)">
+    <!-- Página izquierda -->
+    <path d="M -18 -8 Q -18 -12 -14 -12 L -2 -12 L -2 8 L -14 8 Q -18 8 -18 4 Z" 
+          fill="url(#textGradient)" opacity="0.9"/>
+    
+    <!-- Página derecha -->
+    <path d="M 2 -12 L 14 -12 Q 18 -12 18 -8 L 18 4 Q 18 8 14 8 L 2 8 Z" 
+          fill="url(#textGradient)" opacity="0.9"/>
+    
+    <!-- Líneas de texto en página izquierda -->
+    <line x1="-15" y1="-6" x2="-5" y2="-6" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="-15" y1="-2" x2="-5" y2="-2" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="-15" y1="2" x2="-8" y2="2" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+    
+    <!-- Líneas de texto en página derecha -->
+    <line x1="5" y1="-6" x2="15" y2="-6" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="5" y1="-2" x2="15" y2="-2" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+    <line x1="8" y1="2" x2="15" y2="2" stroke="rgba(59,130,246,0.6)" stroke-width="1" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Letras "EN" estilizadas -->
+  <g transform="translate(60, 75)">
+    <!-- Letra E -->
+    <g transform="translate(-8, 0)">
+      <path d="M -4 -6 L -4 6 M -4 -6 L 2 -6 M -4 0 L 1 0 M -4 6 L 2 6" 
+            stroke="url(#textGradient)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </g>
+    
+    <!-- Letra N -->
+    <g transform="translate(8, 0)">
+      <path d="M -4 -6 L -4 6 M 4 -6 L 4 6 M -4 -6 L 4 6" 
+            stroke="url(#textGradient)" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+  
+  <!-- Puntos decorativos (representan comunidad/colaboración) -->
+  <circle cx="25" cy="35" r="2" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="95" cy="35" r="2" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="25" cy="85" r="2" fill="rgba(255,255,255,0.3)"/>
+  <circle cx="95" cy="85" r="2" fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- Efecto de brillo sutil -->
+  <ellipse cx="45" cy="35" rx="15" ry="8" fill="rgba(255,255,255,0.1)" transform="rotate(-20 45 35)"/>
+</svg>

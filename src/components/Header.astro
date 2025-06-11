@@ -7,7 +7,92 @@ import ThemeToggle from "./ThemeToggle.astro";
     <nav class="nav">
       <div class="nav-brand">
         <a href="/" class="brand-link hover-scale">
-          <span class="brand-icon">📚</span>
+          <span class="brand-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <defs>
+                <linearGradient
+                  id="headerGrad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" style="stop-color:#3b82f6"></stop>
+                  <stop offset="100%" style="stop-color:#1d4ed8"></stop>
+                </linearGradient>
+              </defs>
+
+              <!-- Círculo base -->
+              <circle cx="12" cy="12" r="11" fill="url(#headerGrad)"></circle>
+
+              <!-- Libro ultra minimalista -->
+              <g transform="translate(12, 10)">
+                <!-- Páginas del libro -->
+                <rect
+                  x="-6"
+                  y="-3"
+                  width="5"
+                  height="6"
+                  rx="1"
+                  fill="white"
+                  opacity="0.9"></rect>
+                <rect
+                  x="1"
+                  y="-3"
+                  width="5"
+                  height="6"
+                  rx="1"
+                  fill="white"
+                  opacity="0.9"></rect>
+
+                <!-- Líneas de texto -->
+                <line
+                  x1="-5"
+                  y1="-1"
+                  x2="-2"
+                  y2="-1"
+                  stroke="#3b82f6"
+                  stroke-width="0.8"></line>
+                <line
+                  x1="-5"
+                  y1="1"
+                  x2="-3"
+                  y2="1"
+                  stroke="#3b82f6"
+                  stroke-width="0.8"></line>
+                <line
+                  x1="2"
+                  y1="-1"
+                  x2="5"
+                  y2="-1"
+                  stroke="#3b82f6"
+                  stroke-width="0.8"></line>
+                <line
+                  x1="2"
+                  y1="1"
+                  x2="4"
+                  y2="1"
+                  stroke="#3b82f6"
+                  stroke-width="0.8"></line>
+              </g>
+
+              <!-- EN simplificado -->
+              <text
+                x="12"
+                y="18"
+                text-anchor="middle"
+                font-family="sans-serif"
+                font-size="6"
+                font-weight="bold"
+                fill="white">EN</text
+              >
+            </svg>
+          </span>
           <span class="brand-text">English Project</span>
         </a>
       </div>
@@ -119,7 +204,20 @@ import ThemeToggle from "./ThemeToggle.astro";
   }
 
   .brand-icon {
-    font-size: var(--font-size-2xl);
+    display: flex;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    transition: transform var(--transition-normal);
+  }
+
+  .brand-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand-link:hover .brand-icon {
+    transform: scale(1.1);
   }
 
   .nav-links {
