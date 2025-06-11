@@ -4,26 +4,43 @@
       <stop offset="0%" style="stop-color:#3b82f6"/>
       <stop offset="100%" style="stop-color:#1d4ed8"/>
     </linearGradient>
+    
+    <linearGradient id="bookHeaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f8fafc"/>
+    </linearGradient>
   </defs>
   
-  <!-- Círculo base -->
-  <circle cx="12" cy="12" r="11" fill="url(#headerGrad)"/>
+  <!-- Clean circular background -->
+  <circle cx="12" cy="12" r="10.5" fill="url(#headerGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
   
-  <!-- Libro ultra minimalista -->
-  <g transform="translate(12, 10)">
-    <!-- Páginas del libro -->
-    <rect x="-6" y="-3" width="5" height="6" rx="1" fill="white" opacity="0.9"/>
-    <rect x="1" y="-3" width="5" height="6" rx="1" fill="white" opacity="0.9"/>
+  <!-- Open book icon - simplified for small size -->
+  <g transform="translate(12, 11)">
+    <!-- Book spine -->
+    <rect x="-0.5" y="-4" width="1" height="8" fill="rgba(255,255,255,0.3)" rx="0.5"/>
     
-    <!-- Líneas de texto -->
-    <line x1="-5" y1="-1" x2="-2" y2="-1" stroke="#3b82f6" stroke-width="0.8"/>
-    <line x1="-5" y1="1" x2="-3" y2="1" stroke="#3b82f6" stroke-width="0.8"/>
-    <line x1="2" y1="-1" x2="5" y2="-1" stroke="#3b82f6" stroke-width="0.8"/>
-    <line x1="2" y1="1" x2="4" y2="1" stroke="#3b82f6" stroke-width="0.8"/>
+    <!-- Left page -->
+    <path d="M -5 -3.5 Q -5 -4 -4.5 -4 L -1 -4 L -1 4 L -4.5 4 Q -5 4 -5 3.5 Z" 
+          fill="url(#bookHeaderGrad)" 
+          stroke="rgba(255,255,255,0.1)" 
+          stroke-width="0.3"/>
+    
+    <!-- Right page -->
+    <path d="M 1 -4 L 4.5 -4 Q 5 -4 5 -3.5 L 5 3.5 Q 5 4 4.5 4 L 1 4 Z" 
+          fill="url(#bookHeaderGrad)" 
+          stroke="rgba(255,255,255,0.1)" 
+          stroke-width="0.3"/>
+    
+    <!-- Text lines -->
+    <line x1="-4" y1="-2" x2="-1.5" y2="-2" stroke="#3b82f6" stroke-width="0.3" opacity="0.8"/>
+    <line x1="-4" y1="0" x2="-2" y2="0" stroke="#3b82f6" stroke-width="0.3" opacity="0.6"/>
+    <line x1="1.5" y1="-2" x2="4" y2="-2" stroke="#3b82f6" stroke-width="0.3" opacity="0.8"/>
+    <line x1="1.5" y1="0" x2="3.5" y2="0" stroke="#3b82f6" stroke-width="0.3" opacity="0.6"/>
   </g>
   
-  <!-- EN simplificado -->
-  <g transform="translate(12, 18)" stroke="white" stroke-width="1" fill="none" stroke-linecap="round">
-    <text x="0" y="0" text-anchor="middle" font-family="sans-serif" font-size="6" font-weight="bold" fill="white">EN</text>
+  <!-- "EN" text badge -->
+  <g transform="translate(12, 18.5)">
+    <rect x="-4" y="-1.5" width="8" height="3" rx="1.5" fill="rgba(255,255,255,0.9)" opacity="0.8"/>
+    <text x="0" y="0.5" text-anchor="middle" font-family="system-ui, sans-serif" font-size="4" font-weight="600" fill="#1d4ed8">EN</text>
   </g>
 </svg>
