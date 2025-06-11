@@ -212,4 +212,40 @@
       padding: var(--space-10) 0 var(--space-6);
     }
   }
+
+  /* ===== DARK MODE ENHANCEMENTS ===== */
+
+  /* Manual Dark Mode */
+  [data-theme="dark"] {
+    .footer {
+      background-color: var(--color-gray-900);
+      border-top-color: var(--color-gray-700);
+    }
+
+    .footer-bottom {
+      border-top-color: var(--color-gray-700);
+    }
+
+    .social-link:hover {
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  /* Auto Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      .footer {
+        background-color: var(--color-gray-900);
+        border-top-color: var(--color-gray-700);
+      }
+
+      .footer-bottom {
+        border-top-color: var(--color-gray-700);
+      }
+
+      .social-link:hover {
+        background-color: rgba(59, 130, 246, 0.1);
+      }
+    }
+  }
 </style>

@@ -241,4 +241,98 @@ const { title, description, category, level, tags, readingTime, publishDate } =
       padding: var(--space-5);
     }
   }
+
+  /* ===== DARK MODE ENHANCEMENTS ===== */
+
+  /* Manual Dark Mode */
+  [data-theme="dark"] {
+    .blog-card {
+      background: rgba(31, 41, 55, 0.8);
+      border-color: var(--color-gray-700);
+      backdrop-filter: blur(10px);
+    }
+
+    .blog-card:hover {
+      background: rgba(31, 41, 55, 0.95);
+      border-color: var(--color-primary-400);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+
+    .blog-card.featured {
+      background: linear-gradient(
+        135deg,
+        rgba(31, 41, 55, 0.9) 0%,
+        rgba(59, 130, 246, 0.1) 100%
+      );
+      border-color: var(--color-primary-400);
+    }
+
+    .level-badge.level-beginner {
+      background: var(--color-beginner-900);
+      color: var(--color-beginner-200);
+    }
+
+    .level-badge.level-intermediate {
+      background: var(--color-intermediate-900);
+      color: var(--color-intermediate-200);
+    }
+
+    .level-badge.level-advanced {
+      background: var(--color-advanced-900);
+      color: var(--color-advanced-200);
+    }
+
+    .tag {
+      background: var(--color-gray-800);
+      color: var(--color-gray-200);
+      border: 1px solid var(--color-gray-700);
+    }
+  }
+
+  /* Auto Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      .blog-card {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: var(--color-gray-700);
+        backdrop-filter: blur(10px);
+      }
+
+      .blog-card:hover {
+        background: rgba(31, 41, 55, 0.95);
+        border-color: var(--color-primary-400);
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+      }
+
+      .blog-card.featured {
+        background: linear-gradient(
+          135deg,
+          rgba(31, 41, 55, 0.9) 0%,
+          rgba(59, 130, 246, 0.1) 100%
+        );
+        border-color: var(--color-primary-400);
+      }
+
+      .level-badge.level-beginner {
+        background: var(--color-beginner-900);
+        color: var(--color-beginner-200);
+      }
+
+      .level-badge.level-intermediate {
+        background: var(--color-intermediate-900);
+        color: var(--color-intermediate-200);
+      }
+
+      .level-badge.level-advanced {
+        background: var(--color-advanced-900);
+        color: var(--color-advanced-200);
+      }
+
+      .tag {
+        background: var(--color-gray-800);
+        color: var(--color-gray-200);
+        border: 1px solid var(--color-gray-700);
+      }
+    }
+  }
 </style>

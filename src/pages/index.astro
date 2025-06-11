@@ -1224,4 +1224,204 @@ const postsByCategory = allPosts.reduce(
       padding: var(--space-6) var(--space-4);
     }
   }
+
+  /* ===== DARK MODE ENHANCEMENTS ===== */
+
+  /* Manual Dark Mode */
+  [data-theme="dark"] {
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(
+        135deg,
+        var(--color-gray-900) 0%,
+        var(--color-gray-800) 50%,
+        var(--color-gray-900) 100%
+      );
+    }
+
+    .hero-patterns::before {
+      background: radial-gradient(
+          circle at 25% 25%,
+          rgba(96, 165, 250, 0.1) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          circle at 75% 75%,
+          rgba(59, 130, 246, 0.1) 0%,
+          transparent 50%
+        );
+    }
+
+    /* Feature Cards */
+    .feature-card {
+      background: rgba(31, 41, 55, 0.8);
+      border-color: var(--color-gray-700);
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      background: rgba(31, 41, 55, 0.95);
+      border-color: var(--color-gray-600);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Level Cards */
+    .level-card {
+      background: rgba(31, 41, 55, 0.8);
+      border-color: var(--color-gray-700);
+      backdrop-filter: blur(10px);
+    }
+
+    .level-card:hover {
+      background: rgba(31, 41, 55, 0.95);
+    }
+
+    .level-card.beginner:hover {
+      border-color: var(--color-beginner-400);
+      box-shadow: 0 15px 35px rgba(34, 197, 94, 0.15);
+    }
+
+    .level-card.intermediate:hover {
+      border-color: var(--color-intermediate-400);
+      box-shadow: 0 15px 35px rgba(245, 158, 11, 0.15);
+    }
+
+    .level-card.advanced:hover {
+      border-color: var(--color-advanced-400);
+      box-shadow: 0 15px 35px rgba(239, 68, 68, 0.15);
+    }
+
+    /* Category Cards */
+    .category-card {
+      background: rgba(31, 41, 55, 0.8);
+      border-color: var(--color-gray-700);
+      backdrop-filter: blur(10px);
+    }
+
+    .category-card:hover {
+      background: rgba(31, 41, 55, 0.95);
+      border-color: var(--color-primary-400);
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
+    }
+
+    /* CTA Section */
+    .cta {
+      background: linear-gradient(
+        135deg,
+        var(--color-gray-800) 0%,
+        var(--color-gray-750) 50%,
+        var(--color-gray-800) 100%
+      );
+    }
+
+    .stats-grid .stat-card {
+      background: rgba(31, 41, 55, 0.6);
+      border-color: var(--color-gray-700);
+    }
+
+    .stats-grid .stat-card:hover {
+      background: rgba(31, 41, 55, 0.8);
+      border-color: var(--color-gray-600);
+    }
+  }
+
+  /* Auto Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--color-gray-900) 0%,
+          var(--color-gray-800) 50%,
+          var(--color-gray-900) 100%
+        );
+      }
+
+      .hero-patterns::before {
+        background: radial-gradient(
+            circle at 25% 25%,
+            rgba(96, 165, 250, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 75%,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 50%
+          );
+      }
+
+      /* Feature Cards */
+      .feature-card {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: var(--color-gray-700);
+        backdrop-filter: blur(10px);
+      }
+
+      .feature-card:hover {
+        background: rgba(31, 41, 55, 0.95);
+        border-color: var(--color-gray-600);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Level Cards */
+      .level-card {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: var(--color-gray-700);
+        backdrop-filter: blur(10px);
+      }
+
+      .level-card:hover {
+        background: rgba(31, 41, 55, 0.95);
+      }
+
+      .level-card.beginner:hover {
+        border-color: var(--color-beginner-400);
+        box-shadow: 0 15px 35px rgba(34, 197, 94, 0.15);
+      }
+
+      .level-card.intermediate:hover {
+        border-color: var(--color-intermediate-400);
+        box-shadow: 0 15px 35px rgba(245, 158, 11, 0.15);
+      }
+
+      .level-card.advanced:hover {
+        border-color: var(--color-advanced-400);
+        box-shadow: 0 15px 35px rgba(239, 68, 68, 0.15);
+      }
+
+      /* Category Cards */
+      .category-card {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: var(--color-gray-700);
+        backdrop-filter: blur(10px);
+      }
+
+      .category-card:hover {
+        background: rgba(31, 41, 55, 0.95);
+        border-color: var(--color-primary-400);
+        box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
+      }
+
+      /* CTA Section */
+      .cta {
+        background: linear-gradient(
+          135deg,
+          var(--color-gray-800) 0%,
+          var(--color-gray-750) 50%,
+          var(--color-gray-800) 100%
+        );
+      }
+
+      .stats-grid .stat-card {
+        background: rgba(31, 41, 55, 0.6);
+        border-color: var(--color-gray-700);
+      }
+
+      .stats-grid .stat-card:hover {
+        background: rgba(31, 41, 55, 0.8);
+        border-color: var(--color-gray-600);
+      }
+    }
+  }
 </style>
